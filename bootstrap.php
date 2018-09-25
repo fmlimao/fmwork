@@ -20,3 +20,10 @@ function autoload($classe)
 }
 
 spl_autoload_register('autoload');
+
+try {
+    $conn = new \PDO('mysql:host=' . env('APP_NAME') . '-mysql;dbname=' . env('MYSQL_DATABASE'), env('MYSQL_USER'), env('MYSQL_PASSWORD'));
+} catch (\PDOException $e) {
+    printa('Erro no banco: ' . $e->getMessage());
+    die();
+}
