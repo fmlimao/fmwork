@@ -57,12 +57,20 @@ class Model
 
         $query = "SELECT * FROM " . $this->table;
 
+        $query_args = [];
         if (isset($args['where'])) {
-            $query .= " WHERE " . $args['where'];
+            if (is_string($args['where']) && trim($args['where']) != '') {
+                $query .= " WHERE " . trim($args['where']);
+            } else if (is_array($args['where']) && !empty($args['where'])) {
+                $where = $args['where'][0];
+                unset($args['where'][0]);
+                $query_args = array_values($args['where']);
+                $query .= " WHERE " . $where;
+            }
         }
 
 		$rs = $conn->prepare($query);
-		$rs->execute();
+		$rs->execute($query_args);
         $response = $rs->fetchAll(\PDO::FETCH_ASSOC);
 
         return $response;
@@ -78,8 +86,6 @@ class Model
             $query .= " VALUES (" . implode(', ', array_map(function ($a) {
                 return ':' . $a;
             }, array_keys($this->data))) . ");";
-
-            // printa($query);
 
             $rs = $conn->prepare($query);
             $rs->execute($this->data);

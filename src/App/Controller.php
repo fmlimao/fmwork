@@ -29,4 +29,26 @@ class Controller
 
         die('View "' . ($this->System->getController() . '/' . $this->System->getAction()) . '" não encontrada');
     }
+
+    protected function go($path)
+    {
+        header('location: ' . env('APP_PATH') . $path);
+        exit;
+    }
+
+    protected function needLogin()
+    {
+        if (!isset($_SESSION['login'])) {
+            $this->go('home/login');
+        }
+    }
+
+    protected function get($name, $default_value = null)
+    {
+        $ret = $default_value;
+        if (isset($_GET[$name])) $ret = $_GET[$name];
+        else if (isset($_POST[$name])) $ret = $_POST[$name];
+        else if (isset($_FILES[$name])) $ret = $_POST[$name];
+        return $ret;
+    }
 }

@@ -2,6 +2,9 @@
 
 require_once 'functions.php';
 
+session_name(env('APP_SESSION_NAME'));
+session_start();
+
 if (env('APP_DISPLAY_ERRORS')) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);

@@ -6,33 +6,10 @@ class Home extends \App\Controller
 {
 	public function indexAction()
 	{
-		// se eu quiser buscar uma lista de usuarios, posso fazer assim
+		$this->needLogin();
+
 		$UserModel = new \App\Models\User();
 		$users = $UserModel->getAll();
-		// printa($users);
-
-		// se eu quiser buscar um unico usuario, eu posso fazer dessa maneira
-		// $user = new \App\Models\User(2);
-		// printa($user);
-
-
-
-		// $user = new \App\Models\User(8);
-		// $user->name = 'Arnaldo Coelho';
-		// $user->user = 'arnaldo.coelho';
-		// $user->save();
-
-		// $user->name = 'Caetano Soares';
-		// $user->user = 'caetano.soares';
-		// $user->save();
-
-		// $user->delete();
-
-		// printa($user);
-		// printa($user->name);
-
-
-
 
 		$this->view([
 			'users' => $users,
@@ -41,18 +18,47 @@ class Home extends \App\Controller
 
 	public function loginAction()
 	{
-		$this->view();
+		$act = $this->get('act', '');
+		$user = trim($this->get('user', ''));
+		$password = trim($this->get('password', ''));
+		$error_message = [];
+
+		if ($act == 'login') {
+			$error = false;
+
+			if ($user == '') {
+				$error = true;
+				$error_message[] = '- Informe o usuário';
+			}
+
+			if ($password == '') {
+				$error = true;
+				$error_message[] = '- Informe a senha';
+			}
+
+			if (!$error) {
+				$UserModel = new \App\Models\User();
+				$users = $UserModel->getByUserAndPassword($user, $password);
+
+				if (!$users) {
+					$error_message[] = '- Usuário não encontrado';
+				} else {
+					$_SESSION['login'] = $users;
+					$this->go('home');
+				}
+			}
+		}
+
+		$this->view([
+			'user' => $user,
+			'password' => $password,
+			'error_message' => $error_message,
+		]);
 	}
 
-	public function meAjuda($a, $b)
+	public function logoutAction()
 	{
-		return $a + $b;
-	}
-
-	public function criarContaAction($params)
-	{
-		echo 'criando uma conta... ' . $this->meAjuda(18, 98);
-
-		printa($params);
+		session_destroy();
+		$this->go('home');
 	}
 }

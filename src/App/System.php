@@ -29,6 +29,8 @@ class System
 		if (isset($_SERVER['REQUEST_URI'])) {
 			// Nginx
 			$path = trim($_SERVER['REQUEST_URI']);
+			$query_string = '?' . (isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '');
+			$path = str_replace($query_string, '', $path);
 		} else if (isset($_SERVER['PATH_INFO'])) {
 			// PHP Server
 			$path = trim($_SERVER['PATH_INFO']);
