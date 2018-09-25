@@ -7,8 +7,8 @@ class Home extends \App\Controller
 	public function indexAction()
 	{
 		// se eu quiser buscar uma lista de usuarios, posso fazer assim
-		// $UserModel = new \App\Models\User();
-		// $users = $UserModel->getAll();
+		$UserModel = new \App\Models\User();
+		$users = $UserModel->getAll();
 		// printa($users);
 
 		// se eu quiser buscar um unico usuario, eu posso fazer dessa maneira
@@ -17,28 +17,26 @@ class Home extends \App\Controller
 
 
 
-		// $user = new \App\Models\User();
-		// $user->setAttribute('name', 'Arnaldo Coelho');
-		// $user->setAttribute('user', 'arnaldo.coelho');
+		// $user = new \App\Models\User(8);
+		// $user->name = 'Arnaldo Coelho';
+		// $user->user = 'arnaldo.coelho';
 		// $user->save();
 
-		// $user->setAttribute('name', 'Caetano Soares');
-		// $user->setAttribute('user', 'caetano.soares');
+		// $user->name = 'Caetano Soares';
+		// $user->user = 'caetano.soares';
 		// $user->save();
 
 		// $user->delete();
 
 		// printa($user);
+		// printa($user->name);
 
 
 
-		// $token = 'askjdhkasjdhkajsdhkasjdhkjashd';
 
-		// $this->view([
-		// 	'token' => $token,
-		// 	'users' => $users,
-		// 	'user' => $user,
-		// ]);
+		$this->view([
+			'users' => $users,
+		]);
 	}
 
 	public function loginAction()

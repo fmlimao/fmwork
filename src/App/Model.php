@@ -18,10 +18,20 @@ class Model
 
                 // criar o objeto
                 foreach ($current_obj as $key => $value) {
-                    $this->setAttribute($key, $value);
+                    $this->$key = $value;
                 }
             }
         }
+    }
+
+    public function __set($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
+
+    public function __get($key)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     public function getAll()
@@ -34,7 +44,7 @@ class Model
             $class_name = __CLASS__;
             $obj = new $class_name(null);
             foreach ($current_obj as $key => $value) {
-                $obj->setAttribute($key, $value);
+                $obj->$key = $value;
             }
             $list[] = $obj;
         }
@@ -56,11 +66,6 @@ class Model
         $response = $rs->fetchAll(\PDO::FETCH_ASSOC);
 
         return $response;
-    }
-
-    public function setAttribute($key, $value)
-    {
-        $this->data[$key] = $value;
     }
 
     public function save()
@@ -91,7 +96,7 @@ class Model
 
                 // criar o objeto
                 foreach ($current_obj as $key => $value) {
-                    $this->setAttribute($key, $value);
+                    $this->$key = $value;
                 }
             }
         } else {
@@ -119,7 +124,7 @@ class Model
 
                 // criar o objeto
                 foreach ($current_obj as $key => $value) {
-                    $this->setAttribute($key, $value);
+                    $this->$key = $value;
                 }
             }
         }
