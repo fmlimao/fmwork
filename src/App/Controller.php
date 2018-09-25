@@ -8,9 +8,11 @@ class Controller
 
     public function __construct(System $System)
     {
+        // Toda controller terá uma copia da System para poder acessar seus atributos
         $this->System = $System;
     }
 
+    // Método responsável por exibir a View da Controller/Action
     protected function view($params = [])
     {
         $dir = __DIR__ . '/Views/' . $this->System->getController() . '/';
@@ -30,12 +32,14 @@ class Controller
         die('View "' . ($this->System->getController() . '/' . $this->System->getAction()) . '" não encontrada');
     }
 
+    // Método responsável por redirecionar a aplicação
     protected function go($path)
     {
         header('location: ' . env('APP_PATH') . $path);
         exit;
     }
 
+    // Método responsável por verificar se existe a sessão de login
     protected function needLogin()
     {
         if (!isset($_SESSION['login'])) {
@@ -43,6 +47,7 @@ class Controller
         }
     }
 
+    // Método responsável por buscar variáveis na GET, POST ou FILES
     protected function get($name, $default_value = null)
     {
         $ret = $default_value;

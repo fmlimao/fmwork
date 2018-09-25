@@ -4,6 +4,7 @@ namespace App;
 
 class System
 {
+	// Atributos de controle da aplicação
 	private $url;
 	private $explode;
 	private $controller;
@@ -16,11 +17,22 @@ class System
 
 	public function __construct()
 	{
+		// Primeiro limpamos o caminho informado na URL
 		$this->setUrl();
+
+		// Depois quebramos ela para ajudar no processo
 		$this->setExplode();
+
+		// Retiramos a Controller da URL (caso exista uma)
 		$this->setController();
+
+		// Retiramos a Action da URL (caso exista uma)
 		$this->setAction();
+
+		// Retiramos os Parâmetros da URL (caso eles existam)
 		$this->setParams();
+
+		// Organizamos a Controller e Action para buscar elas dinamicamente
 		$this->arrangeControllerAction();
 	}
 
@@ -130,6 +142,20 @@ class System
 
 	public function start()
 	{
+		// Estanciamos a Controller
+		$Controller = new $this->final_controller($this);
+
+		// Verificamos se a Action existe
+		if (method_exists($Controller, $this->final_action)) {
+			$action = $this->final_action;
+			$Controller->$action($this->params);
+			return;
+		}
+
+		// Erro 404
+		// TODO: Chamar uma página amigável para essa mensagem de erro
+		die('Rota não encontrada!');
+
 		// foreach ($this->routes as $route) {
 		// 	$original_regex = $route['path'];
 		// 	preg_match_all("/\{([A-Za-z0-9\_\.\-]+)\}/", $original_regex, $regex_vars);
@@ -146,16 +172,5 @@ class System
 		// 		break;
 		// 	}
 		// }
-
-		// die('Rota não encontrada!');
-
-		$Controller = new $this->final_controller($this);
-		// printa($Controller);
-		if (!method_exists($Controller, $this->final_action)) {
-			die('Action "' . $this->final_action . '" não encontrada');
-		} else {
-			$action = $this->final_action;
-			$Controller->$action($this->params);
-		}
 	}
 }

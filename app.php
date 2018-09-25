@@ -1,7 +1,9 @@
 <?php
 
+// Chamamos o arquivo com as configurações da nossa aplicação
 require_once 'bootstrap.php';
 
+// Objeto responsável por cuidar das chamadas das Controller e Actions
 $System = new App\System;
 
 // $System->route('/a-b/{v1}/', function () {
@@ -13,4 +15,5 @@ $System = new App\System;
 //     printa($args);
 // });
 
+// Metodo que inicia toda a aplicação
 $System->start();

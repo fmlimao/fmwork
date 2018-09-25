@@ -1,5 +1,6 @@
 <?php
 
+// Função de debug
 function printa($v, $dump = 0)
 {
 	echo '<pre>';
@@ -11,6 +12,7 @@ function printa($v, $dump = 0)
 	echo '</pre>';
 }
 
+// Função que retorna um valor específico do arquivo ".env"
 function env($key)
 {
 	foreach (parse_ini_file(__DIR__ . '/.env') as $k => $v) {

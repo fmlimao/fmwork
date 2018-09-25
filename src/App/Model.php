@@ -4,10 +4,12 @@ namespace App;
 
 class Model
 {
+    // Aqui ficarão todos os atributos do objeto
     protected $data = [];
 
     public function __construct($id = null)
     {
+        // Se o ID for passado no construtor, faremos a busca por elle
         if ($id) {
             $response = $this->search([
                 'where' => 'id = ' . $id,
@@ -16,7 +18,7 @@ class Model
             if (!empty($response)) {
                 $current_obj = $response[0];
 
-                // criar o objeto
+                // Populamos o objeto
                 foreach ($current_obj as $key => $value) {
                     $this->$key = $value;
                 }
@@ -24,16 +26,19 @@ class Model
         }
     }
 
+    // Método que recebe os "sets" do objeto e manda esse valor para o $data
     public function __set($key, $value)
     {
         $this->data[$key] = $value;
     }
 
+    // Método que retorna o valor do $data
     public function __get($key)
     {
         return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
+    // Metodo que retorna todos os registros
     public function getAll()
     {
         $response = $this->search();
@@ -51,6 +56,7 @@ class Model
         return $list;
     }
 
+    // Método que busca os registos no banco (pode passar filtros)
     public function search($args = [])
     {
         global $conn;
@@ -76,6 +82,7 @@ class Model
         return $response;
     }
 
+    // Método que salva novos registros e registros existentes
     public function save()
     {
         global $conn;
@@ -136,6 +143,7 @@ class Model
         }
     }
 
+    // Método que remove o registro do banco
     public function delete()
     {
         if (isset($this->data['id'])) {

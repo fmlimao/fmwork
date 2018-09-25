@@ -6,6 +6,7 @@ class User extends \App\Model
 {
     public $table = 'users';
 
+    // Método que busca usuário pelo login e senha
     public function getByUserAndPassword($user, $password)
     {
         $users = $this->search([
