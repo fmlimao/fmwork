@@ -1,0 +1,26 @@
+{
+  "name": "fmwork",
+  "version": "1.0.0",
+  "description": "Este projeto vai ser a nova versão do FM Work, que é um sistema de gestão de projetos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "standard": {
+    "ignore": [
+      "/public/*"
+    ]
+  },
+  "keywords": [],
+  "author": "Leandro Macedo <fmlimao@gmail.com> (http://github.com/fmlimao)",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "standard": "^17.1.2"
+  }
+}
