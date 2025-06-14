@@ -177,9 +177,9 @@
               App.form.messages = ['Login realizado com sucesso!']
             }
 
-            // setTimeout(() => {
-            //   window.location.href = '/app'
-            // }, 1000)
+            setTimeout(() => {
+              window.location.href = '/app/project-select'
+            }, 1000)
           } catch (error) {
             console.error('Erro ao fazer login:', error)
 
@@ -197,12 +197,12 @@
       }
     })
 
-    // setTimeout(() => {
-    //   App.form.form.email.value = 'admin@email.com'
-    //   App.form.form.password.value = 'admin123'
+    setTimeout(() => {
+      App.form.form.email.value = 'admin@email.com'
+      App.form.form.password.value = 'admin123'
 
-    //   App.doLogin()
-    // }, 500)
+      // App.doLogin()
+    }, 500)
   </script>
 </body>
 

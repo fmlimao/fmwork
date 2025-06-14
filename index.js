@@ -11,6 +11,7 @@ const expressLayouts = require('express-ejs-layouts')
 const moment = require('moment')
 const morgan = require('morgan')
 const path = require('path')
+const p = require('./package.json')
 
 const app = express()
 
@@ -30,9 +31,15 @@ if (DEBUG) {
 }
 
 app.use((req, res, next) => {
+  res.locals.__ = req.__
+  res.locals.version = p.version
+  res.locals.assetsVersion = new Date().getTime()
+
+  res.__ = str => str
   res.locals.pageTitle = process.env.APP_TITLE || 'App Title'
   res.locals.pageShortTitle = process.env.APP_SHORT_TITLE || 'AT'
 
+  // Para o Menu
   res.locals.page = ''
 
   res.locals.activeMenu = (page, pages, className = 'active') => {
@@ -70,9 +77,34 @@ app.get('/app/login', (req, res) => {
   })
 })
 
+app.get('/app/logout', (req, res) => {
+  res.redirect('/app/login')
+})
+
 app.get('/app/forgot-password', (req, res) => {
   res.render('app/auth/forgot-password', {
     layout: false
+  })
+})
+
+app.get('/app/project-select', (req, res) => {
+  res.render('app/auth/project-select', {
+    layout: false
+  })
+})
+
+app.get('/app/:projectUuid', (req, res) => {
+  const selectedProject = {
+    uuid: '1dfb7cc4-7a73-4dec-a0ee-1f876d457a4d',
+    name: 'Projeto Exemplo',
+    description: 'Este é um projeto de exemplo para demonstração.',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+
+  res.render('app/project/home', {
+    page: 'home',
+    selectedProject
   })
 })
 
