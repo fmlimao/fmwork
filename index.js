@@ -70,6 +70,12 @@ app.get('/app/login', (req, res) => {
   })
 })
 
+app.get('/app/forgot-password', (req, res) => {
+  res.render('app/auth/forgot-password', {
+    layout: false
+  })
+})
+
 // SITE
 
 app.get('/', (req, res) => {
