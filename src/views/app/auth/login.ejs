@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%- pageTitle %></title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="/assets/app/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/assets/app/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="/assets/app/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/assets/app/bower_components/admin-lte/dist/css/AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="/assets/app/bower_components/admin-lte/plugins/iCheck/square/blue.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+
+<body class="hold-transition login-page">
+  <div class="login-box" id="AppVue">
+    <div class="login-logo">
+      <a href="/app"><b><%- pageTitle %></b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+
+      <form @submit.prevent="doLogin()">
+        <div class="alert" v-if="login.messages.length" :class="{
+          'alert-danger': login.error,
+          'alert-success': !login.error
+        }" v-html="login.messages.join('<br>')"></div>
+
+        <div class="form-group has-feedback" :class="{
+          'has-error': login.form.email.error
+        }">
+          <input type="email" class="form-control" placeholder="E-mail" v-model="login.form.email.value"
+            :disabled="login.loading">
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          <small class="help-block" v-html="login.form.email.messages.join('<br>')"></small>
+        </div>
+
+        <div class="form-group has-feedback" :class="{
+          'has-error': login.form.password.error
+        }">
+          <input type="password" class="form-control" placeholder="Senha" v-model="login.form.password.value"
+            :disabled="login.loading">
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          <small class="help-block" v-html="login.form.password.messages.join('<br>')"></small>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <button type="submit" class="btn btn-primary btn-block btn-flat" :disabled="login.loading">
+              <span v-if="!login.loading">Entrar</span>
+              <span v-if="login.loading">Entrando...</span>
+            </button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+      <!-- <a href="#">Esqueci a senha</a><br> -->
+
+    </div>
+    <!-- /.login-box-body -->
+
+  </div>
+  <!-- /.login-box -->
+
+  <!-- jQuery 3 -->
+  <script src="/assets/app/bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="/assets/app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- iCheck -->
+  <script src="/assets/app/bower_components/admin-lte/plugins/iCheck/icheck.min.js"></script>
+  <!-- Vuejs CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script>
+  <!-- Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function isJsonDefault(str) {
+      return typeof str === 'object' && typeof str.code !== 'undefined'
+    }
+
+    var App = new Vue({
+      el: '#AppVue',
+      data: {
+        login: {
+          loading: false,
+          error: false,
+          messages: [],
+          form: {
+            email: {
+              value: '',
+              error: false,
+              messages: [],
+            },
+            password: {
+              value: '',
+              error: false,
+              messages: [],
+            }
+          }
+        }
+      },
+      methods: {
+        doLogin: async () => {
+          App.login.error = false
+          App.login.messages = []
+
+          App.login.form.email.value = App.login.form.email.value.trim()
+          App.login.form.email.error = false
+          App.login.form.email.messages = []
+
+          App.login.form.password.value = App.login.form.password.value.trim()
+          App.login.form.password.error = false
+          App.login.form.password.messages = []
+
+          if (!App.login.form.email.value) {
+            App.login.error = true
+            App.login.form.email.error = true
+            App.login.form.email.messages.push('O campo e-mail é obrigatório.')
+          }
+
+          if (!App.login.form.password.value) {
+            App.login.error = true
+            App.login.form.password.error = true
+            App.login.form.password.messages.push('O campo senha é obrigatório.')
+          }
+
+          if (App.login.error) {
+            App.login.messages.push('Verifique todos os campos.')
+            return
+          }
+
+          App.login.loading = true
+
+          try {
+            // Montamos o basic auth
+            const basicAuth = btoa(`${App.login.form.email.value}:${App.login.form.password.value}`)
+
+            // Fazemos a requisição, passando o basic auth no header
+            const response = (await axios.post('/api/auth', {}, {
+              headers: {
+                'Authorization': `Basic ${basicAuth}`
+              }
+            })).data
+
+            const { accessToken } = response.content
+
+            // Fazemos uma requisição no POST /login, passando o token no body
+            await axios.post('/app/login', {
+              accessToken
+            })
+
+            App.login.error = false
+            App.login.messages.push('Login realizado com sucesso.')
+            App.login.messages.push('Redirecionando para a página inicial.')
+
+            App.login.loading = false
+
+            setTimeout(() => {
+              window.location.href = '/app'
+            }, 1000)
+          } catch (error) {
+            if (
+              error.response
+              && error.response.data
+              && isJsonDefault(error.response.data)
+            ) {
+              const response = error.response.data
+              App.login.error = response.error || true
+              App.login.messages = response.messages || []
+            } else {
+              console.log('error', error)
+              App.login.error = true
+              App.login.messages.push('Ocorreu um erro ao tentar realizar o login.')
+              App.login.messages.push(error.message)
+            }
+
+            App.login.loading = false
+          }
+        }
+      }
+    })
+
+    // setTimeout(() => {
+    //   App.login.form.email.value = 'leandro.macedo@email.com'
+    //   App.login.form.password.value = '123456'
+
+    //   App.doLogin()
+    // }, 500)
+  </script>
+</body>
+
+</html>
