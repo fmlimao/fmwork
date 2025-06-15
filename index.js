@@ -58,61 +58,13 @@ app.use((req, res, next) => {
 })
 
 // API
-
-app.get('/api', (req, res) => {
-  res.status(200).json({
-    message: 'Servidor rodando com sucesso!'
-  })
-})
+app.get('/api', require('./src/api/routes'))
 
 // APP
-
-app.get('/app', (req, res) => {
-  res.redirect('/app/login')
-})
-
-app.get('/app/login', (req, res) => {
-  res.render('app/auth/login', {
-    layout: false
-  })
-})
-
-app.get('/app/logout', (req, res) => {
-  res.redirect('/app/login')
-})
-
-app.get('/app/forgot-password', (req, res) => {
-  res.render('app/auth/forgot-password', {
-    layout: false
-  })
-})
-
-app.get('/app/project-select', (req, res) => {
-  res.render('app/auth/project-select', {
-    layout: false
-  })
-})
-
-app.get('/app/:projectUuid', (req, res) => {
-  const selectedProject = {
-    uuid: '1dfb7cc4-7a73-4dec-a0ee-1f876d457a4d',
-    name: 'Projeto Exemplo',
-    description: 'Este é um projeto de exemplo para demonstração.',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-
-  res.render('app/project/home', {
-    page: 'home',
-    selectedProject
-  })
-})
+app.use('/app', require('./src/app/routes'))
 
 // SITE
-
-app.get('/', (req, res) => {
-  res.status(200).send('Site OK')
-})
+app.get('/', require('./src/site/routes'))
 
 // Starting the server
 app.listen(PORT, () => {
