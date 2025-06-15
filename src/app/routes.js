@@ -1,20 +1,23 @@
 const express = require('express')
+
 const router = express.Router()
 
 const getProjectMiddleware = require('./middlewares/get-project')
+const configsMiddleware = require('./middlewares/configs')
 
-router.get('/', (req, res) => {
-  res.redirect('/app/login')
-})
+const AuthController = require('./controllers/auth')
 
-router.get('/login', require('./controllers/auth/login-get'))
+router.use(configsMiddleware)
 
-router.get('/logout', require('./controllers/auth/logout-get'))
+router.get('/', require('./controllers/home-get'))
 
-router.get('/forgot-password', require('./controllers/auth/forgot-password-get'))
+// Autenticação
+router.get('/login', AuthController.loginGet)
+router.get('/logout', AuthController.logoutGet)
+router.get('/forgot-password', AuthController.forgotPasswordGet)
+router.get('/project-select', AuthController.projectSelectGet)
 
-router.get('/project-select', require('./controllers/auth/project-select-get'))
-
+// Rotas internas do projeto
 router.use('/:projectUuid', getProjectMiddleware, require('./controllers/project/routes'))
 
 module.exports = router

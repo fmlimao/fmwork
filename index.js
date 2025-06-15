@@ -8,10 +8,8 @@ const HOST = process.env.HOST
 
 const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
-const moment = require('moment')
 const morgan = require('morgan')
 const path = require('path')
-const p = require('./package.json')
 
 const app = express()
 
@@ -29,33 +27,6 @@ app.use(expressLayouts)
 if (DEBUG) {
   app.use(morgan('dev'))
 }
-
-app.use((req, res, next) => {
-  res.locals.__ = req.__
-  res.locals.version = p.version
-  res.locals.assetsVersion = new Date().getTime()
-
-  res.__ = str => str
-  res.locals.pageTitle = process.env.APP_TITLE || 'App Title'
-  res.locals.pageShortTitle = process.env.APP_SHORT_TITLE || 'AT'
-
-  // Para o Menu
-  res.locals.page = ''
-
-  res.locals.activeMenu = (page, pages, className = 'active') => {
-    if (typeof pages === 'string') {
-      pages = [pages]
-    }
-
-    return pages.includes(page) ? className : ''
-  }
-
-  res.locals.toDateTime = (date) => {
-    return moment(date).format('DD/MM/YYYY HH:mm:ss')
-  }
-
-  next()
-})
 
 // API
 app.get('/api', require('./src/api/routes'))
