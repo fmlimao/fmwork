@@ -3,6 +3,6 @@ const router = express.Router()
 
 router.get('/', require('./home-get'))
 
-router.get('/projects', require('./projects-get'))
+router.get('/my-account', require('./my-account-get'))
 
 module.exports = router

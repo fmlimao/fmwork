@@ -18,6 +18,11 @@ router.get('/forgot-password', AuthController.forgotPasswordGet)
 router.get('/project-select', AuthController.projectSelectGet)
 
 // Rotas internas do projeto
+router.get('/my-projects', require('./controllers/project/my-projects-get'))
 router.use('/:projectUuid', getProjectMiddleware, require('./controllers/project/routes'))
+
+// Erros
+router.use(require('./middlewares/error-404'))
+router.use(require('./middlewares/error-500'))
 
 module.exports = router

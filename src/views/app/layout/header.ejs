@@ -222,6 +222,41 @@
         </li>
         */ %>
 
+
+        <!-- Projetos -->
+        <% if (selectedProject) { %>
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-sitemap"></i>
+              <%- selectedProject.name %>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">Você tem 3 projetos</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <a href="/app/1dfb7cc4-7a73-4dec-a0ee-1f876d457a4d">
+                      <i class="fa fa-sitemap"></i> Projetos FM
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/app/1dfb7cc4-7a73-4dec-a0ee-1f876d457a4d">
+                      <i class="fa fa-sitemap"></i> Projetos FM
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/app/1dfb7cc4-7a73-4dec-a0ee-1f876d457a4d">
+                      <i class="fa fa-sitemap"></i> Projetos FM
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer"><a href="/app/my-projects">Ver tudo</a></li>
+            </ul>
+          </li>
+        <% } %>
+
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
