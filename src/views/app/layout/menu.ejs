@@ -30,20 +30,14 @@
         <li class="header">Administração do Projeto</li>
 
         <li class="<%- activeMenu(page, 'project-users') %>">
-          <a href="/app">
+          <a href="/app/<%- selectedProject.uuid %>/users">
             <i class="fa fa-users"></i> <span>Usuários</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">a fazer</small>
-            </span>
           </a>
         </li>
 
         <li class="<%- activeMenu(page, 'project-profiles') %>">
-          <a href="/app">
+          <a href="/app/<%- selectedProject.uuid %>/profiles">
             <i class="fa fa-id-card-o"></i> <span>Perfis e Privilégios</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">a fazer</small>
-            </span>
           </a>
         </li>
       <% } %>
