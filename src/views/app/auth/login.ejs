@@ -31,44 +31,33 @@
 </head>
 
 <body class="hold-transition login-page">
-  <div class="login-box" id="AppVue">
+  <div class="login-box">
     <div class="login-logo">
       <a href="/app"><b><%- pageTitle %></b></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
       <p class="login-box-msg">Faça o login para iniciar a sua sessão.</p>
-      <p class="login-box-msg">Use o email "admin@projetosfm.com.br" e a senha "admin123".</p>
 
-      <form @submit.prevent="doLogin()">
-        <div class="alert" v-if="form.messages.length" :class="{
-          'alert-danger': form.error,
-          'alert-success': !form.error
-        }" v-html="form.messages.join('<br>')"></div>
+      <form id="loginForm" method="post">
+        <div class="alert" id="formMessages" style="display: none;"></div>
 
-        <div class="form-group has-feedback" :class="{
-          'has-error': form.form.email.error
-        }">
-          <input type="email" class="form-control" placeholder="E-mail" v-model="form.form.email.value"
-            :disabled="form.loading">
+        <div class="form-group has-feedback">
+          <input type="email" class="form-control" id="inputEmail" placeholder="E-mail">
           <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          <small class="help-block" v-html="form.form.email.messages.join('<br>')"></small>
+          <small class="help-block" id="emailError"></small>
         </div>
 
-        <div class="form-group has-feedback" :class="{
-          'has-error': form.form.password.error
-        }">
-          <input type="password" class="form-control" placeholder="Senha" v-model="form.form.password.value"
-            :disabled="form.loading">
+        <div class="form-group has-feedback">
+          <input type="password" class="form-control" id="inputPassword" placeholder="Senha">
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          <small class="help-block" v-html="form.form.password.messages.join('<br>')"></small>
+          <small class="help-block" id="passwordError"></small>
         </div>
 
         <div class="row">
           <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat" :disabled="form.loading">
-              <span v-if="!form.loading">Entrar</span>
-              <span v-if="form.loading">Entrando...</span>
+            <button type="submit" class="btn btn-primary btn-block btn-flat" id="submitButton">
+              Entrar
             </button>
           </div>
           <div class="col-xs-8 text-right" style="padding-top: 6px;">
@@ -90,114 +79,109 @@
   <script src="/assets/app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <!-- iCheck -->
   <script src="/assets/app/bower_components/admin-lte/plugins/iCheck/icheck.min.js"></script>
-  <!-- Vuejs CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script>
-  <!-- Axios CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   <script>
-    function isJsonDefault(str) {
-      return typeof str === 'object' && typeof str.code !== 'undefined'
+  $(function() {
+    const $form = $('#loginForm');
+    const $submitButton = $('#submitButton');
+    const $formMessages = $('#formMessages');
+
+    function showError(messages, isError = true) {
+      $formMessages
+        .removeClass('alert-danger alert-success')
+        .addClass(isError ? 'alert-danger' : 'alert-success')
+        .html(Array.isArray(messages) ? messages.join('<br>') : messages)
+        .show();
     }
 
-    async function doLogin(email, password) {
-      try {
-        const response = await axios.post('/app/login', {
-          email,
-          password
-        })
-        return response.data
-      } catch (error) {
-        if (error.response && error.response.data) {
-          return error.response.data
-        }
-        return {
-          error: true,
-          messages: ['Erro ao conectar com o servidor. Tente novamente mais tarde.']
-        }
+    function clearErrors() {
+      $('.help-block').html('');
+      $('.form-group').removeClass('has-error');
+      $formMessages.hide();
+    }
+
+    function setFieldError(fieldName, message) {
+      const $errorElement = $(`#${fieldName}Error`);
+      if ($errorElement.length) {
+        $errorElement
+          .html(message)
+          .closest('.form-group')
+          .addClass('has-error');
       }
     }
 
-    var App = new Vue({
-      el: '#AppVue',
-      data: {
-        form: {
-          loading: false,
-          error: false,
-          messages: [],
-          form: {
-            email: {
-              value: '',
-              error: false,
-              messages: [],
-            },
-            password: {
-              value: '',
-              error: false,
-              messages: [],
-            }
-          }
-        }
-      },
-      methods: {
-        doLogin: async function() {
-          this.form.error = false
-          this.form.messages = []
+    function validateForm(formData) {
+      let hasError = false;
+      clearErrors();
 
-          this.form.form.email.value = this.form.form.email.value.trim()
-          this.form.form.email.error = false
-          this.form.form.email.messages = []
-
-          this.form.form.password.value = this.form.form.password.value.trim()
-          this.form.form.password.error = false
-          this.form.form.password.messages = []
-
-          if (!this.form.form.email.value) {
-            this.form.error = true
-            this.form.form.email.error = true
-            this.form.form.email.messages.push('O campo e-mail é obrigatório.')
-          }
-
-          if (!this.form.form.password.value) {
-            this.form.error = true
-            this.form.form.password.error = true
-            this.form.form.password.messages.push('O campo senha é obrigatório.')
-          }
-
-          if (this.form.error) {
-            this.form.messages.push('Verifique todos os campos.')
-            return
-          }
-
-          this.form.loading = true
-
-          try {
-            const response = await doLogin(this.form.form.email.value, this.form.form.password.value)
-
-            if (response.error) {
-              this.form.error = response.error
-              this.form.messages = response.messages || []
-            } else {
-              this.form.messages = ['Login realizado com sucesso!']
-              setTimeout(() => {
-                window.location.href = '/app'
-              }, 1000)
-            }
-          } catch (error) {
-            console.error('Erro ao fazer login:', error)
-            this.form.error = true
-            this.form.messages.push('Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.')
-          }
-
-          this.form.loading = false
-        }
+      // Validação do email
+      if (!formData.email.trim()) {
+        setFieldError('email', 'O campo e-mail é obrigatório.');
+        hasError = true;
       }
-    })
 
-    setTimeout(() => {
-      App.form.form.email.value = 'admin@projetosfm.com.br'
-      App.form.form.password.value = 'admin123'
-      // App.doLogin()
-    }, 500)
+      // Validação da senha
+      if (!formData.password.trim()) {
+        setFieldError('password', 'O campo senha é obrigatório.');
+        hasError = true;
+      }
+
+      if (hasError) {
+        showError('Verifique todos os campos.');
+      }
+
+      return !hasError;
+    }
+
+    $form.submit(function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        email: $('#inputEmail').val(),
+        password: $('#inputPassword').val()
+      };
+
+      if (!validateForm(formData)) {
+        return false;
+      }
+
+      $submitButton.prop('disabled', true).html('Entrando...');
+
+      $.ajax({
+        url: '/app/login',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+          if (response.error) {
+            showError(response.messages);
+          } else {
+            showError('Login realizado com sucesso!', false);
+            
+            // Redireciona após 1 segundo
+            setTimeout(function() {
+              window.location.href = '/app';
+            }, 1000);
+          }
+        },
+        error: function(xhr) {
+          console.error('Erro ao fazer login:', xhr);
+          let errorMessage = 'Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.';
+          
+          if (xhr.responseJSON && xhr.responseJSON.messages) {
+            errorMessage = xhr.responseJSON.messages;
+          }
+          
+          showError(errorMessage);
+        },
+        complete: function() {
+          $submitButton.prop('disabled', false).html('Entrar');
+        }
+      });
+
+      return false;
+    });
+  });
   </script>
 </body>
 
