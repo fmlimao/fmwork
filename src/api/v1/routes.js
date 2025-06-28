@@ -6,7 +6,7 @@ const AuthController = require('./controllers/auth')
 const TenantController = require('./controllers/tenant')
 
 const AuthVerifyMiddleware = require('./middlewares/auth-verify')
-// const getUserMiddleware = require('../../../middlewares/get-user')
+const GetTenantMiddleware = require('./middlewares/get-tenant')
 
 // Home
 router.get('/', HomeController.homeGet)
@@ -22,6 +22,7 @@ router.get('/auth/me', AuthController.meGet)
 // Inquilinos
 router.get('/tenants', TenantController.listGet)
 router.post('/tenants', TenantController.createPost)
+router.get('/tenants/:uuid', GetTenantMiddleware, TenantController.getGet)
 
 // Erros
 router.use(require('./middlewares/error-404'))

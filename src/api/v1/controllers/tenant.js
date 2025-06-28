@@ -37,7 +37,23 @@ const createPost = async (req, res) => {
 
     ret.setCode(201)
     ret.addMessage(res.__('Inquilino criado com sucesso.'))
-    ret.addContent('tenant', tenant)
+    ret.addContent('data', tenant)
+
+    res.status(ret.code).json(ret.generate())
+  } catch (error) {
+    ret = res.errorHandler(error, ret)
+    res.status(ret.code).json(ret.generate())
+  }
+}
+
+const getGet = async (req, res) => {
+  let ret = req.ret()
+
+  try {
+    const tenant = req.tenantRoute
+
+    ret.setCode(200)
+    ret.addContent('data', tenant)
 
     res.status(ret.code).json(ret.generate())
   } catch (error) {
@@ -48,5 +64,6 @@ const createPost = async (req, res) => {
 
 module.exports = {
   listGet,
-  createPost
+  createPost,
+  getGet
 }
