@@ -297,169 +297,179 @@ module.exports = class TenantRepository {
       })
   }
 
-  // static async update (args = {}) {
-  //   const req = args.req
-  //   const res = args.res
-  //   const ret = args.ret
-  //   const uuid = args.uuid
-  //   const fields = args.fields
+  static async update (args = {}) {
+    const req = args.req
+    const res = args.res
+    const ret = args.ret
+    const uuid = args.uuid
+    const fields = args.fields
 
-  //   return Promise.resolve()
-  //     .then(async () => {
-  //       // Recebemos as variáveis
-  //       const { name, phoneNumber, email, password, active } = fields
+    return Promise.resolve()
+      .then(async () => {
+        // Recebemos as variáveis
+        const { name, description, appTitle, appShortTitle, isRoot, active } = fields
 
-  //       let fieldCount = 0
-  //       const updateFields = {}
-  //       const updateValidates = {}
+        let fieldCount = 0
+        const updateFields = {}
+        const updateValidates = {}
 
-  //       if (name !== undefined) {
-  //         fieldCount++
-  //         updateFields.name = name
-  //         updateValidates.name = 'required|string|min:3|max:255'
-  //       }
+        if (name !== undefined) {
+          fieldCount++
+          updateFields.name = name
+          updateValidates.name = 'required|string|min:3|max:255'
+        }
 
-  //       if (phoneNumber !== undefined) {
-  //         fieldCount++
-  //         updateFields.phoneNumber = phoneNumber
-  //         updateValidates.phoneNumber = 'string|min:10|max:11'
-  //       }
+        if (description !== undefined) {
+          fieldCount++
+          updateFields.description = description
+          updateValidates.description = 'string|min:3|max:255'
+        }
 
-  //       if (email !== undefined) {
-  //         fieldCount++
-  //         updateFields.email = email
-  //         updateValidates.email = 'required|email|min:3|max:255'
-  //       }
+        if (appTitle !== undefined) {
+          fieldCount++
+          updateFields.app_title = appTitle
+          updateValidates.appTitle = 'string|min:3|max:255'
+        }
 
-  //       if (password !== undefined) {
-  //         fieldCount++
-  //         updateFields.password = password
-  //         updateValidates.password = 'required|string|min:6|max:255'
-  //       }
+        if (appShortTitle !== undefined) {
+          fieldCount++
+          updateFields.app_short_title = appShortTitle
+          updateValidates.appShortTitle = 'string|min:3|max:255'
+        }
 
-  //       if (active !== undefined) {
-  //         fieldCount++
-  //         updateFields.active = active
-  //         updateValidates.active = 'required|integer|between:0,1'
-  //       }
+        if (isRoot !== undefined) {
+          fieldCount++
+          updateFields.is_root = isRoot
+          updateValidates.isRoot = 'integer|between:0,1'
+        }
 
-  //       if (!fieldCount) {
-  //         ret.setError(true)
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Nenhum campo foi informado.'))
-  //         throw ret
-  //       }
+        if (active !== undefined) {
+          fieldCount++
+          updateFields.active = active
+          updateValidates.active = 'required|integer|between:0,1'
+        }
 
-  //       if (!validator(res, ret, updateFields, updateValidates)) {
-  //         ret.setError(true)
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Verifique todos os campos.'))
-  //         throw ret
-  //       }
+        if (!fieldCount) {
+          ret.setError(true)
+          ret.setCode(400)
+          ret.addMessage(res.__('Nenhum campo foi informado.'))
+          throw ret
+        }
 
-  //       updateFields.phone_number = updateFields.phoneNumber
-  //       delete updateFields.phoneNumber
+        if (!validator(res, ret, fields, updateValidates)) {
+          ret.setError(true)
+          ret.setCode(400)
+          ret.addMessage(res.__('Verifique todos os campos.'))
+          throw ret
+        }
 
-  //       return {
-  //         fields: updateFields
-  //       }
-  //     })
-  //     // Verificamos se o usuário já existe
-  //     .then(async next => {
-  //       if (next.fields.email) {
-  //         const userExists = await conn.getOne(`
-  //           SELECT uuid, name, email
-  //           FROM users
-  //           WHERE deleted_at IS NULL
-  //           AND email = ?
-  //           AND uuid != ?
-  //           LIMIT 1;
-  //         `, [
-  //           next.fields.email,
-  //           uuid
-  //         ])
+        return {
+          fields: updateFields
+        }
+      })
+      // Verificamos se o inquilino já existe
+      .then(async next => {
+        if (next.fields.name) {
+          const tenantExists = await conn.getOne(`
+            SELECT uuid, name
+            FROM tenants
+            WHERE deleted_at IS NULL
+            AND name = ?
+            AND uuid != ?
+            LIMIT 1;
+          `, [
+            next.fields.name,
+            uuid
+          ])
 
-  //         if (userExists) {
-  //           ret.setCode(400)
-  //           ret.setFieldError('email', true)
-  //           ret.addFieldMessage('email', res.__('Já temos um usuário com este e-mail.'))
-  //           ret.addMessage(res.__('Verifique todos os campos.'))
-  //           throw ret
-  //         }
-  //       }
+          if (tenantExists) {
+            ret.setCode(400)
+            ret.setFieldError('name', true)
+            ret.addFieldMessage('name', res.__('Já temos um inquilino com este nome.'))
+            ret.addMessage(res.__('Verifique todos os campos.'))
+            throw ret
+          }
+        }
 
-  //       return next
-  //     })
-  //     // Se o password foi informado, vamos criptografar
-  //     .then(async next => {
-  //       if (next.fields.password) {
-  //         const salt = bcrypt.genSaltSync(10)
-  //         next.fields.password = bcrypt.hashSync(next.fields.password, salt)
-  //       }
+        return next
+      })
+      // Vamos atualizar o inquilino
+      .then(async next => {
+        try {
+          await conn.update(`
+            UPDATE tenants
+            SET ${Object.keys(next.fields).map(key => `${key} = :${key}`).join(', ')},
+            updated_at = NOW()
+            WHERE uuid = :uuid
+            LIMIT 1;
+          `, Object.assign({}, next.fields, {
+            uuid
+          }))
+        } catch (error) {
+          ret.setCode(400)
+          ret.addMessage(res.__('Erro ao atualizar inquilino.'))
+          ret.addMessage(error.message)
+          throw ret
+        }
 
-  //       return next
-  //     })
-  //     // Vamos atualizar o usuário
-  //     .then(async next => {
-  //       try {
-  //         await conn.update(`
-  //           UPDATE users
-  //           SET ${Object.keys(next.fields).map(key => `${key} = :${key}`).join(', ')},
-  //           updated_at = NOW()
-  //           WHERE uuid = :uuid
-  //           LIMIT 1;
-  //         `, Object.assign({}, next.fields, {
-  //           uuid
-  //         }))
-  //       } catch (error) {
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Erro ao atualizar usuário.'))
-  //         ret.addMessage(error.message)
-  //         throw ret
-  //       }
+        return this.findByUuid({
+          req,
+          res,
+          ret,
+          uuid
+        })
+      })
+  }
 
-  //       return this.findByUuid({
-  //         req,
-  //         res,
-  //         ret,
-  //         uuid
-  //       })
-  //     })
-  // }
+  static async delete (args = {}) {
+    const req = args.req
+    const res = args.res
+    const ret = args.ret
+    const uuid = args.uuid
 
-  // static async delete (args = {}) {
-  //   const req = args.req
-  //   const res = args.res
-  //   const ret = args.ret
-  //   const uuid = args.uuid
+    return Promise.resolve()
+      .then(async () => {
+        // Verificamos se o inquilino tem usuários vinculados
+        const hasUsers = await conn.getOne(`
+          SELECT COUNT(*) as total
+          FROM users u
+          INNER JOIN tenants t ON u.tenant_id = t.tenant_id
+          WHERE t.uuid = ?
+          AND u.deleted_at IS NULL
+          LIMIT 1;
+        `, [uuid])
 
-  //   return Promise.resolve()
-  //     .then(async () => {
-  //       // Vamos deletar o usuário
-  //       try {
-  //         await conn.update(`
-  //           UPDATE users
-  //           SET deleted_at = NOW()
-  //           WHERE uuid = :uuid
-  //           LIMIT 1;
-  //         `, {
-  //           uuid
-  //         })
-  //       } catch (error) {
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Erro ao deletar usuário.'))
-  //         ret.addMessage(error.message)
-  //         throw ret
-  //       }
+        if (hasUsers && hasUsers.total > 0) {
+          ret.setCode(400)
+          ret.addMessage(res.__('Não é possível excluir um inquilino que possui usuários vinculados.'))
+          throw ret
+        }
 
-  //       const user = await this.findByUuid({
-  //         req,
-  //         res,
-  //         ret,
-  //         uuid
-  //       })
+        // Vamos deletar o inquilino
+        try {
+          await conn.update(`
+            UPDATE tenants
+            SET deleted_at = NOW()
+            WHERE uuid = :uuid
+            LIMIT 1;
+          `, {
+            uuid
+          })
+        } catch (error) {
+          ret.setCode(400)
+          ret.addMessage(res.__('Erro ao deletar inquilino.'))
+          ret.addMessage(error.message)
+          throw ret
+        }
 
-  //       return user
-  //     })
-  // }
+        const tenant = await this.findByUuid({
+          req,
+          res,
+          ret,
+          uuid
+        })
+
+        return tenant
+      })
+  }
 }

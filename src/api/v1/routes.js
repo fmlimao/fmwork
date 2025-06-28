@@ -23,6 +23,8 @@ router.get('/auth/me', AuthController.meGet)
 router.get('/tenants', TenantController.listGet)
 router.post('/tenants', TenantController.createPost)
 router.get('/tenants/:uuid', GetTenantMiddleware, TenantController.getGet)
+router.put('/tenants/:uuid', GetTenantMiddleware, TenantController.updatePut)
+router.delete('/tenants/:uuid', GetTenantMiddleware, TenantController.deleteDelete)
 
 // Erros
 router.use(require('./middlewares/error-404'))

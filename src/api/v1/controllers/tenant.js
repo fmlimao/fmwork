@@ -62,8 +62,52 @@ const getGet = async (req, res) => {
   }
 }
 
+const updatePut = async (req, res) => {
+  let ret = req.ret()
+
+  try {
+    const tenant = await TenantRepository.update({
+      req,
+      res,
+      ret,
+      uuid: req.params.uuid,
+      fields: req.body || {}
+    })
+
+    ret.setCode(200)
+    ret.addMessage(res.__('Inquilino atualizado com sucesso.'))
+    ret.addContent('data', tenant)
+
+    res.status(ret.code).json(ret.generate())
+  } catch (error) {
+    ret = res.errorHandler(error, ret)
+    res.status(ret.code).json(ret.generate())
+  }
+}
+
+const deleteDelete = async (req, res) => {
+  let ret = req.ret()
+
+  try {
+    await TenantRepository.delete({
+      req,
+      res,
+      ret,
+      uuid: req.params.uuid
+    })
+
+    ret.setCode(204)
+    res.status(ret.code).json(ret.generate())
+  } catch (error) {
+    ret = res.errorHandler(error, ret)
+    res.status(ret.code).json(ret.generate())
+  }
+}
+
 module.exports = {
   listGet,
   createPost,
-  getGet
+  getGet,
+  updatePut,
+  deleteDelete
 }
