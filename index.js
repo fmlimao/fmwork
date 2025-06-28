@@ -13,6 +13,8 @@ const path = require('path')
 
 const app = express()
 
+app.use(require('./src/middlewares/configs'))
+
 // Middlewares básicas
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -24,12 +26,15 @@ app.set('view engine', 'ejs')
 app.set('layout', 'app/layout/index')
 app.use(expressLayouts)
 
+app.use(require('./src/middlewares/json-response'))
+app.use(require('./src/middlewares/sintaxe-error'))
+
 if (DEBUG) {
   app.use(morgan('dev'))
 }
 
 // API
-app.get('/api', require('./src/api/routes'))
+app.use('/api/v1', require('./src/api/v1/routes'))
 
 // APP
 app.use('/app', require('./src/app/routes'))
