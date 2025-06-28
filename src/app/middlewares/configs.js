@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
   res.locals.__ = req.__
   res.locals.version = p.version
   res.locals.assetsVersion = new Date().getTime()
+  res.locals.user = req.user || null
 
   res.__ = str => str
   res.locals.pageTitle = process.env.APP_TITLE || 'App Title'
@@ -24,6 +25,9 @@ module.exports = (req, res, next) => {
   res.locals.toDateTime = (date) => {
     return moment(date).format('DD/MM/YYYY HH:mm:ss')
   }
+
+  // Função para o MD5
+  res.locals.md5 = require('md5')
 
   next()
 }

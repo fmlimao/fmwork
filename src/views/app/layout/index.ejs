@@ -45,10 +45,10 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="https://www.gravatar.com/avatar/<%- md5(user.email) %>?s=200&r=g&d=mp" class="img-circle" alt="User Image">
+            <img src="https://www.gravatar.com/avatar/<%- user && user.email ? md5(user.email) : '' %>?s=200&r=g&d=mp" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
-            <p><%- user.name %></p>
+            <p><%- user ? user.name : '' %></p>
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
           </div>
         </div>
@@ -69,6 +69,13 @@
           <li>
             <a href="/app/logout">
               <i class="fa fa-sign-out"></i> <span>Sair</span>
+            </a>
+          </li>
+
+          <li class="header">ADMINISTRAÇÃO</li>
+          <li class="<%- activeMenu(page, ['tenants', 'tenants-create', 'tenants-edit']) %>">
+            <a href="/app/tenants">
+              <i class="fa fa-building"></i> <span>Inquilinos</span>
             </a>
           </li>
         </ul>

@@ -1,0 +1,154 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <i class="fa fa-building"></i> Inquilinos
+    <small><%- tenant ? 'Editar' : 'Novo' %> inquilino</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/app"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="/app/tenants">Inquilinos</a></li>
+    <li class="active"><%- tenant ? 'Editar' : 'Novo' %></li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title"><%- tenant ? 'Editar' : 'Novo' %> Inquilino</h3>
+        </div>
+        <!-- /.box-header -->
+        
+        <form id="tenantForm" method="post">
+          <div class="box-body">
+            <div class="alert" id="formMessages" style="display: none;"></div>
+
+            <div class="form-group">
+              <label for="inputName">Nome</label>
+              <input type="text" class="form-control" id="inputName" name="name" placeholder="Nome do inquilino" value="<%- tenant ? tenant.name : '' %>">
+              <small class="help-block" id="nameError"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="inputDomain">Domínio</label>
+              <input type="text" class="form-control" id="inputDomain" name="domain" placeholder="Domínio do inquilino (ex: empresa.com.br)" value="<%- tenant ? tenant.domain : '' %>">
+              <small class="help-block" id="domainError"></small>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="active" value="1" <%- tenant && tenant.active ? 'checked' : '' %>> Ativo
+              </label>
+            </div>
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary" id="submitButton">Salvar</button>
+            <a href="/app/tenants" class="btn btn-default">Cancelar</a>
+          </div>
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+</section>
+
+<script>
+$(function() {
+  const $form = $('#tenantForm');
+  const $submitButton = $('#submitButton');
+  const $formMessages = $('#formMessages');
+
+  function showError(messages, isError = true) {
+    $formMessages
+      .removeClass('alert-danger alert-success')
+      .addClass(isError ? 'alert-danger' : 'alert-success')
+      .html(Array.isArray(messages) ? messages.join('<br>') : messages)
+      .show();
+  }
+
+  function clearErrors() {
+    $('.help-block').html('');
+    $('.form-group').removeClass('has-error');
+    $formMessages.hide();
+  }
+
+  function setFieldError(fieldName, message) {
+    const $errorElement = $(`#${fieldName}Error`);
+    if ($errorElement.length) {
+      $errorElement
+        .html(message)
+        .closest('.form-group')
+        .addClass('has-error');
+    }
+  }
+
+  function validateForm(formData) {
+    let hasError = false;
+    clearErrors();
+
+    if (!formData.name.trim()) {
+      setFieldError('name', 'O nome é obrigatório');
+      hasError = true;
+    }
+
+    if (!formData.domain.trim()) {
+      setFieldError('domain', 'O domínio é obrigatório');
+      hasError = true;
+    }
+
+    if (hasError) {
+      showError('Verifique todos os campos.');
+    }
+
+    return !hasError;
+  }
+
+  $form.submit(function(e) {
+    e.preventDefault();
+    
+    const formData = {
+      name: $('#inputName').val(),
+      domain: $('#inputDomain').val(),
+      active: $('input[name="active"]').is(':checked') ? 1 : 0
+    };
+
+    if (!validateForm(formData)) {
+      return false;
+    }
+
+    $submitButton.prop('disabled', true).html('Salvando...');
+
+    $.ajax({
+      url: window.location.pathname,
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(formData),
+      success: function(response) {
+        if (response.error) {
+          showError(response.messages);
+        } else {
+          window.location.href = '/app/tenants';
+        }
+      },
+      error: function(xhr) {
+        console.error('Erro ao salvar inquilino:', xhr);
+        let errorMessage = 'Ocorreu um erro ao tentar salvar os dados. Tente novamente mais tarde.';
+        
+        if (xhr.responseJSON && xhr.responseJSON.messages) {
+          errorMessage = xhr.responseJSON.messages;
+        }
+        
+        showError(errorMessage);
+      },
+      complete: function() {
+        $submitButton.prop('disabled', false).html('Salvar');
+      }
+    });
+
+    return false;
+  });
+});</script> 
