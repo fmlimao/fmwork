@@ -3,6 +3,7 @@ const router = express.Router()
 
 const HomeController = require('./controllers/home')
 const AuthController = require('./controllers/auth')
+const TenantController = require('./controllers/tenant')
 
 const AuthVerifyMiddleware = require('./middlewares/auth-verify')
 // const getUserMiddleware = require('../../../middlewares/get-user')
@@ -17,6 +18,9 @@ router.post('/auth', AuthController.loginPost)
 router.use(AuthVerifyMiddleware)
 
 router.get('/auth/me', AuthController.meGet)
+
+// Inquilinos
+router.get('/tenants', TenantController.listGet)
 
 // Erros
 router.use(require('./middlewares/error-404'))
