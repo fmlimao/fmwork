@@ -1,0 +1,241 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Minha Conta
+    <small>Edite seus dados</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/app"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Minha Conta</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row" id="AppVue">
+    <div class="col-md-3">
+      <!-- Profile Image -->
+      <div class="box box-primary">
+        <div class="box-body box-profile">
+          <img class="profile-user-img img-responsive img-circle" src="https://www.gravatar.com/avatar/<%- md5(user.email) %>?s=200&r=g&d=mp" alt="User profile picture">
+          <h3 class="profile-username text-center"><%- user.name %></h3>
+          <p class="text-muted text-center"><%- user.email %></p>
+          <p class="text-center">
+            <small>
+              <a href="https://gravatar.com" target="_blank">Altere seu avatar no Gravatar</a>
+            </small>
+          </p>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+
+    <div class="col-md-9">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#settings" data-toggle="tab">Configurações</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="active tab-pane" id="settings">
+            <form class="form-horizontal" id="accountForm">
+              <div class="alert" id="formMessages" style="display: none;"></div>
+
+              <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Nome</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputName" name="name" placeholder="Nome" value="<%- user.name %>">
+                  <small class="help-block" id="nameError"></small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputEmail" class="col-sm-2 control-label">E-mail</label>
+                <div class="col-sm-10">
+                  <input type="email" class="form-control" id="inputEmail" name="email" placeholder="E-mail" value="<%- user.email %>">
+                  <small class="help-block" id="emailError"></small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputCurrentPassword" class="col-sm-2 control-label">Senha Atual</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputCurrentPassword" name="currentPassword" placeholder="Senha Atual">
+                  <small class="help-block" id="currentPasswordError"></small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputNewPassword" class="col-sm-2 control-label">Nova Senha</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputNewPassword" name="newPassword" placeholder="Nova Senha">
+                  <small class="help-block" id="newPasswordError"></small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputConfirmPassword" class="col-sm-2 control-label">Confirmar Senha</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputConfirmPassword" name="confirmPassword" placeholder="Confirmar Senha">
+                  <small class="help-block" id="confirmPasswordError"></small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-primary" id="submitButton">
+                    Salvar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- /.tab-pane -->
+        </div>
+        <!-- /.tab-content -->
+      </div>
+      <!-- /.nav-tabs-custom -->
+    </div>
+  </div>
+</section>
+
+<!-- MD5 -->
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('accountForm');
+  const submitButton = document.getElementById('submitButton');
+  const formMessages = document.getElementById('formMessages');
+
+  function showError(messages, isError = true) {
+    formMessages.className = `alert ${isError ? 'alert-danger' : 'alert-success'}`;
+    formMessages.innerHTML = Array.isArray(messages) ? messages.join('<br>') : messages;
+    formMessages.style.display = 'block';
+  }
+
+  function clearErrors() {
+    const errorElements = document.querySelectorAll('.help-block');
+    errorElements.forEach(el => el.innerHTML = '');
+    
+    const formGroups = document.querySelectorAll('.form-group');
+    formGroups.forEach(group => group.classList.remove('has-error'));
+    
+    formMessages.style.display = 'none';
+  }
+
+  function setFieldError(fieldName, message) {
+    const errorElement = document.getElementById(`${fieldName}Error`);
+    if (errorElement) {
+      errorElement.innerHTML = message;
+      errorElement.closest('.form-group').classList.add('has-error');
+    }
+  }
+
+  function validateForm(formData) {
+    let hasError = false;
+    clearErrors();
+
+    // Validação do nome
+    if (!formData.get('name').trim()) {
+      setFieldError('name', 'O campo nome é obrigatório.');
+      hasError = true;
+    }
+
+    // Validação do email
+    if (!formData.get('email').trim()) {
+      setFieldError('email', 'O campo e-mail é obrigatório.');
+      hasError = true;
+    }
+
+    // Validação das senhas
+    const currentPassword = formData.get('currentPassword').trim();
+    const newPassword = formData.get('newPassword').trim();
+    const confirmPassword = formData.get('confirmPassword').trim();
+
+    if (currentPassword || newPassword || confirmPassword) {
+      if (!currentPassword) {
+        setFieldError('currentPassword', 'A senha atual é obrigatória para alterar a senha.');
+        hasError = true;
+      }
+
+      if (!newPassword) {
+        setFieldError('newPassword', 'A nova senha é obrigatória.');
+        hasError = true;
+      } else if (newPassword.length < 6) {
+        setFieldError('newPassword', 'A nova senha deve ter no mínimo 6 caracteres.');
+        hasError = true;
+      }
+
+      if (!confirmPassword) {
+        setFieldError('confirmPassword', 'A confirmação da nova senha é obrigatória.');
+        hasError = true;
+      }
+
+      if (newPassword !== confirmPassword) {
+        setFieldError('newPassword', 'A nova senha e a confirmação não conferem.');
+        setFieldError('confirmPassword', 'A nova senha e a confirmação não conferem.');
+        hasError = true;
+      }
+    }
+
+    if (hasError) {
+      showError('Verifique todos os campos.');
+    }
+
+    return !hasError;
+  }
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    if (!validateForm(formData)) {
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Salvando...';
+
+    try {
+      const response = await fetch('/app/my-account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          currentPassword: formData.get('currentPassword'),
+          newPassword: formData.get('newPassword'),
+          confirmPassword: formData.get('confirmPassword')
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        showError(data.messages);
+      } else {
+        showError(data.messages, false);
+        
+        // Limpa os campos de senha
+        form.querySelector('[name="currentPassword"]').value = '';
+        form.querySelector('[name="newPassword"]').value = '';
+        form.querySelector('[name="confirmPassword"]').value = '';
+
+        // Recarrega a página após 1 segundo
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar dados:', error);
+      showError('Ocorreu um erro ao tentar salvar os dados. Tente novamente mais tarde.');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = 'Salvar';
+    }
+  });
+});
+</script> 

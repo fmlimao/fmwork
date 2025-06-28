@@ -22,6 +22,10 @@ router.use(authMiddleware)
 
 router.get('/', require('./controllers/home-get'))
 
+// Minha Conta
+router.get('/my-account', require('./controllers/my-account-get'))
+router.post('/my-account', require('./controllers/my-account-post'))
+
 // Rotas internas do projeto
 router.get('/my-projects', require('./controllers/project/my-projects-get'))
 router.use('/:projectUuid', getProjectMiddleware, require('./controllers/project/routes'))

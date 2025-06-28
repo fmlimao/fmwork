@@ -9,9 +9,9 @@ module.exports = (req, res) => {
     d: 'mp' // default image
   })
 
-  res.render('app/home', {
+  res.render('app/my-account', {
     user: req.user,
-    pageTitle: 'Projetos FM',
+    pageTitle: 'Projetos FM - Minha Conta',
     pageShortTitle: 'PFM',
     layout: 'app/layout/index',
     gravatarUrl,

@@ -109,7 +109,7 @@ VALUES ('288ad53d-4a1f-11f0-95b3-5299fd27ec4e', 'Projetos FM', 'Projeto principa
 
 -- Inserir usuário admin
 INSERT INTO users (tenant_id, uuid, name, document, email, password)
-SELECT tenant_id, '2fe91aa9-4a20-11f0-95b3-5299fd27ec4e', 'Administrador', '000.000.000-00', 'admin@projetosfm.com.br', '$2y$10$eImiTMZG4oQ9qY1a5Z3U0u5z5b5z5b5z5b5z5b5z5b5z5b5z5b5z'
+SELECT tenant_id, '2fe91aa9-4a20-11f0-95b3-5299fd27ec4e', 'Administrador', '000.000.000-00', 'admin@projetosfm.com.br', '$2b$10$xLxrhUq119Hwa2gnRqWlOeucyrTqq8JEDrqOXmUxLSgDGVXIiobwy'
 FROM tenants WHERE is_root = 1;
 
 -- Vincular perfil de Administrador ao usuário admin
