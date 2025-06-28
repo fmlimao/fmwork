@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
   let ret = req.ret()
 
   try {
-    const uuid = req.params.uuid
+    const uuid = req.params.tenantUuid
 
     const tenant = await TenantRepository.findByUuid({
       req,
