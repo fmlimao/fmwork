@@ -38,7 +38,7 @@
         </ul>
         <div class="tab-content">
           <div class="active tab-pane" id="settings">
-            <form class="form-horizontal" id="accountForm">
+            <form class="form-horizontal" id="accountForm" method="post">
               <div class="alert" id="formMessages" style="display: none;"></div>
 
               <div class="form-group">
@@ -99,36 +99,38 @@
   </div>
 </section>
 
+<!-- jQuery 3 -->
+<script src="/assets/app/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- MD5 -->
 <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('accountForm');
-  const submitButton = document.getElementById('submitButton');
-  const formMessages = document.getElementById('formMessages');
+$(function() {
+  const $form = $('#accountForm');
+  const $submitButton = $('#submitButton');
+  const $formMessages = $('#formMessages');
 
   function showError(messages, isError = true) {
-    formMessages.className = `alert ${isError ? 'alert-danger' : 'alert-success'}`;
-    formMessages.innerHTML = Array.isArray(messages) ? messages.join('<br>') : messages;
-    formMessages.style.display = 'block';
+    $formMessages
+      .removeClass('alert-danger alert-success')
+      .addClass(isError ? 'alert-danger' : 'alert-success')
+      .html(Array.isArray(messages) ? messages.join('<br>') : messages)
+      .show();
   }
 
   function clearErrors() {
-    const errorElements = document.querySelectorAll('.help-block');
-    errorElements.forEach(el => el.innerHTML = '');
-    
-    const formGroups = document.querySelectorAll('.form-group');
-    formGroups.forEach(group => group.classList.remove('has-error'));
-    
-    formMessages.style.display = 'none';
+    $('.help-block').html('');
+    $('.form-group').removeClass('has-error');
+    $formMessages.hide();
   }
 
   function setFieldError(fieldName, message) {
-    const errorElement = document.getElementById(`${fieldName}Error`);
-    if (errorElement) {
-      errorElement.innerHTML = message;
-      errorElement.closest('.form-group').classList.add('has-error');
+    const $errorElement = $(`#${fieldName}Error`);
+    if ($errorElement.length) {
+      $errorElement
+        .html(message)
+        .closest('.form-group')
+        .addClass('has-error');
     }
   }
 
@@ -137,21 +139,21 @@ document.addEventListener('DOMContentLoaded', function() {
     clearErrors();
 
     // Validação do nome
-    if (!formData.get('name').trim()) {
+    if (!formData.name.trim()) {
       setFieldError('name', 'O campo nome é obrigatório.');
       hasError = true;
     }
 
     // Validação do email
-    if (!formData.get('email').trim()) {
+    if (!formData.email.trim()) {
       setFieldError('email', 'O campo e-mail é obrigatório.');
       hasError = true;
     }
 
     // Validação das senhas
-    const currentPassword = formData.get('currentPassword').trim();
-    const newPassword = formData.get('newPassword').trim();
-    const confirmPassword = formData.get('confirmPassword').trim();
+    const currentPassword = formData.currentPassword.trim();
+    const newPassword = formData.newPassword.trim();
+    const confirmPassword = formData.confirmPassword.trim();
 
     if (currentPassword || newPassword || confirmPassword) {
       if (!currentPassword) {
@@ -186,56 +188,60 @@ document.addEventListener('DOMContentLoaded', function() {
     return !hasError;
   }
 
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
+  // Manipulador do submit do formulário
+  $form.submit(function(e) {
+    e.preventDefault(); // Impede o envio padrão do formulário
     
-    const formData = new FormData(form);
+    const formData = {
+      name: $('#inputName').val(),
+      email: $('#inputEmail').val(),
+      currentPassword: $('#inputCurrentPassword').val(),
+      newPassword: $('#inputNewPassword').val(),
+      confirmPassword: $('#inputConfirmPassword').val()
+    };
+
     if (!validateForm(formData)) {
-      return;
+      return false; // Impede o envio se a validação falhar
     }
 
-    submitButton.disabled = true;
-    submitButton.innerHTML = 'Salvando...';
+    $submitButton.prop('disabled', true).html('Salvando...');
 
-    try {
-      const response = await fetch('/app/my-account', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          email: formData.get('email'),
-          currentPassword: formData.get('currentPassword'),
-          newPassword: formData.get('newPassword'),
-          confirmPassword: formData.get('confirmPassword')
-        })
-      });
+    $.ajax({
+      url: '/app/my-account',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(formData),
+      success: function(response) {
+        if (response.error) {
+          showError(response.messages);
+        } else {
+          showError(response.messages, false);
+          
+          // Limpa os campos de senha
+          $('#inputCurrentPassword, #inputNewPassword, #inputConfirmPassword').val('');
 
-      const data = await response.json();
-
-      if (data.error) {
-        showError(data.messages);
-      } else {
-        showError(data.messages, false);
+          // Recarrega a página após 1 segundo
+          setTimeout(function() {
+            window.location.reload();
+          }, 1000);
+        }
+      },
+      error: function(xhr) {
+        console.error('Erro ao salvar dados:', xhr);
+        let errorMessage = 'Ocorreu um erro ao tentar salvar os dados. Tente novamente mais tarde.';
         
-        // Limpa os campos de senha
-        form.querySelector('[name="currentPassword"]').value = '';
-        form.querySelector('[name="newPassword"]').value = '';
-        form.querySelector('[name="confirmPassword"]').value = '';
-
-        // Recarrega a página após 1 segundo
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        if (xhr.responseJSON && xhr.responseJSON.messages) {
+          errorMessage = xhr.responseJSON.messages;
+        }
+        
+        showError(errorMessage);
+      },
+      complete: function() {
+        $submitButton.prop('disabled', false).html('Salvar');
       }
-    } catch (error) {
-      console.error('Erro ao salvar dados:', error);
-      showError('Ocorreu um erro ao tentar salvar os dados. Tente novamente mais tarde.');
-    } finally {
-      submitButton.disabled = false;
-      submitButton.innerHTML = 'Salvar';
-    }
+    });
+
+    return false; // Garante que o formulário não será enviado da forma tradicional
   });
 });
 </script> 
