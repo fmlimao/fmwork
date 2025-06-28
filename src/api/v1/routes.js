@@ -21,6 +21,7 @@ router.get('/auth/me', AuthController.meGet)
 
 // Inquilinos
 router.get('/tenants', TenantController.listGet)
+router.post('/tenants', TenantController.createPost)
 
 // Erros
 router.use(require('./middlewares/error-404'))

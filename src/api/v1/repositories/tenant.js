@@ -1,7 +1,7 @@
 const conn = require('../../../database/conn-mysql')
 const filters = require('../../../helpers/filters')
 const generateOptions = require('../../../helpers/generate-options')
-// const validator = require('../helpers/validator')
+const validator = require('../../../helpers/validator')
 
 const localFilters = {
   filterUuid: (args, criterias, values) => {
@@ -173,130 +173,129 @@ module.exports = class TenantRepository {
       })
   }
 
-  // static async findByUuid (args = {}) {
-  //   const res = args.res
-  //   const ret = args.ret
-  //   const uuid = args.uuid
+  static async findByUuid (args = {}) {
+    const res = args.res
+    const ret = args.ret
+    const uuid = args.uuid
 
-  //   return Promise.resolve()
-  //     .then(() => {
-  //       if (!validator(res, null, {
-  //         uuid
-  //       }, {
-  //         uuid: 'required|uuid'
-  //       })) {
-  //         ret.setError(true)
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Id inválido.'))
-  //         throw ret
-  //       }
+    return Promise.resolve()
+      .then(() => {
+        if (!validator(res, null, {
+          uuid
+        }, {
+          uuid: 'required|uuid'
+        })) {
+          ret.setError(true)
+          ret.setCode(400)
+          ret.addMessage(res.__('Id inválido.'))
+          throw ret
+        }
 
-  //       const query = `
-  //         ${localFilters.principalQuery}
-  //         AND u.uuid = :uuid;
-  //       `
+        const query = `
+          ${localFilters.principalQuery}
+          AND t.uuid = :uuid;
+        `
 
-  //       const values = {
-  //         uuid
-  //       }
+        const values = {
+          uuid
+        }
 
-  //       return conn.getOne(query, values)
-  //     })
-  // }
+        return conn.getOne(query, values)
+      })
+  }
 
-  // static async create (args = {}) {
-  //   const req = args.req
-  //   const res = args.res
-  //   const ret = args.ret
-  //   const fields = args.fields
+  static async create (args = {}) {
+    const req = args.req
+    const res = args.res
+    const ret = args.ret
+    const fields = args.fields
 
-  //   return Promise.resolve()
-  //     .then(async () => {
-  //       // Recebemos as variáveis
-  //       const { name, phoneNumber, email, password } = fields
+    return Promise.resolve()
+      .then(async () => {
+        // Recebemos as variáveis
+        const { name, description, appTitle, appShortTitle, isRoot } = fields
 
-  //       if (!validator(res, ret, {
-  //         name,
-  //         phoneNumber,
-  //         email,
-  //         password
-  //       }, {
-  //         name: 'required|string|min:3|max:255',
-  //         phoneNumber: 'string|min:10|max:11',
-  //         email: 'required|email|min:3|max:255',
-  //         password: 'string|min:6|max:255'
-  //       })) {
-  //         ret.setError(true)
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Verifique todos os campos.'))
-  //         throw ret
-  //       }
+        if (!validator(res, ret, {
+          name,
+          description,
+          appTitle,
+          appShortTitle,
+          isRoot
+        }, {
+          name: 'required|string|min:3|max:255',
+          description: 'string|min:3|max:255',
+          appTitle: 'string|min:3|max:255',
+          appShortTitle: 'string|min:3|max:255',
+          isRoot: 'integer|between:0,1'
+        })) {
+          ret.setError(true)
+          ret.setCode(400)
+          ret.addMessage(res.__('Verifique todos os campos.'))
+          throw ret
+        }
 
-  //       return {
-  //         fields: {
-  //           name,
-  //           phoneNumber,
-  //           email,
-  //           password
-  //         }
-  //       }
-  //     })
-  //     // Verificamos se o usuário já existe
-  //     .then(async next => {
-  //       const user = await conn.getOne(`
-  //         SELECT uuid, name, email
-  //         FROM users
-  //         WHERE deleted_at IS NULL
-  //         AND email = ?
-  //         LIMIT 1;
-  //       `, [
-  //         next.fields.email
-  //       ])
+        return {
+          fields: {
+            name,
+            description,
+            appTitle,
+            appShortTitle,
+            isRoot
+          }
+        }
+      })
+      // Verificamos se o registro já existe
+      .then(async next => {
+        const tenant = await conn.getOne(`
+          SELECT uuid, name
+          FROM tenants
+          WHERE deleted_at IS NULL
+          AND name = ?
+          LIMIT 1;
+        `, [
+          next.fields.name
+        ])
 
-  //       if (user) {
-  //         ret.setCode(400)
-  //         ret.setFieldError('email', true)
-  //         ret.addFieldMessage('email', res.__('Já temos um usuário com este e-mail.'))
-  //         ret.addMessage(res.__('Verifique todos os campos.'))
-  //         throw ret
-  //       }
+        if (tenant) {
+          ret.setCode(400)
+          ret.setFieldError('name', true)
+          ret.addFieldMessage('name', res.__('Já temos um inquilino com este nome.'))
+          ret.addMessage(res.__('Verifique todos os campos.'))
+          throw ret
+        }
 
-  //       return next
-  //     })
-  //     // Vamos criar o usuário
-  //     .then(async next => {
-  //       const uuid = await conn.uuid()
+        return next
+      })
+      // Vamos criar o registro
+      .then(async next => {
+        const uuid = await conn.uuid()
 
-  //       if (next.fields.password) {
-  //         const salt = bcrypt.genSaltSync(10)
-  //         next.fields.password = bcrypt.hashSync(next.fields.password, salt)
-  //       }
+        const tenantId = await conn.insert(`
+          INSERT INTO tenants (uuid, name, description, app_title, app_short_title, is_root)
+          VALUES (?, ?, ?, ?, ?, ?);
+        `, [
+          uuid,
+          next.fields.name,
+          next.fields.description || null,
+          next.fields.appTitle || null,
+          next.fields.appShortTitle || null,
+          next.fields.isRoot || 0
+        ])
 
-  //       const userId = await conn.insert(`
-  //         INSERT INTO users (uuid, name, phone_number, email, password)
-  //         VALUES (?, ?, ?, ?, ?);
-  //       `, [
-  //         uuid,
-  //         next.fields.name,
-  //         next.fields.phoneNumber || null,
-  //         next.fields.email,
-  //         next.fields.password || null
-  //       ])
+        if (!tenantId) {
+          ret.setCode(400)
+          ret.addMessage(res.__('Erro ao cadastrar inquilino.'))
+          throw ret
+        }
 
-  //       if (!userId) {
-  //         ret.setCode(400)
-  //         ret.addMessage(res.__('Erro ao cadastrar usuário.'))
-  //         throw ret
-  //       }
-
-  //       return this.findByUuid({
-  //         req,
-  //         res,
-  //         ret,
-  //         uuid
-  //       })
-  //     })
-  // }
+        return this.findByUuid({
+          req,
+          res,
+          ret,
+          uuid
+        })
+      })
+  }
 
   // static async update (args = {}) {
   //   const req = args.req
