@@ -1,5 +1,3 @@
-console.clear()
-
 require('dotenv').config()
 
 const DEBUG = !!Number(process.env.DEBUG || 1)
@@ -10,13 +8,15 @@ const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
 const morgan = require('morgan')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
 // Middlewares básicas
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, './public')))
+app.use(cookieParser())
 
 // Configuração do EJS
 app.set('views', path.join(__dirname, './src/views'))

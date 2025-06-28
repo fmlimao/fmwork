@@ -1,3 +1,8 @@
 module.exports = (req, res) => {
-  res.redirect('/app/login')
+  res.render('app/home', {
+    user: req.user,
+    pageTitle: 'Projetos FM',
+    pageShortTitle: 'PFM',
+    layout: 'app/layout/index'
+  })
 }

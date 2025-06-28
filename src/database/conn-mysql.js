@@ -1,32 +1,44 @@
-const knex = require('knex')
-const Sql = require('../helpers/sql')
+const mysql = require('mysql2/promise')
+const sql = require('./helpers/sql')
 
-const DB_HOST = process.env.DB_HOST || ''
-const DB_PORT = process.env.DB_PORT || ''
-const DB_NAME = process.env.DB_NAME || ''
-const DB_USER = process.env.DB_USER || ''
-const DB_PASS = process.env.DB_PASS || ''
-// const DB_TIMEZONE = process.env.DB_TIMEZONE || ''
-
-const connection = knex({
-  client: 'mysql',
-  connection: {
-    host: DB_HOST,
-    port: DB_PORT,
-    database: DB_NAME,
-    user: DB_USER,
-    password: DB_PASS,
-    charset: 'utf8',
-    dateStrings: true
-  },
-  pool: {
-    // afterCreate: function (connection, callback) {
-    //   connection.query(`SET time_zone = '${DB_TIMEZONE}';`, function (err) {
-    //     callback(err, connection)
-    //   })
-    // }
-  },
-  useNullAsDefault: true
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || '8104',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASS || 'secret',
+  database: process.env.DB_NAME || 'fmwork',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 })
 
-module.exports = new Sql(connection)
+const execute = async (query, params) => {
+  const connection = await pool.getConnection()
+  try {
+    const [rows] = await connection.execute(query, params)
+    return [rows]
+  } finally {
+    connection.release()
+  }
+}
+
+const query = async (query, params) => {
+  const connection = await pool.getConnection()
+  try {
+    const [rows] = await connection.query(query, params)
+    return [rows]
+  } finally {
+    connection.release()
+  }
+}
+
+const format = (query, params) => {
+  return sql.format(query, params)
+}
+
+module.exports = {
+  execute,
+  query,
+  format,
+  pool
+}
