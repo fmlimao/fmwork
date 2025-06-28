@@ -8,15 +8,15 @@ const AuthVerifyMiddleware = require('./middlewares/auth-verify')
 // const getUserMiddleware = require('../../../middlewares/get-user')
 
 // Home
-router.get('/', HomeController.get)
+router.get('/', HomeController.homeGet)
 
 // Autenticação
-router.post('/auth', AuthController.post)
+router.post('/auth', AuthController.loginPost)
 
 // Verificação de autenticação
 router.use(AuthVerifyMiddleware)
 
-// router.get('/auth/me', require('./auth/me'))
+router.get('/auth/me', AuthController.meGet)
 
 // Erros
 router.use(require('./middlewares/error-404'))

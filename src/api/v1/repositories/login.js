@@ -90,7 +90,6 @@ module.exports = class LoginRepository {
     const res = args.res
     const ret = args.ret
     const uuid = args.uuid
-    console.log('\nuuid', uuid, '\n')
 
     return Promise.resolve()
       .then(async () => {
@@ -129,7 +128,6 @@ module.exports = class LoginRepository {
     const res = args.res
     const ret = args.ret
     const uuid = args.uuid
-    console.log('\nuuid', uuid, '\n')
 
     return Promise.resolve()
       .then(async () => {
@@ -167,7 +165,6 @@ module.exports = class LoginRepository {
     const res = args.res
     const ret = args.ret
     const uuid = args.uuid
-    console.log('\nuuid', uuid, '\n')
 
     return Promise.resolve()
       .then(async () => {

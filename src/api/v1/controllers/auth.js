@@ -1,7 +1,7 @@
 const LoginRepository = require('../repositories/login')
 const jwt = require('jsonwebtoken')
 
-const post = async (req, res) => {
+const loginPost = async (req, res) => {
   let ret = req.ret()
 
   try {
@@ -79,6 +79,20 @@ const post = async (req, res) => {
   }
 }
 
+const meGet = async (req, res) => {
+  let ret = req.ret()
+
+  try {
+    ret.addContent('me', req.auth)
+
+    res.status(ret.code).json(ret.generate())
+  } catch (error) {
+    ret = res.errorHandler(error, ret)
+    res.status(ret.code).json(ret.generate())
+  }
+}
+
 module.exports = {
-  post
+  loginPost,
+  meGet
 }
