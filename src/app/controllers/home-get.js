@@ -15,6 +15,7 @@ module.exports = (req, res) => {
     pageShortTitle: 'PFM',
     layout: 'app/layout/index',
     gravatarUrl,
-    md5
+    md5,
+    page: 'dashboard'
   })
 }
