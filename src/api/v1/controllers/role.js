@@ -1,14 +1,15 @@
-const TenantRepository = require('../repositories/tenant')
+const RoleRepository = require('../repositories/role')
 
 const listGet = async (req, res) => {
   let ret = req.ret()
 
   try {
-    const response = await TenantRepository.listAll({
+    const response = await RoleRepository.listAll({
       req,
       res,
       ret,
-      filter: req.query || {}
+      filter: req.query || {},
+      tenant: req.tenantRoute
     })
 
     ret.mergeResponse(response)
@@ -28,16 +29,17 @@ const createPost = async (req, res) => {
   let ret = req.ret()
 
   try {
-    const tenant = await TenantRepository.create({
+    const role = await RoleRepository.create({
       req,
       res,
       ret,
-      fields: req.body || {}
+      fields: req.body || {},
+      tenant: req.tenantRoute
     })
 
     ret.setCode(201)
-    ret.addMessage(res.__('Inquilino criado com sucesso.'))
-    ret.addContent('data', tenant)
+    ret.addMessage(res.__('Perfil criado com sucesso.'))
+    ret.addContent('data', role)
 
     res.status(ret.code).json(ret.generate())
   } catch (error) {
@@ -50,10 +52,10 @@ const getOneGet = async (req, res) => {
   let ret = req.ret()
 
   try {
-    const tenant = req.tenantRoute
+    const role = req.roleRoute
 
     ret.setCode(200)
-    ret.addContent('data', tenant)
+    ret.addContent('data', role)
 
     res.status(ret.code).json(ret.generate())
   } catch (error) {
@@ -66,17 +68,18 @@ const updatePut = async (req, res) => {
   let ret = req.ret()
 
   try {
-    const tenant = await TenantRepository.update({
+    const role = await RoleRepository.update({
       req,
       res,
       ret,
-      uuid: req.params.uuid,
-      fields: req.body || {}
+      uuid: req.params.roleUuid,
+      fields: req.body || {},
+      tenant: req.tenantRoute
     })
 
     ret.setCode(200)
-    ret.addMessage(res.__('Inquilino atualizado com sucesso.'))
-    ret.addContent('data', tenant)
+    ret.addMessage(res.__('Perfil atualizado com sucesso.'))
+    ret.addContent('data', role)
 
     res.status(ret.code).json(ret.generate())
   } catch (error) {
@@ -89,11 +92,12 @@ const deleteDelete = async (req, res) => {
   let ret = req.ret()
 
   try {
-    await TenantRepository.delete({
+    await RoleRepository.delete({
       req,
       res,
       ret,
-      uuid: req.params.uuid
+      uuid: req.params.roleUuid,
+      tenant: req.tenantRoute
     })
 
     ret.setCode(204)

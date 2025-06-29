@@ -4,9 +4,11 @@ const router = express.Router()
 const HomeController = require('./controllers/home')
 const AuthController = require('./controllers/auth')
 const TenantController = require('./controllers/tenant')
+const RoleController = require('./controllers/role')
 
 const AuthVerifyMiddleware = require('./middlewares/auth-verify')
 const GetTenantMiddleware = require('./middlewares/get-tenant')
+const GetRoleMiddleware = require('./middlewares/get-role')
 
 // Home
 router.get('/', HomeController.homeGet)
@@ -22,9 +24,16 @@ router.get('/auth/me', AuthController.meGet)
 // Inquilinos
 router.get('/tenants', TenantController.listGet)
 router.post('/tenants', TenantController.createPost)
-router.get('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.getGet)
+router.get('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.getOneGet)
 router.put('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.updatePut)
 router.delete('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.deleteDelete)
+
+// Perfis
+router.get('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.listGet)
+router.post('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.createPost)
+router.get('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.getOneGet)
+router.put('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.updatePut)
+router.delete('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.deleteDelete)
 
 // Erros
 router.use(require('./middlewares/error-404'))
