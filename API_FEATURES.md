@@ -105,6 +105,21 @@ Este documento lista todas as features implementadas e planejadas para a API.
 - ⏳ Auditoria de ações
 - ⏳ Backup automático
 
+## Internacionalização (i18n)
+
+### Configuração
+- 🚧 Setup básico do i18n
+- ⏳ Mensagens de erro traduzidas
+- ⏳ Mensagens de sucesso traduzidas
+- ⏳ Documentação multi-idioma
+
+### Idiomas
+- ⏳ Português (Brasil)
+- ⏳ Inglês (EUA)
+- ⏳ Espanhol
+- ⏳ Configuração de idioma por tenant
+- ⏳ Configuração de idioma por usuário
+
 ## Documentação
 
 ### API
@@ -115,4 +130,4 @@ Este documento lista todas as features implementadas e planejadas para a API.
 
 ---
 
-> Nota: Este documento é vivo e deve ser atualizado conforme novas features são implementadas ou planejadas. Para adicionar uma nova feature, siga o padrão de marcação e mantenha a organização por categorias. 
+> Nota: Este documento é vivo e deve ser atualizado conforme novas features são implementadas ou planejadas. Para adicionar uma nova feature, siga o padrão de marcação e mantenha a organização por categorias.
