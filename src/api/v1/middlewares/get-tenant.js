@@ -10,7 +10,8 @@ module.exports = async (req, res, next) => {
       req,
       res,
       ret,
-      uuid
+      uuid,
+      withIds: true
     })
 
     if (!tenant) {

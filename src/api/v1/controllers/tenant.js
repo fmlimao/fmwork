@@ -50,10 +50,11 @@ const getOneGet = async (req, res) => {
   let ret = req.ret()
 
   try {
-    const tenant = req.tenantRoute
+    const tenantRoute = req.tenantRoute
+    delete tenantRoute.tenantId
 
     ret.setCode(200)
-    ret.addContent('data', tenant)
+    ret.addContent('data', tenantRoute)
 
     res.status(ret.code).json(ret.generate())
   } catch (error) {
@@ -66,12 +67,14 @@ const updatePut = async (req, res) => {
   let ret = req.ret()
 
   try {
+    const tenantRoute = req.tenantRoute
+
     const tenant = await TenantRepository.update({
       req,
       res,
       ret,
-      uuid: req.params.uuid,
-      fields: req.body || {}
+      fields: req.body || {},
+      tenant: tenantRoute
     })
 
     ret.setCode(200)
@@ -89,11 +92,13 @@ const deleteDelete = async (req, res) => {
   let ret = req.ret()
 
   try {
+    const tenantRoute = req.tenantRoute
+
     await TenantRepository.delete({
       req,
       res,
       ret,
-      uuid: req.params.uuid
+      tenant: tenantRoute
     })
 
     ret.setCode(204)

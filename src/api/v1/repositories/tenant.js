@@ -91,11 +91,28 @@ const localFilters = {
       t.updated_at AS updatedAt
     FROM tenants t
     WHERE t.deleted_at IS NULL
+  `,
+  principalQueryWithIds: `
+    SELECT
+      t.tenant_id AS tenantId,
+      t.uuid,
+      t.name,
+      t.description,
+      t.app_title AS appTitle,
+      t.app_short_title AS appShortTitle,
+      t.is_root AS isRoot,
+      t.active,
+      t.created_at AS createdAt,
+      t.updated_at AS updatedAt
+    FROM tenants t
+    WHERE t.deleted_at IS NULL
   `
 }
 
 module.exports = class TenantRepository {
   static async listAll (args = {}) {
+    const withIds = args.withIds || false
+
     return Promise.resolve()
       .then(async () => {
         const queryOptions = generateOptions(args.filter)
@@ -156,7 +173,7 @@ module.exports = class TenantRepository {
         const values = Object.assign({}, next.fixedWhereValues, next.dynamicWhereValues)
 
         const query = `
-          ${localFilters.principalQuery}
+          ${withIds ? localFilters.principalQueryWithIds : localFilters.principalQuery}
           ${next.fixedWhereCriteria.length ? ` AND (${next.fixedWhereCriteria.join(' AND ')})` : ''}
           ${next.dynamicWhereCriteria.length ? ` AND (${next.dynamicWhereCriteria.join(' AND ')})` : ''}
           ORDER BY ${next.queryOptions.orderByColumn} ${next.queryOptions.orderByDir}
@@ -177,6 +194,7 @@ module.exports = class TenantRepository {
     const res = args.res
     const ret = args.ret
     const uuid = args.uuid
+    const withIds = args.withIds || false
 
     return Promise.resolve()
       .then(() => {
@@ -192,7 +210,7 @@ module.exports = class TenantRepository {
         }
 
         const query = `
-          ${localFilters.principalQuery}
+          ${withIds ? localFilters.principalQueryWithIds : localFilters.principalQuery}
           AND t.uuid = :uuid;
         `
 
@@ -301,8 +319,9 @@ module.exports = class TenantRepository {
     const req = args.req
     const res = args.res
     const ret = args.ret
-    const uuid = args.uuid
+    // const uuid = args.uuid
     const fields = args.fields
+    const tenant = args.tenant
 
     return Promise.resolve()
       .then(async () => {
@@ -375,11 +394,11 @@ module.exports = class TenantRepository {
             FROM tenants
             WHERE deleted_at IS NULL
             AND name = ?
-            AND uuid != ?
+            AND tenant_id != ?
             LIMIT 1;
           `, [
             next.fields.name,
-            uuid
+            tenant.tenantId
           ])
 
           if (tenantExists) {
@@ -400,10 +419,10 @@ module.exports = class TenantRepository {
             UPDATE tenants
             SET ${Object.keys(next.fields).map(key => `${key} = :${key}`).join(', ')},
             updated_at = NOW()
-            WHERE uuid = :uuid
+            WHERE tenant_id = :tenantId
             LIMIT 1;
           `, Object.assign({}, next.fields, {
-            uuid
+            tenantId: tenant.tenantId
           }))
         } catch (error) {
           ret.setCode(400)
@@ -412,11 +431,11 @@ module.exports = class TenantRepository {
           throw ret
         }
 
-        return this.findByUuid({
+        return await this.findByUuid({
           req,
           res,
           ret,
-          uuid
+          uuid: tenant.uuid
         })
       })
   }
@@ -425,19 +444,21 @@ module.exports = class TenantRepository {
     const req = args.req
     const res = args.res
     const ret = args.ret
-    const uuid = args.uuid
+    const tenant = args.tenant
+    console.log('\ntenant', tenant, '\n')
 
     return Promise.resolve()
       .then(async () => {
         // Verificamos se o inquilino tem usuários vinculados
         const hasUsers = await conn.getOne(`
-          SELECT COUNT(*) as total
-          FROM users u
-          INNER JOIN tenants t ON u.tenant_id = t.tenant_id
-          WHERE t.uuid = ?
-          AND u.deleted_at IS NULL
+          SELECT COUNT(user_Id) as total
+          FROM users
+          WHERE deleted_at IS NULL
+          AND tenant_id = ?
           LIMIT 1;
-        `, [uuid])
+        `, [
+          tenant.tenantId
+        ])
 
         if (hasUsers && hasUsers.total > 0) {
           ret.setCode(400)
@@ -450,10 +471,10 @@ module.exports = class TenantRepository {
           await conn.update(`
             UPDATE tenants
             SET deleted_at = NOW()
-            WHERE uuid = :uuid
+            WHERE tenant_id = :tenantId
             LIMIT 1;
           `, {
-            uuid
+            tenantId: tenant.tenantId
           })
         } catch (error) {
           ret.setCode(400)
@@ -462,14 +483,12 @@ module.exports = class TenantRepository {
           throw ret
         }
 
-        const tenant = await this.findByUuid({
+        return await this.findByUuid({
           req,
           res,
           ret,
-          uuid
+          uuid: tenant.uuid
         })
-
-        return tenant
       })
   }
 }
