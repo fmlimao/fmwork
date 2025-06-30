@@ -11,7 +11,8 @@ module.exports = async (req, res, next) => {
       res,
       ret,
       uuid,
-      tenant: req.tenantRoute
+      tenant: req.tenantRoute,
+      withIds: true
     })
 
     if (!role) {

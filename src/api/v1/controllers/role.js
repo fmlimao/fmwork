@@ -4,12 +4,14 @@ const listGet = async (req, res) => {
   let ret = req.ret()
 
   try {
+    const tenantRoute = req.tenantRoute
+
     const response = await RoleRepository.listAll({
       req,
       res,
       ret,
       filter: req.query || {},
-      tenant: req.tenantRoute
+      tenant: tenantRoute
     })
 
     ret.mergeResponse(response)
@@ -29,12 +31,14 @@ const createPost = async (req, res) => {
   let ret = req.ret()
 
   try {
+    const tenantRoute = req.tenantRoute
+
     const role = await RoleRepository.create({
       req,
       res,
       ret,
       fields: req.body || {},
-      tenant: req.tenantRoute
+      tenant: tenantRoute
     })
 
     ret.setCode(201)
@@ -53,6 +57,7 @@ const getOneGet = async (req, res) => {
 
   try {
     const role = req.roleRoute
+    delete role.roleId
 
     ret.setCode(200)
     ret.addContent('data', role)
@@ -68,13 +73,16 @@ const updatePut = async (req, res) => {
   let ret = req.ret()
 
   try {
+    const tenantRoute = req.tenantRoute
+    const roleRoute = req.roleRoute
+
     const role = await RoleRepository.update({
       req,
       res,
       ret,
-      uuid: req.params.roleUuid,
       fields: req.body || {},
-      tenant: req.tenantRoute
+      tenant: tenantRoute,
+      role: roleRoute
     })
 
     ret.setCode(200)
@@ -92,12 +100,15 @@ const deleteDelete = async (req, res) => {
   let ret = req.ret()
 
   try {
+    const tenantRoute = req.tenantRoute
+    const roleRoute = req.roleRoute
+
     await RoleRepository.delete({
       req,
       res,
       ret,
-      uuid: req.params.roleUuid,
-      tenant: req.tenantRoute
+      tenant: tenantRoute,
+      role: roleRoute
     })
 
     ret.setCode(204)

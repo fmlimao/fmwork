@@ -65,7 +65,6 @@ const localFilters = {
   totalQuery: `
     SELECT COUNT(r.role_id) AS total
     FROM roles r
-    INNER JOIN tenants t ON r.tenant_id = t.tenant_id AND t.deleted_at IS NULL
     WHERE r.deleted_at IS NULL
   `,
   principalQuery: `
@@ -76,7 +75,17 @@ const localFilters = {
       r.created_at AS createdAt,
       r.updated_at AS updatedAt
     FROM roles r
-    INNER JOIN tenants t ON r.tenant_id = t.tenant_id AND t.deleted_at IS NULL
+    WHERE r.deleted_at IS NULL
+  `,
+  principalQueryWithIds: `
+    SELECT
+      r.role_id AS roleId,
+      r.uuid,
+      r.name,
+      r.description,
+      r.created_at AS createdAt,
+      r.updated_at AS updatedAt
+    FROM roles r
     WHERE r.deleted_at IS NULL
   `
 }
@@ -84,13 +93,14 @@ const localFilters = {
 module.exports = class RoleRepository {
   static async listAll (args = {}) {
     const tenant = args.tenant
+    const withIds = args.withIds || false
 
     return Promise.resolve()
       .then(async () => {
         const queryOptions = generateOptions(args.filter)
 
-        const fixedWhereCriteria = ['t.uuid = :tenantUuid']
-        const fixedWhereValues = { tenantUuid: tenant.uuid }
+        const fixedWhereCriteria = ['r.tenant_id = :tenantId']
+        const fixedWhereValues = { tenantId: tenant.tenantId }
 
         const dynamicWhereCriteria = []
         const dynamicWhereValues = {}
@@ -144,7 +154,7 @@ module.exports = class RoleRepository {
         const values = Object.assign({}, next.fixedWhereValues, next.dynamicWhereValues)
 
         const query = `
-          ${localFilters.principalQuery}
+          ${withIds ? localFilters.principalQueryWithIds : localFilters.principalQuery}
           ${next.fixedWhereCriteria.length ? ` AND (${next.fixedWhereCriteria.join(' AND ')})` : ''}
           ${next.dynamicWhereCriteria.length ? ` AND (${next.dynamicWhereCriteria.join(' AND ')})` : ''}
           ORDER BY ${next.queryOptions.orderByColumn} ${next.queryOptions.orderByDir}
@@ -166,6 +176,7 @@ module.exports = class RoleRepository {
     const ret = args.ret
     const uuid = args.uuid
     const tenant = args.tenant
+    const withIds = args.withIds || false
 
     return Promise.resolve()
       .then(() => {
@@ -181,13 +192,13 @@ module.exports = class RoleRepository {
         }
 
         const query = `
-          ${localFilters.principalQuery}
-          AND t.uuid = :tenantUuid
+          ${withIds ? localFilters.principalQueryWithIds : localFilters.principalQuery}
+          AND r.tenant_id = :tenantId
           AND r.uuid = :roleUuid;
         `
 
         const values = {
-          tenantUuid: tenant.uuid,
+          tenantId: tenant.tenantId,
           roleUuid: uuid
         }
 
@@ -223,32 +234,9 @@ module.exports = class RoleRepository {
         return {
           fields: {
             name,
-            description,
-            tenantUuid: tenant.uuid
+            description
           }
         }
-      })
-      // Vamos verificar e buscar o id do inquilino
-      .then(async next => {
-        const tenant = await conn.getOne(`
-          SELECT tenant_id
-          FROM tenants
-          WHERE deleted_at IS NULL
-          AND uuid = ?
-          LIMIT 1;
-        `, [
-          next.fields.tenantUuid
-        ])
-
-        if (!tenant) {
-          ret.setCode(400)
-          ret.addMessage(res.__('Inquilino não encontrado.'))
-          throw ret
-        }
-
-        next.fields.tenantId = tenant.tenant_id
-
-        return next
       })
       // Verificamos se o registro já existe
       .then(async next => {
@@ -256,9 +244,11 @@ module.exports = class RoleRepository {
           SELECT uuid, name
           FROM roles
           WHERE deleted_at IS NULL
+          AND tenant_id = ?
           AND name = ?
           LIMIT 1;
         `, [
+          tenant.tenantId,
           next.fields.name
         ])
 
@@ -277,20 +267,18 @@ module.exports = class RoleRepository {
         const uuid = await conn.uuid()
 
         const tenantId = await conn.insert(`
-          INSERT INTO tenants (uuid, name, description, app_title, app_short_title, is_root)
-          VALUES (?, ?, ?, ?, ?, ?);
+          INSERT INTO roles (uuid, name, description, tenant_id)
+          VALUES (?, ?, ?, ?);
         `, [
           uuid,
           next.fields.name,
           next.fields.description || null,
-          next.fields.appTitle || null,
-          next.fields.appShortTitle || null,
-          next.fields.isRoot || 0
+          tenant.tenantId
         ])
 
         if (!tenantId) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao cadastrar inquilino.'))
+          ret.addMessage(res.__('Erro ao cadastrar perfil.'))
           throw ret
         }
 
@@ -298,7 +286,8 @@ module.exports = class RoleRepository {
           req,
           res,
           ret,
-          uuid
+          uuid,
+          tenant
         })
       })
   }
@@ -307,9 +296,9 @@ module.exports = class RoleRepository {
     const req = args.req
     const res = args.res
     const ret = args.ret
-    const uuid = args.uuid
     const fields = args.fields
     const tenant = args.tenant
+    const role = args.role
 
     return Promise.resolve()
       .then(async () => {
@@ -357,12 +346,14 @@ module.exports = class RoleRepository {
             SELECT uuid, name
             FROM roles
             WHERE deleted_at IS NULL
+            AND tenant_id = ?
+            AND role_id != ?
             AND name = ?
-            AND uuid != ?
             LIMIT 1;
           `, [
-            next.fields.name,
-            uuid
+            tenant.tenantId,
+            role.roleId,
+            next.fields.name
           ])
 
           if (roleExists) {
@@ -383,10 +374,10 @@ module.exports = class RoleRepository {
             UPDATE roles
             SET ${Object.keys(next.fields).map(key => `${key} = :${key}`).join(', ')},
             updated_at = NOW()
-            WHERE uuid = :uuid
+            WHERE role_id = :roleId
             LIMIT 1;
           `, Object.assign({}, next.fields, {
-            uuid
+            roleId: role.roleId
           }))
         } catch (error) {
           ret.setCode(400)
@@ -399,7 +390,7 @@ module.exports = class RoleRepository {
           req,
           res,
           ret,
-          uuid,
+          uuid: role.uuid,
           tenant
         })
       })
@@ -409,8 +400,8 @@ module.exports = class RoleRepository {
     const req = args.req
     const res = args.res
     const ret = args.ret
-    const uuid = args.uuid
     const tenant = args.tenant
+    const role = args.role
 
     return Promise.resolve()
       .then(async () => {
@@ -421,9 +412,9 @@ module.exports = class RoleRepository {
           INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.deleted_at IS NULL
           INNER JOIN roles r ON ur.role_id = r.role_id AND r.deleted_at IS NULL
           WHERE u.deleted_at IS NULL
-          AND r.uuid = ?
+          AND r.role_id = ?
           LIMIT 1;
-        `, [uuid])
+        `, [role.roleId])
 
         if (hasUsers && hasUsers.total > 0) {
           ret.setCode(400)
@@ -436,10 +427,10 @@ module.exports = class RoleRepository {
           await conn.update(`
             UPDATE roles
             SET deleted_at = NOW()
-            WHERE uuid = :uuid
+            WHERE role_id = :roleId
             LIMIT 1;
           `, {
-            uuid
+            roleId: role.roleId
           })
         } catch (error) {
           ret.setCode(400)
@@ -448,15 +439,13 @@ module.exports = class RoleRepository {
           throw ret
         }
 
-        const role = await this.findByUuid({
+        return await this.findByUuid({
           req,
           res,
           ret,
-          uuid,
+          uuid: role.uuid,
           tenant
         })
-
-        return role
       })
   }
 }
