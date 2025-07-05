@@ -37,6 +37,16 @@ module.exports = (req, res, next) => {
           ret.addContent(key, response.content[key])
         }
       }
+
+      if (
+        typeof response.code === 'undefined' &&
+        typeof response.messages === 'undefined' &&
+        typeof response.content === 'undefined'
+      ) {
+        for (const key in response) {
+          ret.addContent(key, response[key])
+        }
+      }
     }
 
     if (typeof response === 'number') {

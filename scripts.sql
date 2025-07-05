@@ -99,11 +99,11 @@ CREATE TABLE `role_permissions` (
 
 -- Inserir algumas permissões básicas
 INSERT INTO permissions (uuid, name, slug, description) VALUES
-(uuid(), 'Permissão Total - Inquilino', 'full-tenant-permission', 'Permite todas as ações no inquilino'),
-(uuid(), 'Visualizar Dashboard', 'view-dashboard', 'Permite visualizar o dashboard do tenant'),
-(uuid(), 'Gerenciar Usuários', 'manage-users', 'Permite gerenciar usuários do tenant'),
-(uuid(), 'Gerenciar Perfis', 'manage-roles', 'Permite gerenciar perfis de acesso do tenant'),
-(uuid(), 'Gerenciar Permissões', 'manage-permissions', 'Permite gerenciar permissões dos perfis');
+('264ef91a-59b4-11f0-9142-3eaed10807e8', 'Permissão Total - Inquilino', 'full-tenant-permission', 'Permite todas as ações no inquilino'),
+('264f0021-59b4-11f0-9142-3eaed10807e8', 'Visualizar Dashboard', 'view-dashboard', 'Permite visualizar o dashboard do tenant'),
+('264f01a7-59b4-11f0-9142-3eaed10807e8', 'Gerenciar Usuários', 'manage-users', 'Permite gerenciar usuários do tenant'),
+('264f0210-59b4-11f0-9142-3eaed10807e8', 'Gerenciar Perfis', 'manage-roles', 'Permite gerenciar perfis de acesso do tenant'),
+('264f024c-59b4-11f0-9142-3eaed10807e8', 'Gerenciar Permissões', 'manage-permissions', 'Permite gerenciar permissões dos perfis');
 
 -- Inserir tenant root
 INSERT INTO tenants (uuid, name, description, app_title, app_short_title, is_root)

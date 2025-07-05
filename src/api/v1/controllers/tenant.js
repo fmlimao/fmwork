@@ -23,11 +23,14 @@ const createPost = async (req, res) => {
 }
 
 const getOneGet = async (req, res) => {
+  const tenantRoute = req.tenantRoute
+  delete tenantRoute.tenantId
+
   res.success({
     code: 200,
     messages: ['Inquilino encontrado com sucesso.'],
     content: {
-      data: req.tenantRoute
+      data: tenantRoute
     }
   })
 }

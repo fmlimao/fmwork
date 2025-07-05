@@ -25,11 +25,14 @@ const createPost = async (req, res) => {
 }
 
 const getOneGet = async (req, res) => {
+  const roleRoute = req.roleRoute
+  delete roleRoute.roleId
+
   res.success({
     code: 200,
     messages: ['Perfil encontrado com sucesso.'],
     content: {
-      data: req.roleRoute
+      data: roleRoute
     }
   })
 }

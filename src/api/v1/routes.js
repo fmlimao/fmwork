@@ -5,10 +5,12 @@ const HomeController = require('./controllers/home')
 const AuthController = require('./controllers/auth')
 const TenantController = require('./controllers/tenant')
 const RoleController = require('./controllers/role')
+const RolePermissionController = require('./controllers/role-permission')
 
 const AuthVerifyMiddleware = require('./middlewares/auth-verify')
 const GetTenantMiddleware = require('./middlewares/get-tenant')
 const GetRoleMiddleware = require('./middlewares/get-role')
+const GetRolePermissionMiddleware = require('./middlewares/get-role-permission')
 
 // Home
 router.get('/', HomeController.homeGet)
@@ -34,6 +36,12 @@ router.post('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.cr
 router.get('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.getOneGet)
 router.put('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.updatePut)
 router.delete('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.deleteDelete)
+
+// Perfil / Permissões
+router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.listGet)
+router.post('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.createPost)
+router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions/:permissionUuid', GetTenantMiddleware, GetRoleMiddleware, GetRolePermissionMiddleware, RolePermissionController.getOneGet)
+router.delete('/tenants/:tenantUuid/roles/:roleUuid/permissions/:permissionUuid', GetTenantMiddleware, GetRoleMiddleware, GetRolePermissionMiddleware, RolePermissionController.deleteDelete)
 
 // Erros
 router.use(require('./middlewares/error-404'))
