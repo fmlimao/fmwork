@@ -128,7 +128,7 @@ function formatList (next, filters, options = {}) {
   ret.addContent('meta', meta)
   ret.addContent('data', next.data)
 
-  return ret.generate()
+  return ret
 }
 
 function formatData (data, options = {}) {

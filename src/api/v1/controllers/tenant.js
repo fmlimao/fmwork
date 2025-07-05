@@ -1,112 +1,59 @@
 const TenantRepository = require('../repositories/tenant')
 
 const listGet = async (req, res) => {
-  let ret = req.ret()
-
-  try {
-    const response = await TenantRepository.listAll({
-      req,
-      res,
-      ret,
-      filter: req.query || {}
-    })
-
-    ret.mergeResponse(response)
-
-    const { data } = ret.getContents()
-
-    ret.addContent('data', data)
-
-    res.status(ret.code).json(ret.generate())
-  } catch (error) {
-    ret = res.errorHandler(error, ret)
-    res.status(ret.code).json(ret.generate())
-  }
+  res.success(await TenantRepository.listAll({
+    req,
+    res,
+    filter: req.query || {}
+  }))
 }
 
 const createPost = async (req, res) => {
-  let ret = req.ret()
-
-  try {
-    const tenant = await TenantRepository.create({
-      req,
-      res,
-      ret,
-      fields: req.body || {}
-    })
-
-    ret.setCode(201)
-    ret.addMessage(res.__('Inquilino criado com sucesso.'))
-    ret.addContent('data', tenant)
-
-    res.status(ret.code).json(ret.generate())
-  } catch (error) {
-    ret = res.errorHandler(error, ret)
-    res.status(ret.code).json(ret.generate())
-  }
+  res.success({
+    code: 201,
+    messages: ['Inquilino criado com sucesso.'],
+    content: {
+      data: await TenantRepository.create({
+        req,
+        res,
+        fields: req.body || {}
+      })
+    }
+  })
 }
 
 const getOneGet = async (req, res) => {
-  let ret = req.ret()
-
-  try {
-    const tenantRoute = req.tenantRoute
-    delete tenantRoute.tenantId
-
-    ret.setCode(200)
-    ret.addContent('data', tenantRoute)
-
-    res.status(ret.code).json(ret.generate())
-  } catch (error) {
-    ret = res.errorHandler(error, ret)
-    res.status(ret.code).json(ret.generate())
-  }
+  res.success({
+    code: 200,
+    messages: ['Inquilino encontrado com sucesso.'],
+    content: {
+      data: req.tenantRoute
+    }
+  })
 }
 
 const updatePut = async (req, res) => {
-  let ret = req.ret()
-
-  try {
-    const tenantRoute = req.tenantRoute
-
-    const tenant = await TenantRepository.update({
-      req,
-      res,
-      ret,
-      fields: req.body || {},
-      tenant: tenantRoute
-    })
-
-    ret.setCode(200)
-    ret.addMessage(res.__('Inquilino atualizado com sucesso.'))
-    ret.addContent('data', tenant)
-
-    res.status(ret.code).json(ret.generate())
-  } catch (error) {
-    ret = res.errorHandler(error, ret)
-    res.status(ret.code).json(ret.generate())
-  }
+  res.success({
+    code: 200,
+    messages: ['Inquilino atualizado com sucesso.'],
+    content: {
+      data: await TenantRepository.update({
+        req,
+        res,
+        fields: req.body || {},
+        tenant: req.tenantRoute
+      })
+    }
+  })
 }
 
 const deleteDelete = async (req, res) => {
-  let ret = req.ret()
-
-  try {
-    const tenantRoute = req.tenantRoute
-
-    await TenantRepository.delete({
-      req,
-      res,
-      ret,
-      tenant: tenantRoute
-    })
-
-    ret.setCode(204)
-    res.status(ret.code).json(ret.generate())
-  } catch (error) {
-    ret = res.errorHandler(error, ret)
-    res.status(ret.code).json(ret.generate())
-  }
+  await TenantRepository.delete({
+    req,
+    res,
+    tenant: req.tenantRoute
+  })
+  res.success(204)
 }
 
 module.exports = {

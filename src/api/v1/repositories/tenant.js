@@ -191,8 +191,9 @@ module.exports = class TenantRepository {
   }
 
   static async findByUuid (args = {}) {
+    const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const uuid = args.uuid
     const withIds = args.withIds || false
 
@@ -225,7 +226,7 @@ module.exports = class TenantRepository {
   static async create (args = {}) {
     const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const fields = args.fields
 
     return Promise.resolve()
@@ -309,7 +310,6 @@ module.exports = class TenantRepository {
         return this.findByUuid({
           req,
           res,
-          ret,
           uuid
         })
       })
@@ -318,8 +318,7 @@ module.exports = class TenantRepository {
   static async update (args = {}) {
     const req = args.req
     const res = args.res
-    const ret = args.ret
-    // const uuid = args.uuid
+    const ret = req.ret()
     const fields = args.fields
     const tenant = args.tenant
 
@@ -434,7 +433,6 @@ module.exports = class TenantRepository {
         return await this.findByUuid({
           req,
           res,
-          ret,
           uuid: tenant.uuid
         })
       })
