@@ -172,8 +172,9 @@ module.exports = class RoleRepository {
   }
 
   static async findByUuid (args = {}) {
+    const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const uuid = args.uuid
     const tenant = args.tenant
     const withIds = args.withIds || false
@@ -209,7 +210,7 @@ module.exports = class RoleRepository {
   static async create (args = {}) {
     const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const fields = args.fields
     const tenant = args.tenant
 
@@ -285,7 +286,6 @@ module.exports = class RoleRepository {
         return this.findByUuid({
           req,
           res,
-          ret,
           uuid,
           tenant
         })
@@ -295,7 +295,7 @@ module.exports = class RoleRepository {
   static async update (args = {}) {
     const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const fields = args.fields
     const tenant = args.tenant
     const role = args.role
@@ -389,7 +389,6 @@ module.exports = class RoleRepository {
         return this.findByUuid({
           req,
           res,
-          ret,
           uuid: role.uuid,
           tenant
         })
@@ -399,7 +398,7 @@ module.exports = class RoleRepository {
   static async delete (args = {}) {
     const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const tenant = args.tenant
     const role = args.role
 
@@ -442,7 +441,6 @@ module.exports = class RoleRepository {
         return await this.findByUuid({
           req,
           res,
-          ret,
           uuid: role.uuid,
           tenant
         })
