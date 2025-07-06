@@ -41,7 +41,7 @@ CREATE TABLE `users` (
     `uuid` varchar(36) NOT NULL,
     `tenant_id` int NOT NULL,
     `name` varchar(255) NOT NULL,
-    `document` varchar(255) NOT NULL,
+    `document` varchar(255) DEFAULT NULL,
     `email` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     `active` tinyint DEFAULT 1,

@@ -15,14 +15,14 @@ Este documento lista todas as features implementadas e planejadas para a API.
 - ✅ Geração de JWT Token
 - ✅ Middleware de verificação de autenticação
 - ✅ Endpoint para obter dados do usuário logado
-- ⏳ Refresh Token
-- ⏳ Logout
-- ⏳ Recuperação de senha
-- ⏳ Alteração de senha
+- 🚧 Refresh Token
+- 🚧 Logout
+- 🚧 Recuperação de senha
+- 🚧 Alteração de senha
 
 ### Autorização
-- ⏳ Controle de permissões por rota
-- ⏳ Níveis de acesso por módulo
+- 🚧 Controle de permissões por rota
+- 🚧 Níveis de acesso por módulo
 - ⏳ Blacklist de tokens
 
 ## Gestão de Tenants (Inquilinos)
@@ -33,11 +33,11 @@ Este documento lista todas as features implementadas e planejadas para a API.
 - ✅ Visualização de tenant específico
 - ✅ Atualização de tenant
 - ✅ Deleção de tenant
-- ⏳ Ativação/Desativação de tenant
+- 🚧 Ativação/Desativação de tenant
 - ⏳ Histórico de alterações do tenant
 
 ### Configurações de Tenant
-- ⏳ Configurações personalizadas por tenant
+- 🚧 Configurações personalizadas por tenant
 - ⏳ Limite de usuários por tenant
 - ⏳ Configuração de módulos disponíveis
 - ⏳ Personalização de tema/marca
@@ -50,26 +50,26 @@ Este documento lista todas as features implementadas e planejadas para a API.
 - ✅ Visualização de role específica
 - ✅ Atualização de role
 - ✅ Deleção de role
-- ⏳ Roles padrão do sistema
+- 🚧 Roles padrão do sistema
 - ⏳ Cópia de roles existentes
 
 ### Permissões
-- ⏳ Atribuição de permissões à role
+- 🚧 Atribuição de permissões à role
 - ⏳ Herança de permissões
 - ⏳ Restrições por módulo
 
 ## Usuários
 
 ### CRUD de Usuários
-- ⏳ Listagem de usuários por tenant
-- ⏳ Criação de novo usuário
-- ⏳ Visualização de usuário específico
-- ⏳ Atualização de usuário
-- ⏳ Deleção de usuário
+- 🚧 Listagem de usuários por tenant
+- 🚧 Criação de novo usuário
+- 🚧 Visualização de usuário específico
+- 🚧 Atualização de usuário
+- 🚧 Deleção de usuário
 - ⏳ Ativação/Desativação de usuário
 
 ### Perfil de Usuário
-- ⏳ Atualização de dados pessoais
+- 🚧 Atualização de dados pessoais
 - ⏳ Upload de foto de perfil
 - ⏳ Preferências do usuário
 - ⏳ Histórico de atividades
@@ -77,7 +77,7 @@ Este documento lista todas as features implementadas e planejadas para a API.
 ## Integrações
 
 ### Notificações
-- ⏳ Envio de e-mails
+- 🚧 Envio de e-mails
 - ⏳ Notificações push
 - ⏳ Webhooks
 
@@ -89,18 +89,18 @@ Este documento lista todas as features implementadas e planejadas para a API.
 ## Infraestrutura
 
 ### Monitoramento
-- ⏳ Logs de acesso
-- ⏳ Logs de erro
+- 🚧 Logs de acesso
+- 🚧 Logs de erro
 - ⏳ Métricas de uso
 - ⏳ Alertas de sistema
 
 ### Cache
-- ⏳ Cache de consultas frequentes
-- ⏳ Cache de autenticação
+- 🚧 Cache de consultas frequentes
+- 🚧 Cache de autenticação
 - ⏳ Gestão de cache por tenant
 
 ### Segurança
-- ⏳ Rate limiting
+- 🚧 Rate limiting
 - ⏳ Proteção contra DDoS
 - ⏳ Auditoria de ações
 - ⏳ Backup automático
@@ -109,13 +109,13 @@ Este documento lista todas as features implementadas e planejadas para a API.
 
 ### Configuração
 - 🚧 Setup básico do i18n
-- ⏳ Mensagens de erro traduzidas
-- ⏳ Mensagens de sucesso traduzidas
+- 🚧 Mensagens de erro traduzidas
+- 🚧 Mensagens de sucesso traduzidas
 - ⏳ Documentação multi-idioma
 
 ### Idiomas
-- ⏳ Português (Brasil)
-- ⏳ Inglês (EUA)
+- 🚧 Português (Brasil)
+- 🚧 Inglês (EUA)
 - ⏳ Espanhol
 - ⏳ Configuração de idioma por tenant
 - ⏳ Configuração de idioma por usuário
@@ -123,7 +123,7 @@ Este documento lista todas as features implementadas e planejadas para a API.
 ## Documentação
 
 ### API
-- ⏳ Documentação OpenAPI/Swagger
+- 🚧 Documentação OpenAPI/Swagger
 - ⏳ Exemplos de uso
 - ⏳ Postman/Insomnia Collections
 - ⏳ Guia de integração
