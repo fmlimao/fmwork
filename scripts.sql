@@ -76,7 +76,7 @@ CREATE TABLE `user_roles` (
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `deleted_at` datetime DEFAULT NULL,
     PRIMARY KEY (`user_role_id`),
-    UNIQUE KEY `uk_user_roles` (`tenant_id`, `user_id`, `role_id`),
+#     UNIQUE KEY `uk_user_roles` (`tenant_id`, `user_id`, `role_id`),
     FOREIGN KEY (`tenant_id`) REFERENCES `tenants` (`tenant_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
     FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`)

@@ -52,6 +52,10 @@ router.get('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserM
 router.put('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.updatePut)
 router.delete('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.deleteDelete)
 
+// Usuário / Perfil
+router.get('/tenants/:tenantUuid/users/:userUuid/role', GetTenantMiddleware, GetUserMiddleware, UserController.getRoleGet)
+router.patch('/tenants/:tenantUuid/users/:userUuid/role', GetTenantMiddleware, GetUserMiddleware, UserController.updateRolePatch)
+
 // Erros
 router.use(require('./middlewares/error-404'))
 router.use(require('./middlewares/error-500'))

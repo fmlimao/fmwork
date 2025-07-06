@@ -468,4 +468,145 @@ module.exports = class UserRepository {
         })
       })
   }
+
+  static async getRole (args = {}) {
+    const tenant = args.tenant
+    const user = args.user
+
+    return Promise.resolve()
+      .then(async () => {
+        const role = await conn.getOne(`
+          SELECT
+            r.uuid,
+            r.name,
+            r.description,
+            r.created_at AS createdAt,
+            r.updated_at AS updatedAt
+          FROM roles r
+          INNER JOIN user_roles ur ON r.role_id = ur.role_id AND ur.deleted_at IS NULL
+          WHERE r.deleted_at IS NULL
+          AND r.tenant_id = ?
+          AND ur.user_id = ?
+          LIMIT 1;
+        `, [
+          tenant.tenantId,
+          user.userId
+        ])
+
+        return role || null
+      })
+  }
+
+  static async updateRole (args = {}) {
+    const req = args.req
+    const res = args.res
+    const ret = req.ret()
+    const fields = args.fields
+    const tenant = args.tenant
+    const user = args.user
+
+    return Promise.resolve()
+      .then(async () => {
+        // Recebemos as variáveis
+        const { roleUuid } = fields
+
+        let fieldCount = 0
+        const updateFields = {}
+        const updateValidates = {}
+
+        if (roleUuid !== undefined) {
+          fieldCount++
+          updateFields.roleUuid = roleUuid
+          updateValidates.roleUuid = 'uuid'
+        }
+
+        if (!fieldCount) {
+          ret.setError(true)
+          ret.setCode(400)
+          ret.addMessage(res.__('Nenhum campo foi informado.'))
+          throw ret
+        }
+
+        if (!validator(res, ret, fields, updateValidates)) {
+          ret.setError(true)
+          ret.setCode(400)
+          ret.addMessage(res.__('Verifique todos os campos.'))
+          throw ret
+        }
+
+        return {
+          fields: updateFields
+        }
+      })
+      // Verificamos se o perfil existe
+      .then(async next => {
+        if (next.fields.roleUuid) {
+          const roleExists = await conn.getOne(`
+            SELECT role_id AS roleId
+            FROM roles
+            WHERE deleted_at IS NULL
+            AND tenant_id = ?
+            AND uuid = ?
+            LIMIT 1;
+          `, [
+            tenant.tenantId,
+            next.fields.roleUuid
+          ])
+
+          if (!roleExists) {
+            ret.setCode(400)
+            ret.setFieldError('roleUuid', true)
+            ret.addFieldMessage('roleUuid', res.__('Perfil não encontrado.'))
+            ret.addMessage(res.__('Verifique todos os campos.'))
+            throw ret
+          }
+
+          next.fields.roleId = roleExists.roleId
+        } else {
+          next.fields.roleId = null
+        }
+
+        return next
+      })
+      // Vamos atualizar o perfil do usuário
+      .then(async next => {
+        try {
+          // Se o ID for nulo, então vamos deletar o perfil do usuário
+          if (next.fields.roleId === null) {
+            await conn.update(`
+              UPDATE user_roles
+              SET deleted_at = NOW()
+              WHERE deleted_at IS NULL
+              AND tenant_id = :tenantId
+              AND user_id = :userId
+              LIMIT 1;
+            `, {
+              tenantId: tenant.tenantId,
+              userId: user.userId
+            })
+          } else {
+            await conn.insert(`
+              INSERT INTO user_roles (tenant_id, user_id, role_id)
+              VALUES (:tenantId, :userId, :roleId);
+            `, {
+              userId: user.userId,
+              roleId: next.fields.roleId,
+              tenantId: tenant.tenantId
+            })
+          }
+        } catch (error) {
+          ret.setCode(400)
+          ret.addMessage(res.__('Erro ao atualizar perfil do usuário.'))
+          ret.addMessage(error.message)
+          throw ret
+        }
+
+        return this.getRole({
+          req,
+          res,
+          tenant,
+          user
+        })
+      })
+  }
 }

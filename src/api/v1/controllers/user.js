@@ -64,10 +64,45 @@ const deleteDelete = async (req, res) => {
   res.success(204)
 }
 
+const getRoleGet = async (req, res) => {
+  const role = await UserRepository.getRole({
+    req,
+    res,
+    tenant: req.tenantRoute,
+    user: req.userRoute
+  })
+
+  res.success({
+    code: 200,
+    messages: [role ? 'Perfil do usuário encontrado com sucesso.' : 'Usuário não possui perfil.'],
+    content: {
+      data: role
+    }
+  })
+}
+
+const updateRolePatch = async (req, res) => {
+  res.success({
+    code: 200,
+    messages: ['Perfil do usuário atualizado com sucesso.'],
+    content: {
+      data: await UserRepository.updateRole({
+        req,
+        res,
+        fields: req.body || {},
+        tenant: req.tenantRoute,
+        user: req.userRoute
+      })
+    }
+  })
+}
+
 module.exports = {
   listGet,
   createPost,
   getOneGet,
   updatePut,
-  deleteDelete
+  deleteDelete,
+  getRoleGet,
+  updateRolePatch
 }
