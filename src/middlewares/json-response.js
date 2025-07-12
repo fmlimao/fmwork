@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
   req.ret = () => {
     return new JsonResponse()
   }
+
   res.errorHandler = errorHandler
 
   res.error = error => {
@@ -13,8 +14,6 @@ module.exports = (req, res, next) => {
   }
 
   res.success = response => {
-    console.log('\nresponse', typeof response, response instanceof JsonResponse, response, '\n')
-
     if (response instanceof JsonResponse) {
       return res.status(response.getCode()).json(response.generate())
     }

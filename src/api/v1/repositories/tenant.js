@@ -232,20 +232,18 @@ module.exports = class TenantRepository {
     return Promise.resolve()
       .then(async () => {
         // Recebemos as variáveis
-        const { name, description, appTitle, appShortTitle, isRoot } = fields
+        const { name, description, appTitle, appShortTitle } = fields
 
         if (!validator(res, ret, {
           name,
           description,
           appTitle,
-          appShortTitle,
-          isRoot
+          appShortTitle
         }, {
           name: 'required|string|min:3|max:255',
           description: 'string|min:3|max:255',
           appTitle: 'string|min:3|max:255',
-          appShortTitle: 'string|min:3|max:255',
-          isRoot: 'integer|between:0,1'
+          appShortTitle: 'string|min:3|max:255'
         })) {
           ret.setError(true)
           ret.setCode(400)
@@ -258,8 +256,7 @@ module.exports = class TenantRepository {
             name,
             description,
             appTitle,
-            appShortTitle,
-            isRoot
+            appShortTitle
           }
         }
       })
@@ -290,15 +287,14 @@ module.exports = class TenantRepository {
         const uuid = await conn.uuid()
 
         const tenantId = await conn.insert(`
-          INSERT INTO tenants (uuid, name, description, app_title, app_short_title, is_root)
-          VALUES (?, ?, ?, ?, ?, ?);
+          INSERT INTO tenants (uuid, name, description, app_title, app_short_title)
+          VALUES (?, ?, ?, ?, ?);
         `, [
           uuid,
           next.fields.name,
           next.fields.description || null,
           next.fields.appTitle || null,
-          next.fields.appShortTitle || null,
-          next.fields.isRoot || 0
+          next.fields.appShortTitle || null
         ])
 
         if (!tenantId) {
@@ -325,7 +321,7 @@ module.exports = class TenantRepository {
     return Promise.resolve()
       .then(async () => {
         // Recebemos as variáveis
-        const { name, description, appTitle, appShortTitle, isRoot, active } = fields
+        const { name, description, appTitle, appShortTitle, active } = fields
 
         let fieldCount = 0
         const updateFields = {}
@@ -353,12 +349,6 @@ module.exports = class TenantRepository {
           fieldCount++
           updateFields.app_short_title = appShortTitle
           updateValidates.appShortTitle = 'string|min:3|max:255'
-        }
-
-        if (isRoot !== undefined) {
-          fieldCount++
-          updateFields.is_root = isRoot
-          updateValidates.isRoot = 'integer|between:0,1'
         }
 
         if (active !== undefined) {
@@ -441,26 +431,27 @@ module.exports = class TenantRepository {
   static async delete (args = {}) {
     const req = args.req
     const res = args.res
-    const ret = args.ret
+    const ret = req.ret()
     const tenant = args.tenant
-    console.log('\ntenant', tenant, '\n')
 
     return Promise.resolve()
       .then(async () => {
-        // Verificamos se o inquilino tem usuários vinculados
-        const hasUsers = await conn.getOne(`
-          SELECT COUNT(user_Id) as total
-          FROM users
+        // Verificamos se o inquilino é root
+        const tenantIsRoot = await conn.getOne(`
+          SELECT is_root
+          FROM tenants
           WHERE deleted_at IS NULL
           AND tenant_id = ?
+          AND is_root = 1
           LIMIT 1;
         `, [
           tenant.tenantId
         ])
 
-        if (hasUsers && hasUsers.total > 0) {
+        if (tenantIsRoot) {
+          ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Não é possível excluir um inquilino que possui usuários vinculados.'))
+          ret.addMessage(res.__('Não é possível excluir um inquilino que é root.'))
           throw ret
         }
 
@@ -481,12 +472,7 @@ module.exports = class TenantRepository {
           throw ret
         }
 
-        return await this.findByUuid({
-          req,
-          res,
-          ret,
-          uuid: tenant.uuid
-        })
+        return null
       })
   }
 }

@@ -5,5 +5,5 @@ module.exports = (req, res, next) => {
   ret.setCode(404)
   ret.addMessage(res.__('Rota não encontrada'))
 
-  res.status(ret.getCode()).json(ret.generate())
+  return res.status(ret.getCode()).json(ret.generate())
 }

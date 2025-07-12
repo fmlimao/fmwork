@@ -51,12 +51,16 @@ const updatePut = async (req, res) => {
 }
 
 const deleteDelete = async (req, res) => {
-  await TenantRepository.delete({
-    req,
-    res,
-    tenant: req.tenantRoute
+  res.success({
+    code: 204,
+    content: {
+      data: await TenantRepository.delete({
+        req,
+        res,
+        tenant: req.tenantRoute
+      })
+    }
   })
-  res.success(204)
 }
 
 module.exports = {
