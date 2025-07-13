@@ -1,0 +1,179 @@
+<%- contentFor('body') %>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <i class="fa fa-sitemap"></i> Projetos
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/app"><i class="fa fa-home"></i> Início</a></li>
+    <li class="active"><i class="fa fa-sitemap"></i> Projetos</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title">Lista de Projetos</h3>
+    </div>
+    <datatables :model="tenants"></datatables>
+  </div>
+
+</section>
+<!-- /.content -->
+
+<%- contentFor('scripts') %>
+
+<script>
+  mixins.push({
+    data: {
+      tenants: {
+        loading: false,
+        loaded: false,
+        list: [],
+        // title: 'Lista de Projetos',
+        // buttons: [
+        //   {
+        //     label: '<span class="fa fa-plus"></span>',
+        //     class: 'btn btn-outline-warning btn-sm btn-flat',
+        //     click: () => App.openNewProjectModal()
+        //   }
+        // ],
+        meta: {
+          totalCount: 0,
+          filteredCount: 0,
+          start: 0,
+          length: 10,
+          pages: 0,
+          currentPage: 0,
+          orderBy: {
+            column: 'name',
+            dir: "ASC"
+          }
+        },
+        initialOptions: {
+          start: 0,
+          length: 10,
+          orderByColumn: 'name',
+          orderByDir: 'ASC',
+        },
+        columns: [
+          {
+            label: "<%- __('Nome')%>",
+            field: 'name',
+            minWidth: 200,
+            sortable: true,
+            html: true,
+            render: (value, row) => {
+              return `
+                <a href="/app/tenants/${row.uuid}">
+                  ${row.name}
+                </a>
+              `
+            }
+          },
+          {
+            label: "<%- __('Descrição')%>",
+            field: 'description',
+            sortable: false,
+          },
+          {
+            label: "<%- __('Título')%>",
+            field: 'appTitle',
+            sortable: false,
+            width: 200,
+          },
+          {
+            label: "<%- __('Título curto')%>",
+            field: 'appShortTitle',
+            sortable: false,
+            width: 200,
+          },
+          {
+            label: "<%- __('Criado em')%>",
+            field: 'createdAt',
+            sortable: true,
+            width: 200,
+            align: 'center',
+            nowrap: true,
+            html: true,
+            render: (value, row) => {
+              return datimeFormatDefault(row.createdAt, 'DD/MM/YYYY HH:mm:ss')
+            }
+          },
+          {
+            label: "<%- __('Ativo')%>",
+            field: 'active',
+            sortable: true,
+            width: 100,
+            align: 'center',
+            nowrap: true,
+            html: true,
+            render: (value, row) => {
+              return row.active
+                ? "<span class='label label-success'><%- __('Ativo') %></span>"
+                : "<span class='label label-danger'><%- __('Inativo') %></span>"
+            }
+          },
+          // {
+          //   label: 'Ações',
+          //   sortable: false,
+          //   width: 120,
+          //   nowrap: true,
+          //   html: true,
+          //   buttons: [
+          //     {
+          //       label: '<span class="fa fa-pencil"></span>',
+          //       class: 'btn btn-outline-default btn-sm btn-flat',
+          //       click: (row) => window.location.href = `/app/clients/${row._id}`
+          //     },
+          //     {
+          //       label: '<span class="fa fa-trash"></span>',
+          //       class: 'btn btn-outline-danger btn-sm btn-flat',
+          //       click: (row) => App.deleteClient(row._id)
+          //     }
+          //   ]
+          // },
+        ],
+        getList: () => {
+          App.getTenants()
+        },
+      }
+    },
+    methods: {
+      init: () => {
+        App.getTenants()
+      },
+
+      getTenants: async () => {
+        console.log('getTenants()')
+
+        try {
+          const options = Object.assign(App.tenants.initialOptions)
+          console.log('options', options)
+
+          App.tenants.loading = true
+
+          const response = (await axios({
+            method: 'get',
+            url: '/api/v1/tenants',
+            params: options,
+          })).data
+
+          App.tenants.meta = response.content.meta
+          App.tenants.list = response.content.data
+
+          App.tenants.loading = false
+          App.tenants.loaded = true
+        } catch (error) {
+          console.log("getTenants() error", error)
+          // App.apiRequests.error = true
+          // App.apiRequests.messages = ['Ocorreu um erro interno. Por favor tenta novamente']
+        }
+
+      },
+    }
+  })
+</script>

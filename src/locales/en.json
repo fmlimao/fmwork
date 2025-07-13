@@ -25,5 +25,18 @@
 	"Erro ao atualizar inquilino.": "Error updating tenant.",
 	"Inquilino atualizado com sucesso.": "Tenant updated successfully.",
 	"Não é possível excluir um inquilino que é root.": "It is not possible to delete a tenant that is root.",
-	"Erro ao deletar inquilino.": "Error deleting tenant."
+	"Erro ao deletar inquilino.": "Error deleting tenant.",
+	"Menu Principal": "Main Menu",
+	"Início": "Home",
+	"Projetos": "Projects",
+	"Bem vindo ao sistema de gestão de projetos!": "Welcome to the project management system!",
+	"Lista de Projetos": "Projects List",
+	"Nome": "Name",
+	"Descrição": "Description",
+	"Título": "Title",
+	"Título curto": "Short title",
+	"Criado em": "Created at",
+	"Ativo": "Active",
+  "Inativo": "Inactive",
+  "em andamento": "in progress"
 }

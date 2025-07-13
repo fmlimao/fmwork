@@ -2,13 +2,13 @@ console.clear()
 
 require('dotenv').config()
 
-// const DEBUG = !!Number(process.env.DEBUG || 1)
+const DEBUG = !!Number(process.env.DEBUG || 1)
 const PORT = process.env.PORT
 const HOST = process.env.HOST
 
 const express = require('express')
-// const expressLayouts = require('express-ejs-layouts')
-// const morgan = require('morgan')
+const expressLayouts = require('express-ejs-layouts')
+const morgan = require('morgan')
 const path = require('path')
 const { I18n } = require('i18n')
 
@@ -22,31 +22,36 @@ const i18n = new I18n({
 
 app.use(i18n.init)
 
+app.use((req, res, next) => {
+  if (DEBUG) console.log(`Idioma detectado: ${req.getLocale()}`)
+  next()
+})
+
 app.use(require('./src/middlewares/configs'))
 
 // Middlewares básicas
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-// app.use(express.static(path.join(__dirname, './public')))
+app.use(express.static(path.join(__dirname, './public')))
 
-// // Configuração do EJS
-// app.set('views', path.join(__dirname, './src/views'))
-// app.set('view engine', 'ejs')
-// app.set('layout', 'app/layout/index')
-// app.use(expressLayouts)
+// Configuração do EJS
+app.set('views', path.join(__dirname, './src/views'))
+app.set('view engine', 'ejs')
+app.set('layout', 'app/layout/index')
+app.use(expressLayouts)
 
 app.use(require('./src/middlewares/json-response'))
 app.use(require('./src/middlewares/sintaxe-error'))
 
-// if (DEBUG) {
-//   app.use(morgan('dev'))
-// }
+if (DEBUG) {
+  app.use(morgan('dev'))
+}
 
 // API
 app.use('/api/v1', require('./src/api/v1/routes'))
 
 // APP
-// app.use('/app', require('./src/app/routes'))
+app.use('/app', require('./src/app/routes'))
 
 // SITE
 // app.get('/', require('./src/site/routes'))
