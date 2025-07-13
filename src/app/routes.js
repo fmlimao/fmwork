@@ -11,7 +11,7 @@ router.use(ConfigsMiddleware)
 
 router.get('/', require('./controllers/home-get'))
 
-router.get('/projects', require('./controllers/projects-get'))
+router.get('/tenants', require('./controllers/tenants-get'))
 
 // // Autenticação
 // router.get('/login', AuthController.loginGet)

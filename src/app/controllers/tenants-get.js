@@ -1,3 +1,3 @@
 module.exports = (req, res) => {
-  res.render('app/projects')
+  res.render('app/tenants')
 }

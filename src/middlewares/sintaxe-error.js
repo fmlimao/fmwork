@@ -6,7 +6,7 @@ module.exports = (err, req, res, next) => {
 
     ret.setError(true)
     ret.setCode(400)
-    ret.addMessage('Um erro interno aconteceu. Verifique as variáveis enviadas.')
+    ret.addMessage(res.__('api.error.Um erro interno aconteceu. Verifique as variáveis enviadas.'))
 
     return res.status(ret.getCode()).json(ret.generate())
     // throw new Error('Um erro interno aconteceu. Verifique as variáveis enviadas.')

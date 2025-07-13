@@ -5,19 +5,19 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu" data-widget="tree">
 
-      <li class="header"><%- __('Menu Principal') %></li>
+      <li class="header"><%- __('app.menu.Menu Principal') %></li>
 
       <li class="<%- activeMenu(page, 'home') %>">
         <a href="/app">
-          <i class="fa fa-home"></i> <span><%- __('Início') %></span>
+          <i class="fa fa-home"></i> <span><%- __('app.menu.Início') %></span>
         </a>
       </li>
 
-      <li class="<%- activeMenu(page, 'projects') %>">
-        <a href="/app/projects">
-          <i class="fa fa-sitemap"></i> <span><%- __('Projetos') %></span>
+      <li class="<%- activeMenu(page, 'tenants') %>">
+        <a href="/app/tenants">
+          <i class="fa fa-sitemap"></i> <span><%- __('app.menu.Inquilinos') %></span>
           <span class="pull-right-container">
-            <small class="label pull-right bg-yellow"><%- __('em andamento') %></small>
+            <small class="label pull-right bg-yellow"><%- __('app.menu.status.em andamento') %></small>
           </span>
         </a>
       </li>

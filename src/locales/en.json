@@ -23,6 +23,7 @@
 	"api.home.Servidor rodando com sucesso!": "Server running successfully!",
 	"api.error.Rota não encontrada": "Route not found",
 	"api.error.Erro interno. Por favor, tente novamente.": "Internal error. Please try again.",
+	"api.error.Um erro interno aconteceu. Verifique as variáveis enviadas.": "An internal error occurred. Please check the variables sent.",
 	"api.tenant.Já temos um inquilino com este nome.": "A tenant with this name already exists.",
 	"api.tenant.Erro ao cadastrar inquilino.": "Error while creating tenant.",
 	"api.tenant.Inquilino criado com sucesso.": "Tenant successfully created.",
@@ -31,5 +32,12 @@
 	"api.tenant.Erro ao atualizar inquilino.": "Error while updating tenant.",
 	"api.tenant.Inquilino atualizado com sucesso.": "Tenant successfully updated.",
 	"api.tenant.Não é possível excluir um inquilino que é root.": "It is not possible to delete a tenant that is root.",
-	"api.tenant.Erro ao deletar inquilino.": "Error while deleting tenant."
+	"api.tenant.Erro ao deletar inquilino.": "Error while deleting tenant.",
+	"app.menu.Sair": "Logout",
+	"app.menu.Menu Principal": "Main Menu",
+	"app.menu.Início": "Home",
+	"app.menu.Inquilinos": "Tenants",
+	"app.menu.status.em andamento": "in progress",
+	"app.home.Início": "Home",
+	"app.home.Bem vindo ao sistema de gestão de projetos!": "Welcome to the project management system!"
 }
