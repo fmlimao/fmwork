@@ -27,47 +27,51 @@
           <p v-for="message in tenant.messages">{{ message }}</p>
         </div>
 
-        <input type="text" name="uuid" v-model="tenant.fields.uuid.value">
-
-        <div class="form-group">
+        <div class="form-group" :class="{'has-error': tenant.fields.name.error}">
           <label for="name"><%- __('app.tenant.Nome') %></label>
-          <input type="text" class="form-control" v-model="tenant.fields.name.value">
+          <input type="text" class="form-control" v-model="tenant.fields.name.value" :disabled="tenant.loading">
+          <small class="help-block" v-if="tenant.fields.name.error" v-html="tenant.fields.name.messages.join('<br>')"></small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" :class="{'has-error': tenant.fields.description.error}">
           <label for="description"><%- __('app.tenant.Descrição') %></label>
-          <textarea name="description" id="description" class="form-control" rows="3" v-model="tenant.fields.description.value"></textarea>
+          <textarea name="description" id="description" class="form-control" rows="3" v-model="tenant.fields.description.value" :disabled="tenant.loading"></textarea>
+          <small class="help-block" v-if="tenant.fields.description.error" v-html="tenant.fields.description.messages.join('<br>')"></small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" :class="{'has-error': tenant.fields.appTitle.error}">
           <label for="appTitle"><%- __('app.tenant.Título') %></label>
-          <input type="text" class="form-control" v-model="tenant.fields.appTitle.value">
+          <input type="text" class="form-control" v-model="tenant.fields.appTitle.value" :disabled="tenant.loading">
+          <small class="help-block" v-if="tenant.fields.appTitle.error" v-html="tenant.fields.appTitle.messages.join('<br>')"></small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" :class="{'has-error': tenant.fields.appShortTitle.error}">
           <label for="appShortTitle"><%- __('app.tenant.Título curto') %></label>
-          <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value">
+          <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value" :disabled="tenant.loading">
+          <small class="help-block" v-if="tenant.fields.appShortTitle.error" v-html="tenant.fields.appShortTitle.messages.join('<br>')"></small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" :class="{'has-error': tenant.fields.active.error}">
           <label for="active"><%- __('app.tenant.Ativo') %></label>
-          <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value">
+          <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value" :disabled="tenant.loading">
+            <option value=""><%- __('app.tenant.Selecione') %></option>
             <option value="1"><%- __('app.tenant.Ativo') %></option>
             <option value="0"><%- __('app.tenant.Inativo') %></option>
           </select>
+          <small class="help-block" v-if="tenant.fields.active.error" v-html="tenant.fields.active.messages.join('<br>')"></small>
         </div>
 
-        <button type="submit" class="btn btn-primary" v-if="!tenant.fields.uuid.value">
+        <button type="submit" class="btn btn-primary" v-if="!tenant.fields.uuid.value" :disabled="tenant.loading">
           <span class="fa fa-save"></span>
           <%- __('app.tenant.Criar') %>
         </button>
 
-        <button type="submit" class="btn btn-primary" v-else>
+        <button type="submit" class="btn btn-primary" v-else :disabled="tenant.loading">
           <span class="fa fa-save"></span>
           <%- __('app.tenant.Atualizar') %>
         </button>
 
-        <button type="button" class="btn btn-default" @click="App.cancelTenant()">
+        <button type="button" class="btn btn-default" @click="App.cancelTenant()" :disabled="tenant.loading">
           <span class="fa fa-times"></span>
           <%- __('app.tenant.Cancelar') %>
         </button>
@@ -204,47 +208,39 @@
       },
 
       tenant: {
-        loading: true,
-        error: true,
-        messages: [
-          'teste 1',
-          'teste 2',
-          'teste 3',
-          'teste 4',
-          'teste 5',
-          'teste 6',
-          'teste 7',
-        ],
+        loading: false,
+        error: false,
+        messages: [],
         fields: {
           uuid: {
-            error: true,
-            messages: ['uuid error'],
-            value: 'uuid'
+            error: false,
+            messages: [],
+            value: ''
           },
           name: {
-            error: true,
-            messages: ['name error'],
-            value: 'name'
+            error: false,
+            messages: [],
+            value: ''
           },
           description: {
-            error: true,
-            messages: ['description error'],
-            value: 'description'
+            error: false,
+            messages: [],
+            value: ''
           },
           appTitle: {
-            error: true,
-            messages: ['appTitle error'],
-            value: 'appTitle'
+            error: false,
+            messages: [],
+            value: ''
           },
           appShortTitle: {
-            error: true,
-            messages: ['appShortTitle error'],
-            value: 'appShortTitle'
+            error: false,
+            messages: [],
+            value: ''
           },
           active: {
-            error: true,
-            messages: ['active error'],
-            value: '1'
+            error: false,
+            messages: [],
+            value: ''
           },
 
         }
