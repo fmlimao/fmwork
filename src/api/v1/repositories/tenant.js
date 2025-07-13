@@ -247,7 +247,7 @@ module.exports = class TenantRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage(res.__('validator.Verifique todos os campos.'))
           throw ret
         }
 
@@ -275,8 +275,8 @@ module.exports = class TenantRepository {
         if (tenant) {
           ret.setCode(400)
           ret.setFieldError('name', true)
-          ret.addFieldMessage('name', res.__('Já temos um inquilino com este nome.'))
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addFieldMessage('name', res.__('api.tenant.Já temos um inquilino com este nome.'))
+          ret.addMessage(res.__('validator.Verifique todos os campos.'))
           throw ret
         }
 
@@ -286,20 +286,20 @@ module.exports = class TenantRepository {
       .then(async next => {
         const uuid = await conn.uuid()
 
-        const tenantId = await conn.insert(`
-          INSERT INTO tenants (uuid, name, description, app_title, app_short_title)
-          VALUES (?, ?, ?, ?, ?);
-        `, [
-          uuid,
-          next.fields.name,
-          next.fields.description || null,
-          next.fields.appTitle || null,
-          next.fields.appShortTitle || null
-        ])
-
-        if (!tenantId) {
+        try {
+          await conn.insert(`
+            INSERT INTO tenants (uuid, name, description, app_title, app_short_title)
+            VALUES (?, ?, ?, ?, ?);
+          `, [
+            uuid,
+            next.fields.name,
+            next.fields.description || null,
+            next.fields.appTitle || null,
+            next.fields.appShortTitle || null
+          ])
+        } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao cadastrar inquilino.'))
+          ret.addMessage(res.__('api.tenant.Erro ao cadastrar inquilino.'))
           throw ret
         }
 
@@ -360,14 +360,14 @@ module.exports = class TenantRepository {
         if (!fieldCount) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Nenhum campo foi informado.'))
+          ret.addMessage(res.__('validator.Nenhum campo foi informado.'))
           throw ret
         }
 
         if (!validator(res, ret, fields, updateValidates)) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage(res.__('validator.Verifique todos os campos.'))
           throw ret
         }
 
@@ -393,8 +393,8 @@ module.exports = class TenantRepository {
           if (tenantExists) {
             ret.setCode(400)
             ret.setFieldError('name', true)
-            ret.addFieldMessage('name', res.__('Já temos um inquilino com este nome.'))
-            ret.addMessage(res.__('Verifique todos os campos.'))
+            ret.addFieldMessage('name', res.__('api.tenant.Já temos um inquilino com este nome.'))
+            ret.addMessage(res.__('validator.Verifique todos os campos.'))
             throw ret
           }
         }
@@ -415,7 +415,7 @@ module.exports = class TenantRepository {
           }))
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao atualizar inquilino.'))
+          ret.addMessage(res.__('api.tenant.Erro ao atualizar inquilino.'))
           ret.addMessage(error.message)
           throw ret
         }
@@ -451,7 +451,7 @@ module.exports = class TenantRepository {
         if (tenantIsRoot) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Não é possível excluir um inquilino que é root.'))
+          ret.addMessage(res.__('api.tenant.Não é possível excluir um inquilino que é root.'))
           throw ret
         }
 
@@ -467,7 +467,7 @@ module.exports = class TenantRepository {
           })
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao deletar inquilino.'))
+          ret.addMessage(res.__('api.tenant.Erro ao deletar inquilino.'))
           ret.addMessage(error.message)
           throw ret
         }

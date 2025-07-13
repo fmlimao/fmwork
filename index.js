@@ -46,7 +46,7 @@ if (DEBUG) {
 app.use('/api/v1', require('./src/api/v1/routes'))
 
 // APP
-app.use('/app', require('./src/app/routes'))
+// app.use('/app', require('./src/app/routes'))
 
 // SITE
 // app.get('/', require('./src/site/routes'))

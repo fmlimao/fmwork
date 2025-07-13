@@ -11,7 +11,7 @@ const listGet = async (req, res) => {
 const createPost = async (req, res) => {
   res.success({
     code: 201,
-    messages: ['Inquilino criado com sucesso.'],
+    messages: ['api.tenant.Inquilino criado com sucesso.'],
     content: {
       data: await TenantRepository.create({
         req,
@@ -28,7 +28,7 @@ const getOneGet = async (req, res) => {
 
   res.success({
     code: 200,
-    messages: ['Inquilino encontrado com sucesso.'],
+    messages: ['api.tenant.Inquilino encontrado com sucesso.'],
     content: {
       data: tenantRoute
     }
@@ -38,7 +38,7 @@ const getOneGet = async (req, res) => {
 const updatePut = async (req, res) => {
   res.success({
     code: 200,
-    messages: ['Inquilino atualizado com sucesso.'],
+    messages: ['api.tenant.Inquilino atualizado com sucesso.'],
     content: {
       data: await TenantRepository.update({
         req,
