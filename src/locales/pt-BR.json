@@ -38,5 +38,10 @@
 	"Criado em": "Criado em",
 	"Ativo": "Ativo",
 	"Inativo": "Inativo",
-	"em andamento": "em andamento"
+	"em andamento": "em andamento",
+	"Criar": "Criar",
+	"Atualizar": "Atualizar",
+	"Cancelar": "Cancelar",
+	"Criar Projeto": "Criar Projeto",
+	"Editar Projeto": "Editar Projeto"
 }

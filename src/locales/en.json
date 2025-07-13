@@ -38,5 +38,8 @@
 	"Criado em": "Created at",
 	"Ativo": "Active",
   "Inativo": "Inactive",
-  "em andamento": "in progress"
+  "em andamento": "in progress",
+  "Criar": "Create",
+  "Atualizar": "Update",
+  "Cancelar": "Cancel"
 }

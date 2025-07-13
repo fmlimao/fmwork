@@ -91,8 +91,8 @@ function queryMessage(name, message, type) {
   }
 }
 
-var LOG_ENABLED = false
-var LOG_DISPLAY_ARGS = false
+var LOG_ENABLED = true
+var LOG_DISPLAY_ARGS = true
 
 function doLog() {
   if (LOG_ENABLED) {

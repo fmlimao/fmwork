@@ -22,11 +22,6 @@ const i18n = new I18n({
 
 app.use(i18n.init)
 
-app.use((req, res, next) => {
-  if (DEBUG) console.log(`Idioma detectado: ${req.getLocale()}`)
-  next()
-})
-
 app.use(require('./src/middlewares/configs'))
 
 // Middlewares básicas

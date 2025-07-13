@@ -14,6 +14,67 @@
 <!-- Main content -->
 <section class="content">
 
+  <!-- Formulario de criaçao e ediçao de projetos (temporario, depois vai para uma modal) -->
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title" v-if="!tenant.fields.uuid.value"><%- __('Criar Projeto') %></h3>
+      <h3 class="box-title" v-else><%- __('Editar Projeto') %></h3>
+    </div>
+    <div class="box-body">
+      <form @submit.prevent="App.saveTenant()">
+
+        <div class="alert" v-if="tenant.messages.length" :class="{'alert-danger': tenant.error, 'alert-success': !tenant.error}">
+          <p v-for="message in tenant.messages">{{ message }}</p>
+        </div>
+
+        <input type="text" name="uuid" v-model="tenant.fields.uuid.value">
+
+        <div class="form-group">
+          <label for="name"><%- __('Nome') %></label>
+          <input type="text" class="form-control" v-model="tenant.fields.name.value">
+        </div>
+
+        <div class="form-group">
+          <label for="description"><%- __('Descrição') %></label>
+          <textarea name="description" id="description" class="form-control" rows="3" v-model="tenant.fields.description.value"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="appTitle"><%- __('Título') %></label>
+          <input type="text" class="form-control" v-model="tenant.fields.appTitle.value">
+        </div>
+
+        <div class="form-group">
+          <label for="appShortTitle"><%- __('Título curto') %></label>
+          <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value">
+        </div>
+
+        <div class="form-group">
+          <label for="active"><%- __('Ativo') %></label>
+          <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value">
+            <option value="1"><%- __('Ativo') %></option>
+            <option value="0"><%- __('Inativo') %></option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" v-if="!tenant.fields.uuid.value">
+          <span class="fa fa-save"></span>
+          <%- __('Criar') %>
+        </button>
+
+        <button type="submit" class="btn btn-primary" v-else>
+          <span class="fa fa-save"></span>
+          <%- __('Atualizar') %>
+        </button>
+
+        <button type="button" class="btn btn-default" @click="App.cancelTenant()">
+          <span class="fa fa-times"></span>
+          <%- __('Cancelar') %>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <div class="box">
     <div class="box-header">
       <h3 class="box-title">Lista de Projetos</h3>
@@ -68,7 +129,7 @@
             html: true,
             render: (value, row) => {
               return `
-                <a href="/app/tenants/${row.uuid}">
+                <a href="#" onclick="App.projectSelect(event, '${row.uuid}');">
                   ${row.name}
                 </a>
               `
@@ -140,7 +201,55 @@
         getList: () => {
           App.getTenants()
         },
+      },
+
+      tenant: {
+        loading: true,
+        error: true,
+        messages: [
+          'teste 1',
+          'teste 2',
+          'teste 3',
+          'teste 4',
+          'teste 5',
+          'teste 6',
+          'teste 7',
+        ],
+        fields: {
+          uuid: {
+            error: true,
+            messages: ['uuid error'],
+            value: 'uuid'
+          },
+          name: {
+            error: true,
+            messages: ['name error'],
+            value: 'name'
+          },
+          description: {
+            error: true,
+            messages: ['description error'],
+            value: 'description'
+          },
+          appTitle: {
+            error: true,
+            messages: ['appTitle error'],
+            value: 'appTitle'
+          },
+          appShortTitle: {
+            error: true,
+            messages: ['appShortTitle error'],
+            value: 'appShortTitle'
+          },
+          active: {
+            error: true,
+            messages: ['active error'],
+            value: '1'
+          },
+
+        }
       }
+
     },
     methods: {
       init: () => {
@@ -148,11 +257,10 @@
       },
 
       getTenants: async () => {
-        console.log('getTenants()')
+        doLog('getTenants()')
 
         try {
           const options = Object.assign(App.tenants.initialOptions)
-          console.log('options', options)
 
           App.tenants.loading = true
 
@@ -168,11 +276,30 @@
           App.tenants.loading = false
           App.tenants.loaded = true
         } catch (error) {
-          console.log("getTenants() error", error)
-          // App.apiRequests.error = true
-          // App.apiRequests.messages = ['Ocorreu um erro interno. Por favor tenta novamente']
+          doLog("getTenants() error", error)
+          notify('Ocorreu um erro interno. Por favor tenta novamente', 'danger')
         }
 
+      },
+
+      projectSelect: (event, uuid) => {
+        event.preventDefault()
+        console.log('projectSelect()', uuid)
+
+        // Vamos buscar o projeto
+        const project = App.tenants.list.find(project => project.uuid === uuid)
+        console.log('projectSelect()', project)
+
+        // Vamos preencher o formulario
+        $('#name').val(project.name)
+        $('#description').val(project.description)
+        $('#appTitle').val(project.appTitle)
+        $('#appShortTitle').val(project.appShortTitle)
+        $('#active').val(project.active)
+        $('#uuid').val(project.uuid)
+
+        // Vamos abrir o modal
+        // $('#projectModal').modal('show')
       },
     }
   })
