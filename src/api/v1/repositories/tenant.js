@@ -206,7 +206,7 @@ module.exports = class TenantRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Id inválido.'))
+          ret.addMessage(res.__('validator.Id inválido.'))
           throw ret
         }
 

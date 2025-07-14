@@ -20,6 +20,7 @@
 	"validator.Este campo precisa ser um UUID válido.": "This field must be a valid UUID.",
 	"validator.Verifique todos os campos.": "Please check all fields.",
 	"validator.Nenhum campo foi informado.": "No field was informed.",
+	"validator.Id inválido.": "Invalid ID.",
 	"api.home.Servidor rodando com sucesso!": "Server running successfully!",
 	"api.error.Rota não encontrada": "Route not found",
 	"api.error.Erro interno. Por favor, tente novamente.": "Internal error. Please try again.",
@@ -59,5 +60,6 @@
 	"app.tenant.Não, cancelar": "No, cancel",
 	"app.tenant.Cancelar": "Cancel",
 	"app.tenants.Lista de Inquilinos": "List of Tenants",
-	"app.tenant.Criado em": "Created at"
+	"app.tenant.Criado em": "Created at",
+	"app.tenant.Inquilino apagado com sucesso.": "Tenant deleted successfully."
 }
