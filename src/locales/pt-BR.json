@@ -53,7 +53,12 @@
 	"app.tenant.Inativo": "Inativo",
 	"app.tenant.Criar": "Criar",
 	"app.tenant.Atualizar": "Atualizar",
+	"app.tenant.Apagar": "Apagar",
+	"app.tenant.Deseja realmente apagar este inquilino?": "Deseja realmente apagar este inquilino?",
+	"app.tenant.Sim, apagar": "Sim, apagar",
+	"app.tenant.Não, cancelar": "Não, cancelar",
 	"app.tenant.Cancelar": "Cancelar",
 	"app.tenants.Lista de Inquilinos": "Lista de Inquilinos",
-	"app.tenant.Criado em": "Criado em"
+	"app.tenant.Criado em": "Criado em",
+	"Id inválido.": "Id inválido."
 }

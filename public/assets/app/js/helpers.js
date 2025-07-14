@@ -25,6 +25,31 @@ function isJsonDefault(str) {
   return typeof str === 'object' && typeof str.code !== 'undefined'
 }
 
+function clearFormErrors (form) {
+  form.error = false
+  form.messages = []
+  form.delete = false
+
+  for (const field in form.fields) {
+    form.fields[field].error = false
+    form.fields[field].messages = []
+  }
+}
+
+function formPopulate (form, response) {
+  if (typeof response.error !== 'undefined') form.error = response.error
+  if (typeof response.messages !== 'undefined') form.messages = response.messages
+
+  if (typeof response.form !== 'undefined') {
+    for (const field in response.form) {
+      if (typeof form.fields[field] !== 'undefined') {
+        form.fields[field].error = response.form[field].error
+        form.fields[field].messages = response.form[field].messages
+      }
+    }
+  }
+}
+
 function datimeFormatDefault(str, format, timezone = -3) {
   if (typeof str === 'undefined' || str === null) {
     return ''

@@ -242,8 +242,8 @@ module.exports = class TenantRepository {
         }, {
           name: 'required|string|min:3|max:255',
           description: 'string|min:3|max:255',
-          appTitle: 'string|min:3|max:255',
-          appShortTitle: 'string|min:3|max:255'
+          appTitle: 'required|string|min:3|max:10',
+          appShortTitle: 'required|string|min:3|max:5'
         })) {
           ret.setError(true)
           ret.setCode(400)

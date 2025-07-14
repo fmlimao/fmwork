@@ -53,6 +53,10 @@
 	"app.tenant.Inativo": "Inactive",
 	"app.tenant.Criar": "Create",
 	"app.tenant.Atualizar": "Update",
+	"app.tenant.Apagar": "Delete",
+	"app.tenant.Deseja realmente apagar este inquilino?": "Do you really want to delete this tenant?",
+	"app.tenant.Sim, apagar": "Yes, delete",
+	"app.tenant.Não, cancelar": "No, cancel",
 	"app.tenant.Cancelar": "Cancel",
 	"app.tenants.Lista de Inquilinos": "List of Tenants",
 	"app.tenant.Criado em": "Created at"

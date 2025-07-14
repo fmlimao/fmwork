@@ -39,42 +39,76 @@
           <small class="help-block" v-if="tenant.fields.description.error" v-html="tenant.fields.description.messages.join('<br>')"></small>
         </div>
 
-        <div class="form-group" :class="{'has-error': tenant.fields.appTitle.error}">
-          <label for="appTitle"><%- __('app.tenant.Título') %></label>
-          <input type="text" class="form-control" v-model="tenant.fields.appTitle.value" :disabled="tenant.loading">
-          <small class="help-block" v-if="tenant.fields.appTitle.error" v-html="tenant.fields.appTitle.messages.join('<br>')"></small>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group" :class="{'has-error': tenant.fields.appTitle.error}">
+              <label for="appTitle"><%- __('app.tenant.Título') %></label>
+              <input type="text" class="form-control" v-model="tenant.fields.appTitle.value" :disabled="tenant.loading">
+              <small class="help-block" v-if="tenant.fields.appTitle.error" v-html="tenant.fields.appTitle.messages.join('<br>')"></small>
+            </div>
+          </div>
+          <!-- end::col -->
+
+          <div class="col-md-4">
+            <div class="form-group" :class="{'has-error': tenant.fields.appShortTitle.error}">
+              <label for="appShortTitle"><%- __('app.tenant.Título curto') %></label>
+              <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value" :disabled="tenant.loading">
+              <small class="help-block" v-if="tenant.fields.appShortTitle.error" v-html="tenant.fields.appShortTitle.messages.join('<br>')"></small>
+            </div>
+          </div>
+          <!-- end::col -->
+
+          <div class="col-md-4">
+            <div class="form-group" :class="{'has-error': tenant.fields.active.error}">
+              <label for="active"><%- __('app.tenant.Ativo') %></label>
+              <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value" :disabled="tenant.loading || !tenant.fields.uuid.value">
+                <option value=""><%- __('app.tenant.Selecione') %></option>
+                <option value="1"><%- __('app.tenant.Ativo') %></option>
+                <option value="0"><%- __('app.tenant.Inativo') %></option>
+              </select>
+              <small class="help-block" v-if="tenant.fields.active.error" v-html="tenant.fields.active.messages.join('<br>')"></small>
+            </div>
+          </div>
+          <!-- end::col -->
         </div>
+        <!-- end::row -->
 
-        <div class="form-group" :class="{'has-error': tenant.fields.appShortTitle.error}">
-          <label for="appShortTitle"><%- __('app.tenant.Título curto') %></label>
-          <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value" :disabled="tenant.loading">
-          <small class="help-block" v-if="tenant.fields.appShortTitle.error" v-html="tenant.fields.appShortTitle.messages.join('<br>')"></small>
-        </div>
+        <p v-if="!tenant.delete">
+          <button type="submit" class="btn btn-primary" v-if="!tenant.fields.uuid.value" :disabled="tenant.loading">
+            <span class="fa fa-save"></span>
+            <%- __('app.tenant.Criar') %>
+          </button>
 
-        <div class="form-group" :class="{'has-error': tenant.fields.active.error}">
-          <label for="active"><%- __('app.tenant.Ativo') %></label>
-          <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value" :disabled="tenant.loading">
-            <option value=""><%- __('app.tenant.Selecione') %></option>
-            <option value="1"><%- __('app.tenant.Ativo') %></option>
-            <option value="0"><%- __('app.tenant.Inativo') %></option>
-          </select>
-          <small class="help-block" v-if="tenant.fields.active.error" v-html="tenant.fields.active.messages.join('<br>')"></small>
-        </div>
+          <button type="submit" class="btn btn-primary" v-else :disabled="tenant.loading">
+            <span class="fa fa-save"></span>
+            <%- __('app.tenant.Atualizar') %>
+          </button>
 
-        <button type="submit" class="btn btn-primary" v-if="!tenant.fields.uuid.value" :disabled="tenant.loading">
-          <span class="fa fa-save"></span>
-          <%- __('app.tenant.Criar') %>
-        </button>
+          <button type="button" class="btn btn-danger" :disabled="tenant.loading || !tenant.fields.uuid.value" @click="App.tenant.delete = true">
+            <span class="fa fa-trash"></span>
+            <%- __('app.tenant.Apagar') %>
+          </button>
 
-        <button type="submit" class="btn btn-primary" v-else :disabled="tenant.loading">
-          <span class="fa fa-save"></span>
-          <%- __('app.tenant.Atualizar') %>
-        </button>
+          <button type="button" class="btn btn-default" @click="App.cancelTenant()" :disabled="tenant.loading">
+            <span class="fa fa-times"></span>
+            <%- __('app.tenant.Cancelar') %>
+          </button>
+        </p>
 
-        <button type="button" class="btn btn-default" @click="App.cancelTenant()" :disabled="tenant.loading">
-          <span class="fa fa-times"></span>
-          <%- __('app.tenant.Cancelar') %>
-        </button>
+        <p v-if="tenant.delete">
+          <span class="text-danger"><%- __('app.tenant.Deseja realmente apagar este inquilino?') %></span>
+
+          <button type="button" class="btn btn-danger" :disabled="tenant.loading" @click="App.deleteTenant()">
+            <span class="fa fa-check"></span>
+            <%- __('app.tenant.Sim, apagar') %>
+          </button>
+
+          <button type="button" class="btn btn-default" @click="App.tenant.delete = false">
+            <span class="fa fa-times"></span>
+            <%- __('app.tenant.Não, cancelar') %>
+          </button>
+
+        </p>
       </form>
     </div>
   </div>
@@ -98,14 +132,6 @@
         loading: false,
         loaded: false,
         list: [],
-        // title: 'Lista de Projetos',
-        // buttons: [
-        //   {
-        //     label: '<span class="fa fa-plus"></span>',
-        //     class: 'btn btn-outline-warning btn-sm btn-flat',
-        //     click: () => App.openNewProjectModal()
-        //   }
-        // ],
         meta: {
           totalCount: 0,
           filteredCount: 0,
@@ -133,7 +159,7 @@
             html: true,
             render: (value, row) => {
               return `
-                <a href="#" onclick="App.projectSelect(event, '${row.uuid}');">
+                <a href="#" onclick="App.tenantSelect(event, '${row.uuid}');">
                   ${row.name}
                 </a>
               `
@@ -211,6 +237,7 @@
         loading: false,
         error: false,
         messages: [],
+        delete: false,
         fields: {
           uuid: {
             error: false,
@@ -250,6 +277,34 @@
     methods: {
       init: () => {
         App.getTenants()
+
+        // setTimeout(() => {
+        //   App.tenant.fields.name.value = 'Nome do teste 1'
+        //   App.tenant.fields.description.value = 'Descrição do teste 1'
+        //   App.tenant.fields.appTitle.value = 'Teste 1'
+        //   App.tenant.fields.appShortTitle.value = 'TT1'
+        //   App.saveTenant()
+
+        //   setTimeout(() => {
+        //     App.tenant.fields.name.value = 'Nome do teste 2'
+        //     App.tenant.fields.description.value = 'Descrição do teste 2'
+        //     App.tenant.fields.appTitle.value = 'Teste 2'
+        //     App.tenant.fields.appShortTitle.value = 'TT2'
+        //     App.saveTenant()
+        //   }, 1500)
+        // }, 1500)
+
+        setTimeout(() => {
+          App.tenantSelect(null, '099e49fc-6050-11f0-a360-52fbe6087460')
+
+          setTimeout(() => {
+            App.tenant.delete = true
+
+            setTimeout(() => {
+              App.deleteTenant()
+            }, 500)
+          }, 500)
+        }, 500)
       },
 
       getTenants: async () => {
@@ -278,25 +333,138 @@
 
       },
 
-      projectSelect: (event, uuid) => {
-        event.preventDefault()
-        console.log('projectSelect()', uuid)
+      tenantSelect: (event, uuid) => {
+        doLog('tenantSelect()', uuid)
+
+        if (event) event.preventDefault()
 
         // Vamos buscar o projeto
-        const project = App.tenants.list.find(project => project.uuid === uuid)
-        console.log('projectSelect()', project)
+        const tenant = App.tenants.list.find(tenant => tenant.uuid === uuid)
+
+        clearFormErrors(App.tenant)
 
         // Vamos preencher o formulario
-        $('#name').val(project.name)
-        $('#description').val(project.description)
-        $('#appTitle').val(project.appTitle)
-        $('#appShortTitle').val(project.appShortTitle)
-        $('#active').val(project.active)
-        $('#uuid').val(project.uuid)
-
-        // Vamos abrir o modal
-        // $('#projectModal').modal('show')
+        App.tenant.fields.uuid.value = tenant.uuid
+        App.tenant.fields.name.value = tenant.name
+        App.tenant.fields.description.value = tenant.description
+        App.tenant.fields.appTitle.value = tenant.appTitle
+        App.tenant.fields.appShortTitle.value = tenant.appShortTitle
+        App.tenant.fields.active.value = tenant.active
       },
+
+      cancelTenant: () => {
+        doLog('cancelTenant()')
+
+        clearFormErrors(App.tenant)
+
+        App.tenant.fields.uuid.value = ''
+        App.tenant.fields.name.value = ''
+        App.tenant.fields.description.value = ''
+        App.tenant.fields.appTitle.value = ''
+        App.tenant.fields.appShortTitle.value = ''
+        App.tenant.fields.active.value = ''
+      },
+
+      saveTenant: async () => {
+        doLog('saveTenant()')
+
+        clearFormErrors(App.tenant)
+
+        let error = false
+
+        if (!App.tenant.fields.name.value) {
+          App.tenant.fields.name.error = true
+          App.tenant.fields.name.messages.push("<%- __('validator.Campo obrigatório.') %>")
+          error = true
+        }
+
+        if (error) {
+          App.tenant.error = true
+          App.tenant.messages.push("<%- __('validator.Verifique todos os campos.') %>")
+          return
+        }
+
+        try {
+          App.tenant.loading = true
+
+          let uuid = App.tenant.fields.uuid.value
+
+          let response = null
+
+          if (!uuid) {
+            response = (await axios({
+              method: 'post',
+              url: '/api/v1/tenants',
+              data: {
+                name: App.tenant.fields.name.value,
+                description: App.tenant.fields.description.value,
+                appTitle: App.tenant.fields.appTitle.value,
+                appShortTitle: App.tenant.fields.appShortTitle.value
+              }
+            })).data
+
+            uuid = response.content.data.uuid
+          } else {
+            response = (await axios({
+              method: 'put',
+              url: `/api/v1/tenants/${uuid}`,
+              data: {
+                name: App.tenant.fields.name.value,
+                description: App.tenant.fields.description.value,
+                appTitle: App.tenant.fields.appTitle.value,
+                appShortTitle: App.tenant.fields.appShortTitle.value,
+                active: App.tenant.fields.active.value
+              }
+            })).data
+          }
+          formPopulate(App.tenant, response)
+
+          await App.getTenants()
+
+          App.tenantSelect(null, uuid)
+        } catch (error) {
+          doLog("saveTenant() error", error)
+
+          if (isAxiosError(error) && isApiError(error)) {
+            const response = error.response.data
+            formPopulate(App.tenant, response)
+          } else {
+            notify('<%- __("app.error.Ocorreu um erro interno. Por favor tenta novamente") %>', 'danger')
+          }
+        } finally {
+          App.tenant.loading = false
+        }
+      },
+
+      deleteTenant: async () => {
+        doLog('deleteTenant()')
+
+        try {
+          App.tenant.loading = true
+
+          const response = (await axios({
+            method: 'delete',
+            url: `/api/v1/tenants/${App.tenant.fields.uuid.value}`
+          })).data
+
+          formPopulate(App.tenant, response)
+
+          App.cancelTenant()
+
+          await App.getTenants()
+        } catch (error) {
+          doLog("deleteTenant() error", error)
+
+          if (isAxiosError(error) && isApiError(error)) {
+            const response = error.response.data
+            formPopulate(App.tenant, response)
+          } else {
+            notify('<%- __("app.error.Ocorreu um erro interno. Por favor tenta novamente") %>', 'danger')
+          }
+        } finally {
+          App.tenant.loading = false
+        }
+      }
     }
   })
 </script>
