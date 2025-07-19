@@ -1,11 +1,12 @@
 -- Desabilitar verificação de chaves estrangeiras
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS role_permissions;
-DROP TABLE IF EXISTS user_roles;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS roles;
-DROP TABLE IF EXISTS permissions;
+# DROP TABLE IF EXISTS role_permissions;
+# DROP TABLE IF EXISTS user_roles;
+# DROP TABLE IF EXISTS users;
+# DROP TABLE IF EXISTS roles;
+# DROP TABLE IF EXISTS permissions;
+DROP TABLE IF EXISTS people;
 DROP TABLE IF EXISTS tenants;
 
 # CREATE TABLE `permissions` (
@@ -34,6 +35,17 @@ CREATE TABLE `tenants` (
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `deleted_at` datetime DEFAULT NULL,
     PRIMARY KEY (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `people` (
+   `person_id` int NOT NULL AUTO_INCREMENT,
+   `uuid` varchar(36) NOT NULL,
+   `name` varchar(255) NOT NULL,
+   `document` text,
+   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `deleted_at` datetime DEFAULT NULL,
+   PRIMARY KEY (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 # CREATE TABLE `users` (
