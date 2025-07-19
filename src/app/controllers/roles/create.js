@@ -1,6 +1,6 @@
 module.exports = (req, res) => {
-  res.render('app/tenants/update', {
-    page: 'tenants-update',
+  res.render('app/roles/create', {
+    page: 'roles-create',
     tenantUuid: req.params.tenantUuid
   })
 }

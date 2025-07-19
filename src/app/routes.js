@@ -14,7 +14,10 @@ router.get('/', require('./controllers/home-get'))
 // Inquilinos
 router.get('/tenants', require('./controllers/tenants/list'))
 router.get('/tenants/create', require('./controllers/tenants/create'))
-router.get('/tenants/:uuid', require('./controllers/tenants/update'))
+router.get('/tenants/:tenantUuid', require('./controllers/tenants/update'))
+
+// Papéis
+router.get('/tenants/:tenantUuid/roles/create', require('./controllers/roles/create'))
 
 // // Autenticação
 // router.get('/login', AuthController.loginGet)
