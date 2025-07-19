@@ -9,21 +9,21 @@ module.exports = async (req, res, next) => {
 
     if (!auth) {
       ret.setCode(401)
-      ret.addMessage(res.__('Bearer Auth não informado.'))
+      ret.addMessage('Bearer Auth não informado.')
       throw ret
     }
 
     const authParts = auth.split(' ')
     if (authParts.length !== 2) {
       ret.setCode(401)
-      ret.addMessage(res.__('Bearer Auth inválido.'))
+      ret.addMessage('Bearer Auth inválido.')
       throw ret
     }
 
     const [authScheme, authToken] = authParts
     if (!/^Bearer$/i.test(authScheme)) {
       ret.setCode(401)
-      ret.addMessage(res.__('Bearer Auth inválido.'))
+      ret.addMessage('Bearer Auth inválido.')
       throw ret
     }
 
@@ -104,7 +104,7 @@ module.exports = async (req, res, next) => {
       ret.addErrorCode('INVALID_TOKEN')
       ret.addErrorCodeDetail(error.message)
 
-      error.message = res.__('Token inválido.')
+      error.message = 'Token inválido.'
       ret.setCode(401)
       ret = res.errorHandler(error, ret)
       return res.status(ret.getCode()).json(ret.generate())
@@ -112,7 +112,7 @@ module.exports = async (req, res, next) => {
       ret.addErrorCode('EXPIRED_TOKEN')
 
       ret.setCode(401)
-      ret.addMessage(res.__('Token expirado.'))
+      ret.addMessage('Token expirado.')
       return res.status(ret.getCode()).json(ret.generate())
     }
 

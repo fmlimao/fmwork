@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 
     if (!tenant) {
       ret.setCode(404)
-      ret.addMessage(res.__('Inquilino não encontrado.'))
+      ret.addMessage('Inquilino não encontrado.')
       throw ret
     }
 

@@ -27,7 +27,7 @@ module.exports = (req, res, next) => {
 
       if (typeof response.messages !== 'undefined' && Array.isArray(response.messages)) {
         for (const message of response.messages) {
-          ret.addMessage(res.__(message))
+          ret.addMessage(message)
         }
       }
 
@@ -53,7 +53,7 @@ module.exports = (req, res, next) => {
     }
 
     if (typeof response === 'string') {
-      ret.addMessage(res.__(response))
+      ret.addMessage(response)
     }
 
     res.status(ret.getCode()).json(ret.generate())

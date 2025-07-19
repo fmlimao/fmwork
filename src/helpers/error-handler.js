@@ -18,7 +18,7 @@ const errorHandler = function (err, ret) {
 
     ret.setError(true)
     ret.setCode(500)
-    ret.addMessage(res.__('Erro interno. Por favor, tente novamente.'))
+    ret.addMessage('Erro interno. Por favor, tente novamente.')
 
     if (process.env && DEBUG && DEBUG === 1) ret.addMessage(err.message)
   } else {

@@ -32,7 +32,7 @@ module.exports = class LoginRepository {
         if (!user) {
           ret.setCode(401)
           ret.setError(true)
-          ret.addMessage(res.__('Usuário não encontrado.'))
+          ret.addMessage('Usuário não encontrado.')
           throw ret
         }
 
@@ -42,7 +42,7 @@ module.exports = class LoginRepository {
         if (!passwordCompare) {
           ret.setCode(401)
           ret.setError(true)
-          ret.addMessage(res.__('Usuário não encontrado.'))
+          ret.addMessage('Usuário não encontrado.')
           throw ret
         }
 
@@ -78,7 +78,7 @@ module.exports = class LoginRepository {
 
         if (!user) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 
@@ -116,7 +116,7 @@ module.exports = class LoginRepository {
 
         if (!tenant) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 
@@ -153,7 +153,7 @@ module.exports = class LoginRepository {
 
         if (!role) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 
@@ -194,7 +194,7 @@ module.exports = class LoginRepository {
 
         if (!permissions || permissions.length === 0) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 

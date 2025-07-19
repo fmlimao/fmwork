@@ -182,7 +182,7 @@ function uuidFilter (
         })) {
           args.ret.setError(true)
           args.ret.setCode(400)
-          args.ret.addMessage(args.res.__('Verifique todos os campos.'))
+          args.ret.addMessage('Verifique todos os campos.')
           throw args.ret
         }
 
@@ -229,7 +229,7 @@ function activeFilter (
         })) {
           args.ret.setError(true)
           args.ret.setCode(400)
-          args.ret.addMessage(args.res.__('Verifique todos os campos.'))
+          args.ret.addMessage('Verifique todos os campos.')
           throw args.ret
         }
 
@@ -259,17 +259,17 @@ function dateFilter (
     })) {
       args.ret.setError(true)
       args.ret.setCode(400)
-      args.ret.addMessage(args.res.__('Verifique todos os campos.'))
+      args.ret.addMessage('Verifique todos os campos.')
       throw args.ret
     }
 
     if (isNaN((new Date(args.filter[field])).getTime())) {
       args.ret.setError(true)
       args.ret.setCode(400)
-      args.ret.addMessage(args.res.__('Verifique todos os campos.'))
+      args.ret.addMessage('Verifique todos os campos.')
 
       args.ret.setFieldError(field, true)
-      args.ret.addFieldMessage(field, args.res.__('Data inválida.'))
+      args.ret.addFieldMessage(field, 'Data inválida.')
       throw args.ret
     }
 

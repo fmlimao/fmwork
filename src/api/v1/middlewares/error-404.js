@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
 
   ret.setError(true)
   ret.setCode(404)
-  ret.addMessage(res.__('Rota não encontrada'))
+  ret.addMessage('Rota não encontrada')
 
   return res.status(ret.getCode()).json(ret.generate())
 }

@@ -201,7 +201,7 @@ module.exports = class RoleRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Id inválido.'))
+          ret.addMessage('Id inválido.')
           throw ret
         }
 
@@ -242,7 +242,7 @@ module.exports = class RoleRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -267,8 +267,8 @@ module.exports = class RoleRepository {
         if (!permission) {
           ret.setCode(400)
           ret.setFieldError('permissionUuid', true)
-          ret.addFieldMessage('permissionUuid', res.__('Permissão não encontrada.'))
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addFieldMessage('permissionUuid', 'Permissão não encontrada.')
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -296,8 +296,8 @@ module.exports = class RoleRepository {
         if (rolePermission) {
           ret.setCode(400)
           ret.setFieldError('permissionUuid', true)
-          ret.addFieldMessage('permissionUuid', res.__('Esta permissão já está associada a este perfil.'))
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addFieldMessage('permissionUuid', 'Esta permissão já está associada a este perfil.')
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -316,7 +316,7 @@ module.exports = class RoleRepository {
 
         if (!rolePermissionId) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao associar permissão ao perfil.'))
+          ret.addMessage('Erro ao associar permissão ao perfil.')
           throw ret
         }
 
@@ -356,7 +356,7 @@ module.exports = class RoleRepository {
           })
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao remover permissão do perfil.'))
+          ret.addMessage('Erro ao remover permissão do perfil.')
           ret.addMessage(error.message)
           throw ret
         }

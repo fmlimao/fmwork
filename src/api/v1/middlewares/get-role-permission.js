@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
 
     if (!rolePermission) {
       ret.setCode(404)
-      ret.addMessage(res.__('Permissão não encontrada.'))
+      ret.addMessage('Permissão não encontrada.')
       throw ret
     }
 

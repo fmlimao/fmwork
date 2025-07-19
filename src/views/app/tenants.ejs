@@ -3,11 +3,11 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    <i class="fa fa-sitemap"></i> <%- __('Inquilinos') %>
+    <i class="fa fa-sitemap"></i> Inquilinos
   </h1>
   <ol class="breadcrumb">
-    <li><a href="/app"><i class="fa fa-home"></i> <%- __('Início') %></a></li>
-    <li class="active"><i class="fa fa-sitemap"></i> <%- __('Inquilinos') %></li>
+    <li><a href="/app"><i class="fa fa-home"></i> Início</a></li>
+    <li class="active"><i class="fa fa-sitemap"></i> Inquilinos</li>
   </ol>
 </section>
 
@@ -17,7 +17,7 @@
   <!-- Alert loading -->
   <div v-if="tenants.loading && !tenants.loaded">
     <div class="alert alert-info">
-      <i class="fa fa-spinner fa-spin"></i> <%- __('Carregando...') %>
+      <i class="fa fa-spinner fa-spin"></i> Carregando...
     </div>
   </div>
   <!-- end::Alert loading -->
@@ -26,13 +26,13 @@
   <div v-if="tenants.loaded">
     <p class="text-right">
       <button class="btn btn-primary" @click="App.openNewTenantModal(true)">
-        <i class="fa fa-plus"></i> <%- __('Criar Inquilino') %>
+        <i class="fa fa-plus"></i> Criar Inquilino
       </button>
     </p>
 
     <div v-if="!tenants.list.length">
       <div class="alert alert-info">
-        <i class="fa fa-info-circle"></i> <%- __('Nenhum registro encontrado.') %>
+        <i class="fa fa-info-circle"></i> Nenhum registro encontrado.
       </div>
     </div>
     <!-- end::Alert no records -->
@@ -41,7 +41,7 @@
     <div v-else>
       <div class="box">
         <div class="box-header">
-          <h3 class="box-title"><%- __('Lista de Inquilinos') %></h3>
+          <h3 class="box-title">Lista de Inquilinos</h3>
         </div>
         <datatables :model="tenants"></datatables>
       </div>
@@ -61,8 +61,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
 
-        <h4 class="modal-title" v-if="!tenant.fields.uuid.value"><%- __('Criar Inquilino') %></h4>
-        <h4 class="modal-title" v-else><%- __('Editar Inquilino') %></h4>
+        <h4 class="modal-title" v-if="!tenant.fields.uuid.value">Criar Inquilino</h4>
+        <h4 class="modal-title" v-else>Editar Inquilino</h4>
       </div>
 
       <div class="modal-body">
@@ -74,13 +74,13 @@
           </div>
 
           <div class="form-group" :class="{'has-error': tenant.fields.name.error}">
-            <label for="name"><%- __('Nome') %></label>
+            <label for="name">Nome</label>
             <input type="text" class="form-control" v-model="tenant.fields.name.value" :disabled="tenant.loading">
             <small class="help-block" v-if="tenant.fields.name.error" v-html="tenant.fields.name.messages.join('<br>')"></small>
           </div>
 
           <div class="form-group" :class="{'has-error': tenant.fields.description.error}">
-            <label for="description"><%- __('Descrição') %></label>
+            <label for="description">Descrição</label>
             <textarea name="description" id="description" class="form-control" rows="3" v-model="tenant.fields.description.value" :disabled="tenant.loading"></textarea>
             <small class="help-block" v-if="tenant.fields.description.error" v-html="tenant.fields.description.messages.join('<br>')"></small>
           </div>
@@ -88,7 +88,7 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group" :class="{'has-error': tenant.fields.appTitle.error}">
-                <label for="appTitle"><%- __('Título') %></label>
+                <label for="appTitle">Título</label>
                 <input type="text" class="form-control" v-model="tenant.fields.appTitle.value" :disabled="tenant.loading">
                 <small class="help-block" v-if="tenant.fields.appTitle.error" v-html="tenant.fields.appTitle.messages.join('<br>')"></small>
               </div>
@@ -97,7 +97,7 @@
 
             <div class="col-md-4">
               <div class="form-group" :class="{'has-error': tenant.fields.appShortTitle.error}">
-                <label for="appShortTitle"><%- __('Título curto') %></label>
+                <label for="appShortTitle">Título curto</label>
                 <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value" :disabled="tenant.loading">
                 <small class="help-block" v-if="tenant.fields.appShortTitle.error" v-html="tenant.fields.appShortTitle.messages.join('<br>')"></small>
               </div>
@@ -106,11 +106,11 @@
 
             <div class="col-md-4">
               <div class="form-group" :class="{'has-error': tenant.fields.active.error}">
-                <label for="active"><%- __('Ativo') %></label>
+                <label for="active">Ativo</label>
                 <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value" :disabled="tenant.loading || !tenant.fields.uuid.value">
-                  <option value=""><%- __('Selecione') %></option>
-                  <option value="1"><%- __('Ativo') %></option>
-                  <option value="0"><%- __('Inativo') %></option>
+                  <option value="">Selecione</option>
+                  <option value="1">Ativo</option>
+                  <option value="0">Inativo</option>
                 </select>
                 <small class="help-block" v-if="tenant.fields.active.error" v-html="tenant.fields.active.messages.join('<br>')"></small>
               </div>
@@ -127,36 +127,36 @@
         <p v-if="!tenant.delete">
           <button type="submit" class="btn btn-primary" form="newTenantForm" v-if="!tenant.fields.uuid.value" :disabled="tenant.loading">
             <span class="fa fa-save"></span>
-            <%- __('Criar') %>
+            Criar
           </button>
 
           <button type="submit" class="btn btn-primary" form="newTenantForm" v-else :disabled="tenant.loading">
             <span class="fa fa-save"></span>
-            <%- __('Atualizar') %>
+            Atualizar
           </button>
 
           <button type="button" class="btn btn-danger" v-if="tenant.fields.uuid.value" :disabled="tenant.loading" @click="App.tenant.delete = true">
             <span class="fa fa-trash"></span>
-            <%- __('Apagar') %>
+            Apagar
           </button>
 
           <button type="button" class="btn btn-default" data-dismiss="modal" @click="App.cancelTenant()" :disabled="tenant.loading">
             <span class="fa fa-times"></span>
-            <%- __('Cancelar') %>
+            Cancelar
           </button>
         </p>
 
         <p v-if="tenant.delete">
-          <span class="text-danger"><%- __('Deseja realmente apagar este inquilino?') %></span>
+          <span class="text-danger">Deseja realmente apagar este inquilino?</span>
 
           <button type="button" class="btn btn-danger" :disabled="tenant.loading" @click="App.deleteTenant()">
             <span class="fa fa-check"></span>
-            <%- __('Sim, apagar') %>
+            Sim, apagar
           </button>
 
           <button type="button" class="btn btn-default" @click="setTimeout(() => { App.tenant.delete = false }, 100)">
             <span class="fa fa-times"></span>
-            <%- __('Não, cancelar') %>
+            Não, cancelar
           </button>
         </p>
       </div>
@@ -166,20 +166,4 @@
 <!-- /Tenant Add Modal -->
 
 <%- contentFor('scripts') %>
-
-<script>
-var locale = {
-  'Título': `<%- __('Título')%>`,
-  'Título curto': `<%- __('Título curto')%>`,
-  'Criado em': `<%- __('Criado em')%>`,
-  'Ativo': `<%- __('Ativo')%>`,
-  'Inativo': `<%- __('Inativo')%>`,
-  'Campo obrigatório.': `<%- __('Campo obrigatório.') %>`,
-  'Verifique todos os campos.': `<%- __('Verifique todos os campos.') %>`,
-  'Ocorreu um erro interno. Por favor tenta novamente': `<%- __('Ocorreu um erro interno. Por favor tenta novamente') %>`,
-  'Inquilino criado com sucesso.': `<%- __('Inquilino criado com sucesso.') %>`,
-  'Inquilino atualizado com sucesso.': `<%- __('Inquilino atualizado com sucesso.') %>`,
-  'Inquilino apagado com sucesso.': `<%- __('Inquilino apagado com sucesso.') %>`
-}
-</script>
 <script src="/assets/app/js/pages/tenants.js?_v=<%= assetsVersion %>"></script>

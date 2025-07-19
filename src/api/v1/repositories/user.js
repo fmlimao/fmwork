@@ -193,7 +193,7 @@ module.exports = class UserRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Id inválido.'))
+          ret.addMessage('Id inválido.')
           throw ret
         }
 
@@ -237,7 +237,7 @@ module.exports = class UserRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -267,8 +267,8 @@ module.exports = class UserRepository {
         if (user) {
           ret.setCode(400)
           ret.setFieldError('email', true)
-          ret.addFieldMessage('email', res.__('Já temos um usuário com este e-mail.'))
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addFieldMessage('email', 'Já temos um usuário com este e-mail.')
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -298,7 +298,7 @@ module.exports = class UserRepository {
 
         if (!userId) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao cadastrar usuário.'))
+          ret.addMessage('Erro ao cadastrar usuário.')
           throw ret
         }
 
@@ -355,14 +355,14 @@ module.exports = class UserRepository {
         if (!fieldCount) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Nenhum campo foi informado.'))
+          ret.addMessage('Nenhum campo foi informado.')
           throw ret
         }
 
         if (!validator(res, ret, fields, updateValidates)) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -390,8 +390,8 @@ module.exports = class UserRepository {
           if (userExists) {
             ret.setCode(400)
             ret.setFieldError('email', true)
-            ret.addFieldMessage('email', res.__('Já temos um usuário com este e-mail.'))
-            ret.addMessage(res.__('Verifique todos os campos.'))
+            ret.addFieldMessage('email', 'Já temos um usuário com este e-mail.')
+            ret.addMessage('Verifique todos os campos.')
             throw ret
           }
         }
@@ -420,7 +420,7 @@ module.exports = class UserRepository {
           }))
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao atualizar usuário.'))
+          ret.addMessage('Erro ao atualizar usuário.')
           ret.addMessage(error.message)
           throw ret
         }
@@ -455,7 +455,7 @@ module.exports = class UserRepository {
           })
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao deletar usuário.'))
+          ret.addMessage('Erro ao deletar usuário.')
           ret.addMessage(error.message)
           throw ret
         }
@@ -523,14 +523,14 @@ module.exports = class UserRepository {
         if (!fieldCount) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Nenhum campo foi informado.'))
+          ret.addMessage('Nenhum campo foi informado.')
           throw ret
         }
 
         if (!validator(res, ret, fields, updateValidates)) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -556,8 +556,8 @@ module.exports = class UserRepository {
           if (!roleExists) {
             ret.setCode(400)
             ret.setFieldError('roleUuid', true)
-            ret.addFieldMessage('roleUuid', res.__('Perfil não encontrado.'))
-            ret.addMessage(res.__('Verifique todos os campos.'))
+            ret.addFieldMessage('roleUuid', 'Perfil não encontrado.')
+            ret.addMessage('Verifique todos os campos.')
             throw ret
           }
 
@@ -596,7 +596,7 @@ module.exports = class UserRepository {
           }
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao atualizar perfil do usuário.'))
+          ret.addMessage('Erro ao atualizar perfil do usuário.')
           ret.addMessage(error.message)
           throw ret
         }

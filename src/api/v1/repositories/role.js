@@ -188,7 +188,7 @@ module.exports = class RoleRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Id inválido.'))
+          ret.addMessage('Id inválido.')
           throw ret
         }
 
@@ -228,7 +228,7 @@ module.exports = class RoleRepository {
         })) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -256,8 +256,8 @@ module.exports = class RoleRepository {
         if (role) {
           ret.setCode(400)
           ret.setFieldError('name', true)
-          ret.addFieldMessage('name', res.__('Já temos um perfil com este nome.'))
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addFieldMessage('name', 'Já temos um perfil com este nome.')
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -279,7 +279,7 @@ module.exports = class RoleRepository {
 
         if (!tenantId) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao cadastrar perfil.'))
+          ret.addMessage('Erro ao cadastrar perfil.')
           throw ret
         }
 
@@ -324,14 +324,14 @@ module.exports = class RoleRepository {
         if (!fieldCount) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Nenhum campo foi informado.'))
+          ret.addMessage('Nenhum campo foi informado.')
           throw ret
         }
 
         if (!validator(res, ret, fields, updateValidates)) {
           ret.setError(true)
           ret.setCode(400)
-          ret.addMessage(res.__('Verifique todos os campos.'))
+          ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
@@ -359,8 +359,8 @@ module.exports = class RoleRepository {
           if (roleExists) {
             ret.setCode(400)
             ret.setFieldError('name', true)
-            ret.addFieldMessage('name', res.__('Já temos um perfil com este nome.'))
-            ret.addMessage(res.__('Verifique todos os campos.'))
+            ret.addFieldMessage('name', 'Já temos um perfil com este nome.')
+            ret.addMessage('Verifique todos os campos.')
             throw ret
           }
         }
@@ -381,7 +381,7 @@ module.exports = class RoleRepository {
           }))
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao atualizar perfil.'))
+          ret.addMessage('Erro ao atualizar perfil.')
           ret.addMessage(error.message)
           throw ret
         }
@@ -417,7 +417,7 @@ module.exports = class RoleRepository {
 
         if (hasUsers && hasUsers.total > 0) {
           ret.setCode(400)
-          ret.addMessage(res.__('Não é possível excluir um perfil que possui usuários vinculados.'))
+          ret.addMessage('Não é possível excluir um perfil que possui usuários vinculados.')
           throw ret
         }
 
@@ -433,7 +433,7 @@ module.exports = class RoleRepository {
           })
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage(res.__('Erro ao deletar perfil.'))
+          ret.addMessage('Erro ao deletar perfil.')
           ret.addMessage(error.message)
           throw ret
         }

@@ -12,7 +12,7 @@ const loginPost = async (req, res) => {
     if (!auth) {
       ret.setCode(401)
       ret.setError(true)
-      ret.addMessage(res.__('Basic Auth não informado.'))
+      ret.addMessage('Basic Auth não informado.')
       throw ret
     }
 
@@ -22,7 +22,7 @@ const loginPost = async (req, res) => {
     if (authParts.length !== 2) {
       ret.setCode(401)
       ret.setError(true)
-      ret.addMessage(res.__('Basic Auth inválido.'))
+      ret.addMessage('Basic Auth inválido.')
       throw ret
     }
 
@@ -32,7 +32,7 @@ const loginPost = async (req, res) => {
     if (!/^Basic$/i.test(authScheme)) {
       ret.setCode(401)
       ret.setError(true)
-      ret.addMessage(res.__('Basic Auth inválido.'))
+      ret.addMessage('Basic Auth inválido.')
       throw ret
     }
 
@@ -42,7 +42,7 @@ const loginPost = async (req, res) => {
     if (!email || !password) {
       ret.setCode(401)
       ret.setError(true)
-      ret.addMessage(res.__('Basic Auth inválido.'))
+      ret.addMessage('Basic Auth inválido.')
       throw ret
     }
 

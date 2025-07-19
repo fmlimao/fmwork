@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 
     if (!role) {
       ret.setCode(404)
-      ret.addMessage(res.__('Perfil não encontrado.'))
+      ret.addMessage('Perfil não encontrado.')
       throw ret
     }
 

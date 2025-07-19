@@ -10,17 +10,17 @@ const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
 const morgan = require('morgan')
 const path = require('path')
-const { I18n } = require('i18n')
+// const { I18n } = require('i18n')
 
 const app = express()
 
-const i18n = new I18n({
-  locales: ['en', 'pt-BR'],
-  defaultLocale: 'pt-BR',
-  directory: path.join(__dirname, './src/locales')
-})
+// const i18n = new I18n({
+//   locales: ['en', 'pt-BR'],
+//   defaultLocale: 'pt-BR',
+//   directory: path.join(__dirname, './src/locales')
+// })
 
-app.use(i18n.init)
+// app.use(i18n.init)
 
 app.use(require('./src/middlewares/configs'))
 

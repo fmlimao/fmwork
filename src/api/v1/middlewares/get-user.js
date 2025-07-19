@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 
     if (!user) {
       ret.setCode(404)
-      ret.addMessage(res.__('Usuário não encontrado.'))
+      ret.addMessage('Usuário não encontrado.')
       throw ret
     }
 

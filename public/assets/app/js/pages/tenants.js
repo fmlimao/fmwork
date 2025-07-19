@@ -24,7 +24,7 @@ mixins.push({
       },
       columns: [
         {
-          label: locale['Nome'],
+          label: 'Nome',
           field: 'name',
           minWidth: 200,
           sortable: true,
@@ -38,24 +38,24 @@ mixins.push({
           }
         },
         {
-          label: locale['Descrição'],
+          label: 'Descrição',
           field: 'description',
           sortable: false,
         },
         {
-          label: locale['Título'],
+          label: 'Título',
           field: 'appTitle',
           sortable: false,
           width: 200,
         },
         {
-          label: locale['Título curto'],
+          label: 'Título curto',
           field: 'appShortTitle',
           sortable: false,
           width: 200,
         },
         {
-          label: locale['Criado em'],
+          label: 'Criado em',
           field: 'createdAt',
           sortable: true,
           width: 200,
@@ -67,7 +67,7 @@ mixins.push({
           }
         },
         {
-          label: locale['Ativo'],
+          label: 'Ativo',
           field: 'active',
           sortable: true,
           width: 100,
@@ -76,8 +76,8 @@ mixins.push({
           html: true,
           render: (value, row) => {
             return row.active
-              ? `<span class='label label-success'>${locale['Ativo']}</span>`
-              : `<span class='label label-danger'>${locale['Inativo']}</span>`
+              ? `<span class='label label-success'>${'Ativo'}</span>`
+              : `<span class='label label-danger'>${'Inativo'}</span>`
           }
         },
         // {
@@ -172,7 +172,7 @@ mixins.push({
         App.tenants.loaded = true
       } catch (error) {
         doLog("getTenants() error", error)
-        notify(locale['Ocorreu um erro interno. Por favor tenta novamente'], 'danger')
+        notify('Ocorreu um erro interno. Por favor tenta novamente', 'danger')
       }
 
     },
@@ -233,25 +233,25 @@ mixins.push({
 
       if (!App.tenant.fields.name.value) {
         App.tenant.fields.name.error = true
-        App.tenant.fields.name.messages.push(locale['Campo obrigatório.'])
+        App.tenant.fields.name.messages.push('Campo obrigatório.')
         error = true
       }
 
       if (!App.tenant.fields.appTitle.value) {
         App.tenant.fields.appTitle.error = true
-        App.tenant.fields.appTitle.messages.push(locale['Campo obrigatório.'])
+        App.tenant.fields.appTitle.messages.push('Campo obrigatório.')
         error = true
       }
 
       if (!App.tenant.fields.appShortTitle.value) {
         App.tenant.fields.appShortTitle.error = true
-        App.tenant.fields.appShortTitle.messages.push(locale['Campo obrigatório.'])
+        App.tenant.fields.appShortTitle.messages.push('Campo obrigatório.')
         error = true
       }
 
       if (error) {
         App.tenant.error = true
-        App.tenant.messages.push(locale['Verifique todos os campos.'])
+        App.tenant.messages.push('Verifique todos os campos.')
         return
       }
 
@@ -276,8 +276,8 @@ mixins.push({
 
           uuid = response.content.data.uuid
           formPopulate(App.tenant, response)
-          App.tenant.messages = [locale['Inquilino criado com sucesso.']]
-          notify(locale['Inquilino criado com sucesso.'], 'success')
+          App.tenant.messages = ['Inquilino criado com sucesso.']
+          notify('Inquilino criado com sucesso.', 'success')
 
           setTimeout(() => {
             App.tenantSelect(null, uuid)
@@ -295,8 +295,8 @@ mixins.push({
             }
           })).data
           formPopulate(App.tenant, response)
-          App.tenant.messages = [locale['Inquilino atualizado com sucesso.']]
-          notify(locale['Inquilino atualizado com sucesso.'], 'success')
+          App.tenant.messages = ['Inquilino atualizado com sucesso.']
+          notify('Inquilino atualizado com sucesso.', 'success')
         }
 
         await App.getTenants()
@@ -307,9 +307,9 @@ mixins.push({
           const response = error.response.data
           formPopulate(App.tenant, response)
         } else {
-          notify(locale['Ocorreu um erro interno. Por favor tenta novamente'], 'danger')
+          notify('Ocorreu um erro interno. Por favor tenta novamente', 'danger')
           App.tenant.error = true
-          App.tenant.messages.push(locale['Ocorreu um erro interno. Por favor tenta novamente'])
+          App.tenant.messages.push('Ocorreu um erro interno. Por favor tenta novamente')
         }
       } finally {
         App.tenant.loading = false
@@ -328,8 +328,8 @@ mixins.push({
         })).data
 
         formPopulate(App.tenant, response)
-        App.tenant.messages = [locale['Inquilino apagado com sucesso.']]
-        notify(locale['Inquilino apagado com sucesso.'], 'success')
+        App.tenant.messages = ['Inquilino apagado com sucesso.']
+        notify('Inquilino apagado com sucesso.', 'success')
 
         setTimeout(() => {
           App.cancelTenant()
@@ -344,9 +344,9 @@ mixins.push({
           const response = error.response.data
           formPopulate(App.tenant, response)
         } else {
-          notify(locale['Ocorreu um erro interno. Por favor tenta novamente'], 'danger')
+          notify('Ocorreu um erro interno. Por favor tenta novamente', 'danger')
           App.tenant.error = true
-          App.tenant.messages.push(locale['Ocorreu um erro interno. Por favor tenta novamente'])
+          App.tenant.messages.push('Ocorreu um erro interno. Por favor tenta novamente')
         }
       } finally {
         App.tenant.loading = false

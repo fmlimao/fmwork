@@ -29,7 +29,7 @@ const Validate = function (res, ret, fields, rules, customMessages = {}) {
   const translatedMessages = {}
 
   for (const i in messagesValidator) {
-    const message = res.__(messagesValidator[i])
+    const message = messagesValidator[i]
     translatedMessages[i] = message
   }
 
