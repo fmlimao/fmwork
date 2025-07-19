@@ -405,7 +405,7 @@ module.exports = class RoleRepository {
 
   static async delete (args = {}) {
     const req = args.req
-    const res = args.res
+    // const res = args.res
     const ret = req.ret()
     const tenant = args.tenant
     const role = args.role

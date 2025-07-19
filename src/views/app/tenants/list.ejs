@@ -25,9 +25,13 @@
   <!-- Alert no records -->
   <div v-if="tenants.loaded">
     <p class="text-right">
-      <button class="btn btn-primary" @click="App.openNewTenantModal(true)">
+      <!-- <button class="btn btn-primary" @click="App.openNewTenantModal(true)"> -->
+        <!-- <i class="fa fa-plus"></i> Criar Inquilino -->
+      <!-- </button> -->
+
+      <a href="/app/tenants/create" class="btn btn-primary">
         <i class="fa fa-plus"></i> Criar Inquilino
-      </button>
+      </a>
     </p>
 
     <div v-if="!tenants.list.length">
@@ -39,7 +43,7 @@
 
     <!-- Table -->
     <div v-else>
-      <div class="box">
+      <div class="box box-primary">
         <div class="box-header">
           <h3 class="box-title">Lista de Inquilinos</h3>
         </div>
@@ -48,7 +52,7 @@
     </div>
     <!-- end::Table -->
   </div>
-
+  <!-- end::Alert no records -->
 
 </section>
 <!-- /.content -->
@@ -166,4 +170,4 @@
 <!-- /Tenant Add Modal -->
 
 <%- contentFor('scripts') %>
-<script src="/assets/app/js/pages/tenants.js?_v=<%= assetsVersion %>"></script>
+<script src="/assets/app/js/pages/tenants/list.js?_v=<%= assetsVersion %>"></script>

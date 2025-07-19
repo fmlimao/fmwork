@@ -11,7 +11,10 @@ router.use(ConfigsMiddleware)
 
 router.get('/', require('./controllers/home-get'))
 
-router.get('/tenants', require('./controllers/tenants-get'))
+// Inquilinos
+router.get('/tenants', require('./controllers/tenants/list'))
+router.get('/tenants/create', require('./controllers/tenants/create'))
+router.get('/tenants/:uuid', require('./controllers/tenants/update'))
 
 // // Autenticação
 // router.get('/login', AuthController.loginGet)

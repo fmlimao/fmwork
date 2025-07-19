@@ -13,13 +13,17 @@
         </a>
       </li>
 
-      <li class="<%- activeMenu(page, 'tenants') %>">
-        <a href="/app/tenants">
+      <li class="treeview <%- activeMenu(page, ['tenants', 'tenants-create'], 'active menu-open') %>">
+        <a href="#">
           <i class="fa fa-sitemap"></i> <span>Inquilinos</span>
           <span class="pull-right-container">
-            <small class="label pull-right bg-yellow">em andamento</small>
+            <i class="fa fa-angle-left pull-right"></i>
           </span>
         </a>
+        <ul class="treeview-menu">
+          <li class="<%- activeMenu(page, 'tenants') %>"><a href="/app/tenants"><i class="fa fa-circle-o"></i> Listar</a></li>
+          <li class="<%- activeMenu(page, 'tenants-create') %>"><a href="/app/tenants/create"><i class="fa fa-circle-o"></i> Cadastrar</a></li>
+        </ul>
       </li>
 
     </ul>

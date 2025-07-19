@@ -30,8 +30,13 @@ mixins.push({
           sortable: true,
           html: true,
           render: (value, row) => {
+            // return `
+            //   <a href="#" onclick="App.tenantSelect(event, '${row.uuid}');">
+            //     ${row.name}
+            //   </a>
+            // `
             return `
-              <a href="#" onclick="App.tenantSelect(event, '${row.uuid}');">
+              <a href="/app/tenants/${row.uuid}">
                 ${row.name}
               </a>
             `
