@@ -54,14 +54,17 @@ const updatePut = async (req, res) => {
 }
 
 const deleteDelete = async (req, res) => {
-  await RoleRepository.delete({
-    req,
-    res,
-    tenant: req.tenantRoute,
-    role: req.roleRoute
+  res.success({
+    code: 204,
+    content: {
+      data: await RoleRepository.delete({
+        req,
+        res,
+        tenant: req.tenantRoute,
+        role: req.roleRoute
+      })
+    }
   })
-
-  res.success(204)
 }
 
 module.exports = {

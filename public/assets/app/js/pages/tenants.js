@@ -46,13 +46,13 @@ mixins.push({
           label: 'Título',
           field: 'appTitle',
           sortable: false,
-          width: 200,
+          // width: 200,
         },
         {
           label: 'Título curto',
           field: 'appShortTitle',
           sortable: false,
-          width: 200,
+          // width: 200,
         },
         {
           label: 'Criado em',

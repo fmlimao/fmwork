@@ -72,6 +72,7 @@ const localFilters = {
       r.uuid,
       r.name,
       r.description,
+      r.active,
       r.created_at AS createdAt,
       r.updated_at AS updatedAt
     FROM roles r
@@ -83,6 +84,7 @@ const localFilters = {
       r.uuid,
       r.name,
       r.description,
+      r.active,
       r.created_at AS createdAt,
       r.updated_at AS updatedAt
     FROM roles r
@@ -256,7 +258,7 @@ module.exports = class RoleRepository {
         if (role) {
           ret.setCode(400)
           ret.setFieldError('name', true)
-          ret.addFieldMessage('name', 'Já temos um perfil com este nome.')
+          ret.addFieldMessage('name', 'Já temos um papel com este nome.')
           ret.addMessage('Verifique todos os campos.')
           throw ret
         }
@@ -279,7 +281,7 @@ module.exports = class RoleRepository {
 
         if (!tenantId) {
           ret.setCode(400)
-          ret.addMessage('Erro ao cadastrar perfil.')
+          ret.addMessage('Erro ao cadastrar papel.')
           throw ret
         }
 
@@ -303,7 +305,7 @@ module.exports = class RoleRepository {
     return Promise.resolve()
       .then(async () => {
         // Recebemos as variáveis
-        const { name, description } = fields
+        const { name, description, active } = fields
 
         let fieldCount = 0
         const updateFields = {}
@@ -319,6 +321,12 @@ module.exports = class RoleRepository {
           fieldCount++
           updateFields.description = description
           updateValidates.description = 'string|min:3|max:255'
+        }
+
+        if (active !== undefined) {
+          fieldCount++
+          updateFields.active = active
+          updateValidates.active = 'boolean'
         }
 
         if (!fieldCount) {
@@ -359,7 +367,7 @@ module.exports = class RoleRepository {
           if (roleExists) {
             ret.setCode(400)
             ret.setFieldError('name', true)
-            ret.addFieldMessage('name', 'Já temos um perfil com este nome.')
+            ret.addFieldMessage('name', 'Já temos um papel com este nome.')
             ret.addMessage('Verifique todos os campos.')
             throw ret
           }
@@ -381,7 +389,7 @@ module.exports = class RoleRepository {
           }))
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage('Erro ao atualizar perfil.')
+          ret.addMessage('Erro ao atualizar papel.')
           ret.addMessage(error.message)
           throw ret
         }
@@ -408,20 +416,23 @@ module.exports = class RoleRepository {
         const hasUsers = await conn.getOne(`
           SELECT COUNT(*) as total
           FROM users u
-          INNER JOIN user_roles ur ON u.user_id = ur.user_id AND ur.deleted_at IS NULL
-          INNER JOIN roles r ON ur.role_id = r.role_id AND r.deleted_at IS NULL
           WHERE u.deleted_at IS NULL
-          AND r.role_id = ?
+          AND u.active = 1
+          AND u.tenant_id = ?
+          AND u.role_id = ?
           LIMIT 1;
-        `, [role.roleId])
+        `, [
+          tenant.tenantId,
+          role.roleId
+        ])
 
         if (hasUsers && hasUsers.total > 0) {
           ret.setCode(400)
-          ret.addMessage('Não é possível excluir um perfil que possui usuários vinculados.')
+          ret.addMessage('Não é possível excluir um papel que possui usuários vinculados.')
           throw ret
         }
 
-        // Vamos deletar o perfil
+        // Vamos deletar o registro
         try {
           await conn.update(`
             UPDATE roles
@@ -433,17 +444,12 @@ module.exports = class RoleRepository {
           })
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage('Erro ao deletar perfil.')
+          ret.addMessage('Erro ao deletar papel.')
           ret.addMessage(error.message)
           throw ret
         }
 
-        return await this.findByUuid({
-          req,
-          res,
-          uuid: role.uuid,
-          tenant
-        })
+        return null
       })
   }
 }

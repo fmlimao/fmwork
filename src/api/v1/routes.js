@@ -4,13 +4,13 @@ const router = express.Router()
 const HomeController = require('./controllers/home')
 // const AuthController = require('./controllers/auth')
 const TenantController = require('./controllers/tenant')
-// const RoleController = require('./controllers/role')
+const RoleController = require('./controllers/role')
 // const RolePermissionController = require('./controllers/role-permission')
 // const UserController = require('./controllers/user')
 
 // const AuthVerifyMiddleware = require('./middlewares/auth-verify')
 const GetTenantMiddleware = require('./middlewares/get-tenant')
-// const GetRoleMiddleware = require('./middlewares/get-role')
+const GetRoleMiddleware = require('./middlewares/get-role')
 // const GetRolePermissionMiddleware = require('./middlewares/get-role-permission')
 // const GetUserMiddleware = require('./middlewares/get-user')
 
@@ -32,12 +32,12 @@ router.get('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.getOneG
 router.put('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.updatePut)
 router.delete('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.deleteDelete)
 
-// // Perfis
-// router.get('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.listGet)
-// router.post('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.createPost)
-// router.get('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.getOneGet)
-// router.put('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.updatePut)
-// router.delete('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.deleteDelete)
+// Papeis
+router.get('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.listGet)
+router.post('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.createPost)
+router.get('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.getOneGet)
+router.put('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.updatePut)
+router.delete('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.deleteDelete)
 
 // // Perfil / Permissões
 // router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.listGet)

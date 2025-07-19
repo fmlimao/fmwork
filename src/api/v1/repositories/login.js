@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 module.exports = class LoginRepository {
   static async findOneByEmailAndPassword (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const email = args.email
     const password = args.password
@@ -51,7 +51,7 @@ module.exports = class LoginRepository {
   }
 
   static async findOneByUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -87,7 +87,7 @@ module.exports = class LoginRepository {
   }
 
   static async getTenantByUserUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -125,7 +125,7 @@ module.exports = class LoginRepository {
   }
 
   static async getRoleByUserUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -162,7 +162,7 @@ module.exports = class LoginRepository {
   }
 
   static async getPermissionsByUserUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
