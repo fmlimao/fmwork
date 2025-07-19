@@ -21,10 +21,13 @@
 	"validator.Verifique todos os campos.": "Verifique todos os campos.",
 	"validator.Nenhum campo foi informado.": "Nenhum campo foi informado.",
 	"validator.Id inválido.": "Id inválido.",
-	"api.home.Servidor rodando com sucesso!": "Servidor rodando com sucesso!",
+
 	"api.error.Rota não encontrada": "Rota não encontrada",
 	"api.error.Erro interno. Por favor, tente novamente.": "Erro interno. Por favor, tente novamente.",
 	"api.error.Um erro interno aconteceu. Verifique as variáveis enviadas.": "Um erro interno aconteceu. Verifique as variáveis enviadas.",
+
+	"api.home.Servidor rodando com sucesso!": "Servidor rodando com sucesso!",
+
 	"api.tenant.Já temos um inquilino com este nome.": "Já temos um inquilino com este nome.",
 	"api.tenant.Erro ao cadastrar inquilino.": "Erro ao cadastrar inquilino.",
 	"api.tenant.Inquilino criado com sucesso.": "Inquilino criado com sucesso.",
@@ -34,14 +37,19 @@
 	"api.tenant.Inquilino atualizado com sucesso.": "Inquilino atualizado com sucesso.",
 	"api.tenant.Não é possível excluir um inquilino que é root.": "Não é possível excluir um inquilino que é root.",
 	"api.tenant.Erro ao deletar inquilino.": "Erro ao deletar inquilino.",
+
 	"app.error.Ocorreu um erro interno. Por favor tenta novamente": "Ocorreu um erro interno. Por favor tenta novamente",
+	"app.message.Carregando...": "Carregando...",
+
 	"app.menu.Sair": "Sair",
 	"app.menu.Menu Principal": "Menu Principal",
 	"app.menu.Início": "Início",
 	"app.menu.Inquilinos": "Inquilinos",
 	"app.menu.status.em andamento": "em andamento",
+
 	"app.home.Início": "Início",
 	"app.home.Bem vindo ao sistema de gestão de projetos!": "Bem vindo ao sistema de gestão de projetos!",
+
 	"app.tenants.Inquilinos": "Inquilinos",
 	"app.tenant.Criar Inquilino": "Criar Inquilino",
 	"app.tenant.Editar Inquilino": "Editar Inquilino",
@@ -61,5 +69,8 @@
 	"app.tenant.Cancelar": "Cancelar",
 	"app.tenants.Lista de Inquilinos": "Lista de Inquilinos",
 	"app.tenant.Criado em": "Criado em",
-	"app.tenant.Inquilino apagado com sucesso.": "Inquilino apagado com sucesso."
+	"app.tenant.Inquilino apagado com sucesso.": "Inquilino apagado com sucesso.",
+	"app.tenants.Nenhum registro encontrado.": "Nenhum registro encontrado.",
+	"app.tenant.Inquilino criado com sucesso.": "Inquilino criado com sucesso.",
+	"app.tenant.Inquilino atualizado com sucesso.": "Inquilino atualizado com sucesso."
 }

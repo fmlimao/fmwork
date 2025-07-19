@@ -14,18 +14,41 @@
 <!-- Main content -->
 <section class="content">
 
-  <p class="text-right">
-    <button class="btn btn-primary" @click="App.openNewTenantModal()">
-      <i class="fa fa-plus"></i> <%- __('app.tenant.Criar Inquilino') %>
-    </button>
-  </p>
-
-  <div class="box">
-    <div class="box-header">
-      <h3 class="box-title"><%- __('app.tenants.Lista de Inquilinos') %></h3>
+  <!-- Alert loading -->
+  <div v-if="tenants.loading && !tenants.loaded">
+    <div class="alert alert-info">
+      <i class="fa fa-spinner fa-spin"></i> <%- __('app.message.Carregando...') %>
     </div>
-    <datatables :model="tenants"></datatables>
   </div>
+  <!-- end::Alert loading -->
+
+  <!-- Alert no records -->
+  <div v-if="tenants.loaded">
+    <p class="text-right">
+      <button class="btn btn-primary" @click="App.openNewTenantModal(true)">
+        <i class="fa fa-plus"></i> <%- __('app.tenant.Criar Inquilino') %>
+      </button>
+    </p>
+
+    <div v-if="!tenants.list.length">
+      <div class="alert alert-info">
+        <i class="fa fa-info-circle"></i> <%- __('app.tenants.Nenhum registro encontrado.') %>
+      </div>
+    </div>
+    <!-- end::Alert no records -->
+
+    <!-- Table -->
+    <div v-else>
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title"><%- __('app.tenants.Lista de Inquilinos') %></h3>
+        </div>
+        <datatables :model="tenants"></datatables>
+      </div>
+    </div>
+    <!-- end::Table -->
+  </div>
+
 
 </section>
 <!-- /.content -->
@@ -112,12 +135,12 @@
             <%- __('app.tenant.Atualizar') %>
           </button>
 
-          <button type="button" class="btn btn-danger" :disabled="tenant.loading || !tenant.fields.uuid.value" @click="App.tenant.delete = true">
+          <button type="button" class="btn btn-danger" v-if="tenant.fields.uuid.value" :disabled="tenant.loading" @click="App.tenant.delete = true">
             <span class="fa fa-trash"></span>
             <%- __('app.tenant.Apagar') %>
           </button>
 
-          <button type="button" class="btn btn-default" data-dismiss="modal"data-dismiss="modal" @click="App.cancelTenant()" :disabled="tenant.loading">
+          <button type="button" class="btn btn-default" data-dismiss="modal" @click="App.cancelTenant()" :disabled="tenant.loading">
             <span class="fa fa-times"></span>
             <%- __('app.tenant.Cancelar') %>
           </button>
@@ -131,11 +154,10 @@
             <%- __('app.tenant.Sim, apagar') %>
           </button>
 
-          <button type="button" class="btn btn-default" @click="App.tenant.delete = false">
+          <button type="button" class="btn btn-default" @click="setTimeout(() => { App.tenant.delete = false }, 100)">
             <span class="fa fa-times"></span>
             <%- __('app.tenant.Não, cancelar') %>
           </button>
-
         </p>
       </div>
     </div>
@@ -146,362 +168,18 @@
 <%- contentFor('scripts') %>
 
 <script>
-  mixins.push({
-    data: {
-      tenants: {
-        loading: false,
-        loaded: false,
-        list: [],
-        meta: {
-          totalCount: 0,
-          filteredCount: 0,
-          start: 0,
-          length: 10,
-          pages: 0,
-          currentPage: 0,
-          orderBy: {
-            column: 'name',
-            dir: "ASC"
-          }
-        },
-        initialOptions: {
-          start: 0,
-          length: 10,
-          orderByColumn: 'name',
-          orderByDir: 'ASC',
-        },
-        columns: [
-          {
-            label: "<%- __('app.tenant.Nome')%>",
-            field: 'name',
-            minWidth: 200,
-            sortable: true,
-            html: true,
-            render: (value, row) => {
-              return `
-                <a href="#" onclick="App.tenantSelect(event, '${row.uuid}');">
-                  ${row.name}
-                </a>
-              `
-            }
-          },
-          {
-            label: "<%- __('app.tenant.Descrição')%>",
-            field: 'description',
-            sortable: false,
-          },
-          {
-            label: "<%- __('app.tenant.Título')%>",
-            field: 'appTitle',
-            sortable: false,
-            width: 200,
-          },
-          {
-            label: "<%- __('app.tenant.Título curto')%>",
-            field: 'appShortTitle',
-            sortable: false,
-            width: 200,
-          },
-          {
-            label: "<%- __('app.tenant.Criado em')%>",
-            field: 'createdAt',
-            sortable: true,
-            width: 200,
-            align: 'center',
-            nowrap: true,
-            html: true,
-            render: (value, row) => {
-              return datimeFormatDefault(row.createdAt, 'DD/MM/YYYY HH:mm:ss')
-            }
-          },
-          {
-            label: "<%- __('app.tenant.Ativo')%>",
-            field: 'active',
-            sortable: true,
-            width: 100,
-            align: 'center',
-            nowrap: true,
-            html: true,
-            render: (value, row) => {
-              return row.active
-                ? "<span class='label label-success'><%- __('app.tenant.Ativo') %></span>"
-                : "<span class='label label-danger'><%- __('app.tenant.Inativo') %></span>"
-            }
-          },
-          // {
-          //   label: 'Ações',
-          //   sortable: false,
-          //   width: 120,
-          //   nowrap: true,
-          //   html: true,
-          //   buttons: [
-          //     {
-          //       label: '<span class="fa fa-pencil"></span>',
-          //       class: 'btn btn-outline-default btn-sm btn-flat',
-          //       click: (row) => window.location.href = `/app/clients/${row._id}`
-          //     },
-          //     {
-          //       label: '<span class="fa fa-trash"></span>',
-          //       class: 'btn btn-outline-danger btn-sm btn-flat',
-          //       click: (row) => App.deleteClient(row._id)
-          //     }
-          //   ]
-          // },
-        ],
-        getList: () => {
-          App.getTenants()
-        },
-      },
-
-      tenant: {
-        loading: false,
-        error: false,
-        messages: [],
-        delete: false,
-        fields: {
-          uuid: {
-            error: false,
-            messages: [],
-            value: ''
-          },
-          name: {
-            error: false,
-            messages: [],
-            value: ''
-          },
-          description: {
-            error: false,
-            messages: [],
-            value: ''
-          },
-          appTitle: {
-            error: false,
-            messages: [],
-            value: ''
-          },
-          appShortTitle: {
-            error: false,
-            messages: [],
-            value: ''
-          },
-          active: {
-            error: false,
-            messages: [],
-            value: ''
-          },
-
-        }
-      }
-
-    },
-    methods: {
-      init: () => {
-        App.getTenants()
-
-        // setTimeout(() => {
-        //   App.tenant.fields.name.value = 'Nome do teste 1'
-        //   App.tenant.fields.description.value = 'Descrição do teste 1'
-        //   App.tenant.fields.appTitle.value = 'Teste 1'
-        //   App.tenant.fields.appShortTitle.value = 'TT1'
-        //   App.saveTenant()
-
-        //   setTimeout(() => {
-        //     App.tenant.fields.name.value = 'Nome do teste 2'
-        //     App.tenant.fields.description.value = 'Descrição do teste 2'
-        //     App.tenant.fields.appTitle.value = 'Teste 2'
-        //     App.tenant.fields.appShortTitle.value = 'TT2'
-        //     App.saveTenant()
-        //   }, 1500)
-        // }, 1500)
-
-        // setTimeout(() => {
-        //   App.tenantSelect(null, '099e49fc-6050-11f0-a360-52fbe6087460')
-
-        //   setTimeout(() => {
-        //     App.tenant.delete = true
-
-        //     setTimeout(() => {
-        //       App.deleteTenant()
-        //     }, 500)
-        //   }, 500)
-        // }, 500)
-      },
-
-      getTenants: async () => {
-        doLog('getTenants()')
-
-        try {
-          const options = Object.assign(App.tenants.initialOptions)
-
-          App.tenants.loading = true
-
-          const response = (await axios({
-            method: 'get',
-            url: '/api/v1/tenants',
-            params: options,
-          })).data
-
-          App.tenants.meta = response.content.meta
-          App.tenants.list = response.content.data
-
-          App.tenants.loading = false
-          App.tenants.loaded = true
-        } catch (error) {
-          doLog("getTenants() error", error)
-          notify('<%- __("app.error.Ocorreu um erro interno. Por favor tenta novamente") %>', 'danger')
-        }
-
-      },
-
-      tenantSelect: (event, uuid) => {
-        doLog('tenantSelect()', uuid)
-
-        if (event) event.preventDefault()
-
-        // Vamos buscar o projeto
-        const tenant = App.tenants.list.find(tenant => tenant.uuid === uuid)
-
-        if (!tenant) {
-          return
-        }
-
-        App.tenant.delete = false
-
-        // Vamos preencher o formulario
-        App.tenant.fields.uuid.value = tenant.uuid
-        App.tenant.fields.name.value = tenant.name
-        App.tenant.fields.description.value = tenant.description
-        App.tenant.fields.appTitle.value = tenant.appTitle
-        App.tenant.fields.appShortTitle.value = tenant.appShortTitle
-        App.tenant.fields.active.value = tenant.active
-
-        App.openNewTenantModal()
-      },
-
-      cancelTenant: () => {
-        doLog('cancelTenant()')
-
-        clearFormErrors(App.tenant)
-
-        App.tenant.fields.uuid.value = ''
-        App.tenant.fields.name.value = ''
-        App.tenant.fields.description.value = ''
-        App.tenant.fields.appTitle.value = ''
-        App.tenant.fields.appShortTitle.value = ''
-        App.tenant.fields.active.value = ''
-      },
-
-      saveTenant: async () => {
-        doLog('saveTenant()')
-
-        clearFormErrors(App.tenant)
-
-        let error = false
-
-        if (!App.tenant.fields.name.value) {
-          App.tenant.fields.name.error = true
-          App.tenant.fields.name.messages.push("<%- __('validator.Campo obrigatório.') %>")
-          error = true
-        }
-
-        if (error) {
-          App.tenant.error = true
-          App.tenant.messages.push("<%- __('validator.Verifique todos os campos.') %>")
-          return
-        }
-
-        try {
-          App.tenant.loading = true
-
-          let uuid = App.tenant.fields.uuid.value
-
-          let response = null
-
-          if (!uuid) {
-            response = (await axios({
-              method: 'post',
-              url: '/api/v1/tenants',
-              data: {
-                name: App.tenant.fields.name.value,
-                description: App.tenant.fields.description.value,
-                appTitle: App.tenant.fields.appTitle.value,
-                appShortTitle: App.tenant.fields.appShortTitle.value
-              }
-            })).data
-
-            uuid = response.content.data.uuid
-          } else {
-            response = (await axios({
-              method: 'put',
-              url: `/api/v1/tenants/${uuid}`,
-              data: {
-                name: App.tenant.fields.name.value,
-                description: App.tenant.fields.description.value,
-                appTitle: App.tenant.fields.appTitle.value,
-                appShortTitle: App.tenant.fields.appShortTitle.value,
-                active: App.tenant.fields.active.value
-              }
-            })).data
-          }
-          formPopulate(App.tenant, response)
-
-          await App.getTenants()
-
-          App.tenantSelect(null, uuid)
-        } catch (error) {
-          doLog("saveTenant() error", error)
-
-          if (isAxiosError(error) && isApiError(error)) {
-            const response = error.response.data
-            formPopulate(App.tenant, response)
-          } else {
-            notify('<%- __("app.error.Ocorreu um erro interno. Por favor tenta novamente") %>', 'danger')
-          }
-        } finally {
-          App.tenant.loading = false
-        }
-      },
-
-      deleteTenant: async () => {
-        doLog('deleteTenant()')
-
-        try {
-          App.tenant.loading = true
-
-          const response = (await axios({
-            method: 'delete',
-            url: `/api/v1/tenants/${App.tenant.fields.uuid.value}`
-          })).data
-
-          formPopulate(App.tenant, response)
-
-          App.cancelTenant()
-          App.closeNewTenantModal()
-
-          await App.getTenants()
-
-          notify('<%- __("app.tenant.Inquilino apagado com sucesso.") %>', 'success')
-        } catch (error) {
-          doLog("deleteTenant() error", error)
-
-          if (isAxiosError(error) && isApiError(error)) {
-            const response = error.response.data
-            formPopulate(App.tenant, response)
-          } else {
-            notify('<%- __("app.error.Ocorreu um erro interno. Por favor tenta novamente") %>', 'danger')
-          }
-        } finally {
-          App.tenant.loading = false
-        }
-      },
-
-      openNewTenantModal: () => {
-        $('#newTenantModal').modal('show')
-      },
-
-      closeNewTenantModal: () => {
-        $('#newTenantModal').modal('hide')
-      },
-    }
-  })
+var locale = {
+  'app.tenant.Título': `<%- __('app.tenant.Título')%>`,
+  'app.tenant.Título curto': `<%- __('app.tenant.Título curto')%>`,
+  'app.tenant.Criado em': `<%- __('app.tenant.Criado em')%>`,
+  'app.tenant.Ativo': `<%- __('app.tenant.Ativo')%>`,
+  'app.tenant.Inativo': `<%- __('app.tenant.Inativo')%>`,
+  'validator.Campo obrigatório.': `<%- __('validator.Campo obrigatório.') %>`,
+  'validator.Verifique todos os campos.': `<%- __('validator.Verifique todos os campos.') %>`,
+  'app.error.Ocorreu um erro interno. Por favor tenta novamente': `<%- __('app.error.Ocorreu um erro interno. Por favor tenta novamente') %>`,
+  'app.tenant.Inquilino criado com sucesso.': `<%- __('app.tenant.Inquilino criado com sucesso.') %>`,
+  'app.tenant.Inquilino atualizado com sucesso.': `<%- __('app.tenant.Inquilino atualizado com sucesso.') %>`,
+  'app.tenant.Inquilino apagado com sucesso.': `<%- __('app.tenant.Inquilino apagado com sucesso.') %>`
+}
 </script>
+<script src="/assets/app/js/pages/tenants.js?_v=<%= assetsVersion %>"></script>
