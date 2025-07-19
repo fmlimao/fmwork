@@ -153,7 +153,8 @@ mixins.push({
             name: App.tenant.fields.name.value,
             description: App.tenant.fields.description.value,
             appTitle: App.tenant.fields.appTitle.value,
-            appShortTitle: App.tenant.fields.appShortTitle.value
+            appShortTitle: App.tenant.fields.appShortTitle.value,
+            active: App.tenant.fields.active.value,
           }
         })).data
 
