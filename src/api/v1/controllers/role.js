@@ -12,7 +12,7 @@ const listGet = async (req, res) => {
 const createPost = async (req, res) => {
   res.success({
     code: 201,
-    messages: ['Perfil criado com sucesso.'],
+    messages: ['Papel criado com sucesso.'],
     content: {
       data: await RoleRepository.create({
         req,
@@ -30,7 +30,7 @@ const getOneGet = async (req, res) => {
 
   res.success({
     code: 200,
-    messages: ['Perfil encontrado com sucesso.'],
+    messages: ['Papel encontrado com sucesso.'],
     content: {
       data: roleRoute
     }
@@ -40,7 +40,7 @@ const getOneGet = async (req, res) => {
 const updatePut = async (req, res) => {
   res.success({
     code: 200,
-    messages: ['Perfil atualizado com sucesso.'],
+    messages: ['Papel atualizado com sucesso.'],
     content: {
       data: await RoleRepository.update({
         req,

@@ -3,19 +3,19 @@ mixins.push({
     role: {
       loading: true,
       loaded: false,
-      error: true,
-      messages: ['role error'],
+      error: false,
+      messages: [],
       delete: false,
       fields: {
         name: {
-          error: true,
-          messages: ['name error'],
-          value: 'name value'
+          error: false,
+          messages: [],
+          value: ''
         },
         description: {
-          error: true,
-          messages: ['description error'],
-          value: 'description value'
+          error: false,
+          messages: [],
+          value: ''
         },
 
       }

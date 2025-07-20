@@ -111,40 +111,40 @@ mixins.push({
     },
 
     tenant: {
-      loading: true,
-      error: true,
-      messages: ['tenant error'],
+      loading: false,
+      error: false,
+      messages: [],
       delete: false,
       fields: {
         uuid: {
-          error: true,
-          messages: ['uuid error'],
-          value: 'uuid value'
+          error: false,
+          messages: [],
+          value: ''
         },
         name: {
-          error: true,
-          messages: ['name error'],
-          value: 'name value'
+          error: false,
+          messages: [],
+          value: ''
         },
         description: {
-          error: true,
-          messages: ['description error'],
-          value: 'description value'
+          error: false,
+          messages: [],
+          value: ''
         },
         appTitle: {
-          error: true,
-          messages: ['appTitle error'],
-          value: 'appTitle value'
+          error: false,
+          messages: [],
+          value: ''
         },
         appShortTitle: {
-          error: true,
-          messages: ['appShortTitle error'],
-          value: 'appShortTitle value'
+          error: false,
+          messages: [],
+          value: ''
         },
         active: {
-          error: true,
-          messages: ['active error'],
-          value: 'active value'
+          error: false,
+          messages: [],
+          value: ''
         },
 
       }

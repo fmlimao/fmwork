@@ -3,50 +3,50 @@ mixins.push({
     tenant: {
       loading: true,
       loaded: false,
-      error: true,
-      messages: ['tenant error'],
+      error: false,
+      messages: [],
       delete: false,
       fields: {
         uuid: {
-          error: true,
-          messages: ['uuid error'],
-          value: 'uuid value'
-        },
-        createdAt: {
-          error: true,
-          messages: ['createdAt error'],
-          value: 'createdAt value'
-        },
-        updatedAt: {
-          error: true,
-          messages: ['updatedAt error'],
-          value: 'updatedAt value'
+          error: false,
+          messages: [],
+          value: ''
         },
         name: {
-          error: true,
-          messages: ['name error'],
-          value: 'name value'
+          error: false,
+          messages: [],
+          value: ''
         },
         description: {
-          error: true,
-          messages: ['description error'],
-          value: 'description value'
+          error: false,
+          messages: [],
+          value: ''
         },
         appTitle: {
-          error: true,
-          messages: ['appTitle error'],
-          value: 'appTitle value'
+          error: false,
+          messages: [],
+          value: ''
         },
         appShortTitle: {
-          error: true,
-          messages: ['appShortTitle error'],
-          value: 'appShortTitle value'
+          error: false,
+          messages: [],
+          value: ''
         },
         active: {
-          error: true,
-          messages: ['active error'],
-          value: 'active value'
+          error: false,
+          messages: [],
+          value: ''
         },
+        createdAt: {
+          error: false,
+          messages: [],
+          value: ''
+        },
+        updatedAt: {
+          error: false,
+          messages: [],
+          value: ''
+        }
 
       }
     },
@@ -74,8 +74,6 @@ mixins.push({
           method: 'get',
           url: `/api/v1/tenants/${tenantUuid}`,
         })).data
-
-        console.log('response', response)
 
         App.tenant.fields.name.value = response.content.data.name
         App.tenant.fields.description.value = response.content.data.description
@@ -158,10 +156,9 @@ mixins.push({
           }
         })).data
 
-        // const uuid = response.content.data.uuid
-        App.tenant.messages = ['Inquilino editado com sucesso.']
-
         App.getTenant()
+
+        App.tenant.messages = ['Inquilino editado com sucesso.']
       } catch (error) {
         doLog("saveTenant() error", error)
 
