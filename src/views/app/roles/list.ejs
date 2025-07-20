@@ -8,16 +8,6 @@
 
 <!-- Alert no records -->
 <div v-if="roles.loaded">
-  <p class="text-right">
-    <!-- <button class="btn btn-primary" @click="App.openNewTenantModal(true)"> -->
-      <!-- <i class="fa fa-plus"></i> Criar Inquilino -->
-    <!-- </button> -->
-
-    <a href="/app/tenants/<%= tenantUuid %>/roles/create" class="btn btn-primary">
-      <i class="fa fa-plus"></i> Cadastrar Papel
-    </a>
-  </p>
-
   <div v-if="!roles.list.length">
     <div class="alert alert-info">
       <i class="fa fa-info-circle"></i> Nenhum registro encontrado.
@@ -30,6 +20,12 @@
     <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title">Lista de Papéis</h3>
+
+        <div class="box-tools pull-right">
+          <a href="/app/tenants/<%= tenantUuid %>/roles/create" class="btn btn-primary btn-sm">
+            <i class="fa fa-plus"></i> Adicionar
+          </a>
+        </div>
       </div>
       <datatables :model="roles"></datatables>
     </div>
