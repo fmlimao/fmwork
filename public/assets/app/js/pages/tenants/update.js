@@ -56,6 +56,7 @@ mixins.push({
     init: () => {
       App.getTenant()
       App.getRoles()
+      App.getUsers()
     },
 
     getTenant: async () => {

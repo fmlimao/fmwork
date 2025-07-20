@@ -26,7 +26,7 @@ mixins.push({
         {
           label: 'Nome',
           field: 'name',
-          minWidth: 200,
+          // minWidth: 200,
           sortable: true,
           html: true,
           render: (value, row) => {
@@ -63,7 +63,7 @@ mixins.push({
           label: 'Criado em',
           field: 'createdAt',
           sortable: true,
-          width: 200,
+          // width: 200,
           align: 'center',
           nowrap: true,
           html: true,
@@ -75,7 +75,7 @@ mixins.push({
           label: 'Ativo',
           field: 'active',
           sortable: true,
-          width: 100,
+          // width: 100,
           align: 'center',
           nowrap: true,
           html: true,

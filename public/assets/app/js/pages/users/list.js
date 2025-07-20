@@ -1,7 +1,7 @@
 mixins.push({
   data: {
 
-    roles: {
+    users: {
       loading: true,
       loaded: false,
       list: [],
@@ -32,16 +32,38 @@ mixins.push({
           html: true,
           render: (value, row) => {
             return `
-              <a href="/app/tenants/${tenantUuid}/roles/${row.uuid}">
+              <a href="/app/tenants/${tenantUuid}/users/${row.uuid}">
                 ${row.name}
               </a>
             `
           }
         },
         {
-          label: 'Descrição',
-          field: 'description',
-          sortable: false,
+          label: 'Email',
+          field: 'email',
+          sortable: true,
+          // width: 200,
+          align: 'center',
+          nowrap: true,
+          html: true,
+        },
+        {
+          label: 'Documento',
+          field: 'document',
+          sortable: true,
+          // width: 200,
+          align: 'center',
+          nowrap: true,
+          html: true,
+        },
+        {
+          label: 'Papel',
+          field: 'roleName',
+          sortable: true,
+          // width: 200,
+          align: 'center',
+          nowrap: true,
+          html: true,
         },
         {
           label: 'Criado em',
@@ -90,34 +112,34 @@ mixins.push({
         // },
       ],
       getList: () => {
-        App.getRoles()
+        App.getUsers()
       },
     },
 
   },
   methods: {
 
-    getRoles: async () => {
-      doLog('getRoles()')
+    getUsers: async () => {
+      doLog('getUsers()')
 
       try {
-        App.roles.loading = true
+        App.users.loading = true
 
-        const options = Object.assign(App.roles.initialOptions)
+        const options = Object.assign(App.users.initialOptions)
 
         const response = (await axios({
           method: 'get',
-          url: `/api/v1/tenants/${tenantUuid}/roles`,
+          url: `/api/v1/tenants/${tenantUuid}/users`,
           params: options,
         })).data
 
-        App.roles.meta = response.content.meta
-        App.roles.list = response.content.data
+        App.users.meta = response.content.meta
+        App.users.list = response.content.data
 
-        App.roles.loading = false
-        App.roles.loaded = true
+        App.users.loading = false
+        App.users.loaded = true
       } catch (error) {
-        doLog("getRoles() error", error)
+        doLog("getUsers() error", error)
         notify('Ocorreu um erro interno. Por favor tenta novamente', 'danger')
       }
 
