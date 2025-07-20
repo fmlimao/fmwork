@@ -74,10 +74,13 @@ const localFilters = {
       u.name,
       u.document,
       u.email,
+      r.uuid AS roleUuid,
+      r.name AS roleName,
       u.active,
       u.created_at AS createdAt,
       u.updated_at AS updatedAt
     FROM users u
+    INNER JOIN roles r ON r.role_id = u.role_id AND r.deleted_at IS NULL
     WHERE u.deleted_at IS NULL
   `,
   principalQueryWithIds: `
@@ -87,10 +90,13 @@ const localFilters = {
       u.name,
       u.document,
       u.email,
+      r.uuid AS roleUuid,
+      r.name AS roleName,
       u.active,
       u.created_at AS createdAt,
       u.updated_at AS updatedAt
     FROM users u
+    INNER JOIN roles r ON r.role_id = u.role_id AND r.deleted_at IS NULL
     WHERE u.deleted_at IS NULL
   `
 }
@@ -222,18 +228,20 @@ module.exports = class UserRepository {
     return Promise.resolve()
       .then(async () => {
         // Recebemos as variáveis
-        const { name, document, email, password } = fields
+        const { name, document, email, password, roleUuid } = fields
 
         if (!validator(res, ret, {
           name,
           document,
           email,
-          password
+          password,
+          roleUuid
         }, {
           name: 'required|string|min:3|max:255',
           document: 'string|min:11|max:14',
           email: 'required|email',
-          password: 'required|string|min:6|max:255'
+          password: 'required|string|min:6|max:255',
+          roleUuid: 'required|uuid'
         })) {
           ret.setError(true)
           ret.setCode(400)
@@ -246,9 +254,37 @@ module.exports = class UserRepository {
             name,
             document,
             email,
-            password
+            password,
+            roleUuid
           }
         }
+      })
+      // Verifico se o papel existe
+      .then(async next => {
+        const role = await conn.getOne(`
+          SELECT role_id AS roleId
+          FROM roles
+          WHERE deleted_at IS NULL
+          AND active = 1
+          AND tenant_id = ?
+          AND uuid = ?
+          LIMIT 1;
+        `, [
+          tenant.tenantId,
+          next.fields.roleUuid
+        ])
+
+        if (!role) {
+          ret.setCode(400)
+          ret.setFieldError('roleUuid', true)
+          ret.addFieldMessage('roleUuid', 'Papel não encontrado.')
+          ret.addMessage('Verifique todos os campos.')
+          throw ret
+        }
+
+        next.fields.roleId = role.roleId
+
+        return next
       })
       // Verificamos se o registro já existe
       .then(async next => {
@@ -285,15 +321,16 @@ module.exports = class UserRepository {
         const uuid = await conn.uuid()
 
         const userId = await conn.insert(`
-          INSERT INTO users (uuid, name, document, email, password, tenant_id)
-          VALUES (?, ?, ?, ?, ?, ?);
+          INSERT INTO users (uuid, name, document, email, password, tenant_id, role_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?);
         `, [
           uuid,
           next.fields.name,
           next.fields.document || null,
           next.fields.email,
           next.fields.password,
-          tenant.tenantId
+          tenant.tenantId,
+          next.fields.roleId
         ])
 
         if (!userId) {
@@ -322,7 +359,7 @@ module.exports = class UserRepository {
     return Promise.resolve()
       .then(async () => {
         // Recebemos as variáveis
-        const { name, document, email, password } = fields
+        const { name, document, email, password, roleUuid } = fields
 
         let fieldCount = 0
         const updateFields = {}
@@ -344,6 +381,12 @@ module.exports = class UserRepository {
           fieldCount++
           updateFields.email = email
           updateValidates.email = 'required|email'
+        }
+
+        if (roleUuid !== undefined) {
+          fieldCount++
+          updateFields.roleUuid = roleUuid
+          updateValidates.roleUuid = 'uuid'
         }
 
         if (password !== undefined) {
@@ -369,6 +412,36 @@ module.exports = class UserRepository {
         return {
           fields: updateFields
         }
+      })
+      // Verifico se o papel existe
+      .then(async next => {
+        if (next.fields.roleUuid) {
+          const role = await conn.getOne(`
+            SELECT role_id AS roleId
+            FROM roles
+            WHERE deleted_at IS NULL
+            AND active = 1
+            AND tenant_id = ?
+            AND uuid = ?
+            LIMIT 1;
+          `, [
+            tenant.tenantId,
+            next.fields.roleUuid
+          ])
+
+          if (!role) {
+            ret.setCode(400)
+            ret.setFieldError('roleUuid', true)
+            ret.addFieldMessage('roleUuid', 'Papel não encontrado.')
+            ret.addMessage('Verifique todos os campos.')
+            throw ret
+          }
+
+          next.fields.role_id = role.roleId
+          delete next.fields.roleUuid
+        }
+
+        return next
       })
       // Verificamos se o registro já existe
       .then(async next => {
