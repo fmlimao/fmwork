@@ -1,3 +1,5 @@
 module.exports = (req, res) => {
-  res.redirect('/app/login')
+  res.render('app/home', {
+    page: 'home'
+  })
 }

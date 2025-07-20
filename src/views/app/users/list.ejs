@@ -1,0 +1,35 @@
+<!-- Alert loading -->
+<div v-if="users.loading && !users.loaded">
+  <div class="alert alert-info">
+    <i class="fa fa-spinner fa-spin"></i> Carregando...
+  </div>
+</div>
+<!-- end::Alert loading -->
+
+<!-- Alert no records -->
+<div v-if="users.loaded">
+  <div v-if="!users.list.length">
+    <div class="alert alert-info">
+      <i class="fa fa-info-circle"></i> Nenhum registro encontrado.
+    </div>
+  </div>
+  <!-- end::Alert no records -->
+
+  <!-- Table -->
+  <div v-else>
+    <div class="box box-primary">
+      <div class="box-header">
+        <h3 class="box-title">Lista de Usuários</h3>
+
+        <div class="box-tools pull-right">
+          <a href="/app/tenants/<%= tenantUuid %>/users/create" class="btn btn-primary btn-sm">
+            <i class="fa fa-plus"></i> Adicionar
+          </a>
+        </div>
+      </div>
+      <datatables :model="users"></datatables>
+    </div>
+  </div>
+  <!-- end::Table -->
+</div>
+<!-- end::Alert no records -->

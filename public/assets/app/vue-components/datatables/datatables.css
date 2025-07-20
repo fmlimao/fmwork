@@ -1,0 +1,60 @@
+.vue-datatable .minimal-height {
+  min-height: 80px;
+}
+.vue-datatable .paginate-column {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.vue-datatable .paginate-column .text-muted {
+  color: #ddd;
+}
+.vue-datatable .nowrap {
+  white-space: nowrap;
+}
+.vue-datatable .buttons button {
+  margin-right: 4px;
+}
+.vue-datatable .buttons button:last-child {
+  margin-right: 0;
+}
+.vue-datatable .loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -20px;
+  margin-left: -60px;
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #666;
+}
+.vue-datatable .box-footer {
+  padding: 15px;
+}
+.vue-datatable .pagination > li:first-child > a,
+.vue-datatable .pagination > li:first-child > span {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.vue-datatable .pagination > li:last-child > a,
+.vue-datatable .pagination > li:last-child > span {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.vue-datatable .pagination > .active > a,
+.vue-datatable .pagination > .active > a:focus,
+.vue-datatable .pagination > .active > a:hover,
+.vue-datatable .pagination > .active > span,
+.vue-datatable .pagination > .active > span:focus,
+.vue-datatable .pagination > .active > span:hover {
+  background-color: #fff;
+  border-color: #3c8dbc;
+  color: #3c8dbc;
+}

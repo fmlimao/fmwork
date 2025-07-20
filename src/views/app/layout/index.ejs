@@ -50,15 +50,24 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
   <!-- Vue components -->
-  <!-- <link rel="stylesheet" href="/assets/app/vue-components/datatables/datatables.css?_v=<%= assetsVersion %>"> -->
+  <link rel="stylesheet" href="/assets/app/vue-components/datatables/datatables.css?_v=<%= assetsVersion %>">
 
   <!-- AnimateCSS CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <link rel="stylesheet" href="/assets/app/css/skin-midnight.css?_v=<%= assetsVersion %>">
+
+  <style>
+    [data-notify="container"] {
+      z-index: 9999 !important;
+    }
+  </style>
 
   <%- defineContent('styles') %>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini fixed">
+<!-- <body class="hold-transition skin-blue-light sidebar-mini fixed"> -->
   <div class="wrapper" id="AppVue">
 
     <%- include('./header') %>
@@ -82,7 +91,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script>
 
   <!-- VueJS Components -->
-  <!-- OK <script src="/assets/app/vue-components/datatables/datatables.js?_v=<%= assetsVersion %>"></script> -->
+  <script src="/assets/app/vue-components/datatables/datatables.js?_v=<%= assetsVersion %>"></script>
 
   <!-- jQuery 3 -->
   <script src="/assets/app/bower_components/jquery/dist/jquery.min.js"></script>
@@ -130,11 +139,11 @@
   <!-- Select2 -->
   <script src="/assets/app/bower_components/select2/dist/js/select2.full.min.js"></script>
 
-  <!-- <script src="/assets/app/js/helpers.js?_v=<%= assetsVersion %>"></script> -->
+  <script src="/assets/app/js/helpers.js?_v=<%= assetsVersion %>"></script>
 
   <script>
     // var accessToken = '%- auth.token %'
-    // var mixins = []
+    var mixins = []
 
     // // Configurar o axios para sempre enviar o token de autenticação
     // axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
@@ -142,7 +151,7 @@
 
   <%- defineContent('scripts') %>
 
-  <!-- <script src="/assets/app/js/layout.js?_v=<%= assetsVersion %>"></script> -->
+  <script src="/assets/app/js/layout.js?_v=<%= assetsVersion %>"></script>
 
 </body>
 

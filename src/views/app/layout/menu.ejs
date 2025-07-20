@@ -5,87 +5,19 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu" data-widget="tree">
 
-      <li class="<%- activeMenu(page, 'project-my-projects') %>">
-        <a href="/app/my-projects">
-          <i class="fa fa-sitemap"></i> <span>Meus Projetos</span>
-        </a>
-      </li>
+      <li class="header">Menu Principal</li>
 
-      <% if (selectedProject) { %>
-
-        <li class="header"><%- selectedProject.name %></li>
-
-        <li class="<%- activeMenu(page, 'project-home') %>">
-          <a href="/app/<%- selectedProject.uuid %>">
-            <i class="fa fa-home"></i> <span>Home</span>
-          </a>
-        </li>
-
-        <li class="<%- activeMenu(page, 'project-my-account') %>">
-          <a href="/app/<%- selectedProject.uuid %>/my-account">
-            <i class="fa fa-user"></i> <span>Minha Conta</span>
-          </a>
-        </li>
-
-        <li class="header">Administração do Projeto</li>
-
-        <li class="<%- activeMenu(page, 'project-users') %>">
-          <a href="/app/<%- selectedProject.uuid %>/users">
-            <i class="fa fa-users"></i> <span>Usuários</span>
-          </a>
-        </li>
-
-        <li class="<%- activeMenu(page, 'project-profiles') %>">
-          <a href="/app/<%- selectedProject.uuid %>/profiles">
-            <i class="fa fa-id-card-o"></i> <span>Perfis e Privilégios</span>
-          </a>
-        </li>
-      <% } %>
-
-      <li class="header">Administração do Sistema</li>
-
-      <li class="<%- activeMenu(page, 'system-projects') %>">
+      <li class="<%- activeMenu(page, 'home') %>">
         <a href="/app">
-          <i class="fa fa-sitemap"></i> <span>Projetos</span>
-          <span class="pull-right-container">
-            <small class="label pull-right bg-red">a fazer</small>
-          </span>
+          <i class="fa fa-home"></i> <span>Início</span>
         </a>
       </li>
 
-      <% /*
-      <li class="%- activeMenu(page, 'dashboard') %">
-        <a href="/app/dashboard">
-          <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+      <li class="<%- activeMenu(page, ['tenants', 'tenants-create', 'tenants-update', 'roles-create', 'roles-update']) %>">
+        <a href="/app/tenants">
+          <i class="fa fa-sitemap"></i> <span>Inquilinos</span>
         </a>
       </li>
-
-      <li class="header">Administração</li>
-
-      <li class="%- activeMenu(page, 'profiles') %">
-        <a href="/app/profiles">
-          <i class="fa fa-id-card-o"></i> <span>Perfis e Privilégios</span>
-        </a>
-      </li>
-
-      <li class="%- activeMenu(page, 'users') %">
-        <a href="/app/users">
-          <i class="fa fa-users"></i> <span>Usuários</span>
-        </a>
-      </li>
-
-      <li class="%- activeMenu(page, 'me') %">
-        <a href="/app/me">
-          <i class="fa fa-id-card-o"></i> <span>Meu Perfil</span>
-        </a>
-      </li>
-
-      <li class="%- activeMenu(page, 'organizations') %">
-        <a href="/app/organizations">
-          <i class="fa fa-sitemap"></i> <span>Organizações</span>
-        </a>
-      </li>
-      */ %>
 
     </ul>
   </section>

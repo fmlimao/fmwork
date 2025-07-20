@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 module.exports = class LoginRepository {
   static async findOneByEmailAndPassword (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const email = args.email
     const password = args.password
@@ -32,7 +32,7 @@ module.exports = class LoginRepository {
         if (!user) {
           ret.setCode(401)
           ret.setError(true)
-          ret.addMessage(res.__('Usuário não encontrado.'))
+          ret.addMessage('Usuário não encontrado.')
           throw ret
         }
 
@@ -42,7 +42,7 @@ module.exports = class LoginRepository {
         if (!passwordCompare) {
           ret.setCode(401)
           ret.setError(true)
-          ret.addMessage(res.__('Usuário não encontrado.'))
+          ret.addMessage('Usuário não encontrado.')
           throw ret
         }
 
@@ -51,7 +51,7 @@ module.exports = class LoginRepository {
   }
 
   static async findOneByUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -78,7 +78,7 @@ module.exports = class LoginRepository {
 
         if (!user) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 
@@ -87,7 +87,7 @@ module.exports = class LoginRepository {
   }
 
   static async getTenantByUserUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -116,7 +116,7 @@ module.exports = class LoginRepository {
 
         if (!tenant) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 
@@ -125,7 +125,7 @@ module.exports = class LoginRepository {
   }
 
   static async getRoleByUserUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -153,7 +153,7 @@ module.exports = class LoginRepository {
 
         if (!role) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 
@@ -162,7 +162,7 @@ module.exports = class LoginRepository {
   }
 
   static async getPermissionsByUserUuid (args = {}) {
-    const res = args.res
+    // const res = args.res
     const ret = args.ret
     const uuid = args.uuid
 
@@ -194,7 +194,7 @@ module.exports = class LoginRepository {
 
         if (!permissions || permissions.length === 0) {
           ret.setCode(401)
-          ret.addMessage(res.__('Token inválido.'))
+          ret.addMessage('Token inválido.')
           throw ret
         }
 

@@ -12,5 +12,11 @@ module.exports = {
   digits_between: 'Este campo precisa ter de :min a :max dígitos.',
   regex: 'Formato inválido.',
   in: 'Valor inválido. Precisa ser um desses: :in.',
-  date: 'Este campo precisa ser uma data válida.'
+  date: 'Este campo precisa ser uma data válida.',
+  phone: 'Este campo precisa ser um telefone com DDD+TELEFONE (apenas números).',
+  mobilephone: 'Este campo precisa ser um celular com DDD+CELULAR (apenas números).',
+  genericphone: 'Este campo precisa ser um celular com DDD+CELULAR (apenas números).',
+  dateformat: 'Este campo precisa ser uma data no formato YYYY-MM-DD.',
+  datetimeformat: 'Este campo precisa ser uma data no formato YYYY-MM-DD HH:mm:ss.',
+  uuid: 'Este campo precisa ser um UUID válido.'
 }

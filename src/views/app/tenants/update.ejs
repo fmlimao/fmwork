@@ -1,0 +1,166 @@
+<%- contentFor('body') %>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <i class="fa fa-sitemap"></i> Inquilinos - Atualizar
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/app"><i class="fa fa-home"></i> Início</a></li>
+    <li><a href="/app/tenants"><i class="fa fa-sitemap"></i> Inquilinos</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Atualizar</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <p>
+    <a href="/app/tenants" class="btn btn-default">
+      <i class="fa fa-arrow-left"></i> Voltar
+    </a>
+  </p>
+
+  <!-- Alert loading -->
+  <div v-if="tenant.loading && !tenant.loaded">
+    <div class="alert" v-if="tenant.messages.length" :class="{'alert-danger': tenant.error, 'alert-success': !tenant.error}">
+      <p v-for="message in tenant.messages">{{ message }}</p>
+    </div>
+
+    <div class="alert alert-info" v-else>
+      <i class="fa fa-spinner fa-spin"></i> Carregando...
+    </div>
+  </div>
+  <!-- end::Alert loading -->
+
+  <!-- Alert no records -->
+  <div v-if="tenant.loaded">
+    <form id="newTenantForm" @submit.prevent="App.saveTenant()">
+
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Atualizar Inquilino</h3>
+        </div>
+        <!-- end::box-header -->
+
+        <div class="box-body">
+
+          <div class="alert" v-if="tenant.messages.length" :class="{'alert-danger': tenant.error, 'alert-success': !tenant.error}">
+            <p v-for="message in tenant.messages">{{ message }}</p>
+          </div>
+
+          <div class="form-group" :class="{'has-error': tenant.fields.name.error}">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" v-model="tenant.fields.name.value" :disabled="tenant.loading">
+            <small class="help-block" v-if="tenant.fields.name.error" v-html="tenant.fields.name.messages.join('<br>')"></small>
+          </div>
+
+          <div class="form-group" :class="{'has-error': tenant.fields.description.error}">
+            <label for="description">Descrição</label>
+            <textarea name="description" id="description" class="form-control" rows="3" v-model="tenant.fields.description.value" :disabled="tenant.loading"></textarea>
+            <small class="help-block" v-if="tenant.fields.description.error" v-html="tenant.fields.description.messages.join('<br>')"></small>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group" :class="{'has-error': tenant.fields.appTitle.error}">
+                <label for="appTitle">Título</label>
+                <input type="text" class="form-control" v-model="tenant.fields.appTitle.value" :disabled="tenant.loading">
+                <small class="help-block" v-if="tenant.fields.appTitle.error" v-html="tenant.fields.appTitle.messages.join('<br>')"></small>
+              </div>
+            </div>
+            <!-- end::col -->
+
+            <div class="col-md-4">
+              <div class="form-group" :class="{'has-error': tenant.fields.appShortTitle.error}">
+                <label for="appShortTitle">Título curto</label>
+                <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value" :disabled="tenant.loading">
+                <small class="help-block" v-if="tenant.fields.appShortTitle.error" v-html="tenant.fields.appShortTitle.messages.join('<br>')"></small>
+              </div>
+            </div>
+            <!-- end::col -->
+
+            <div class="col-md-4">
+              <div class="form-group" :class="{'has-error': tenant.fields.active.error}">
+                <label for="active">Ativo</label>
+                <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value" :disabled="tenant.loading">
+                  <option value="">Selecione</option>
+                  <option value="1">Ativo</option>
+                  <option value="0">Inativo</option>
+                </select>
+                <small class="help-block" v-if="tenant.fields.active.error" v-html="tenant.fields.active.messages.join('<br>')"></small>
+              </div>
+            </div>
+            <!-- end::col -->
+
+          </div>
+          <!-- end::row -->
+
+          <p><strong>UUID:</strong> {{ tenant.fields.uuid.value }}</p>
+          <p><strong>Criado em:</strong> {{ moment(tenant.fields.createdAt.value).format('DD/MM/YYYY HH:mm:ss') }}</p>
+          <p><strong>Atualizado em:</strong> {{ moment(tenant.fields.updatedAt.value).format('DD/MM/YYYY HH:mm:ss') }}</p>
+
+        </div>
+        <!-- end::box-body -->
+
+        <div class="box-footer">
+
+          <div v-if="!tenant.delete">
+            <button type="submit" class="btn btn-primary" form="newTenantForm" :disabled="tenant.loading">
+              <span class="fa fa-save"></span>
+              Atualizar
+            </button>
+
+            <button type="button" class="btn btn-danger" v-if="tenant.fields.uuid.value" :disabled="tenant.loading" @click="App.tenant.delete = true">
+              <span class="fa fa-trash"></span>
+              Apagar
+            </button>
+          </div>
+
+          <div v-if="tenant.delete">
+            <span class="text-danger">Deseja realmente apagar este inquilino?</span>
+
+            <button type="button" class="btn btn-danger" :disabled="tenant.loading" @click="App.deleteTenant()">
+              <span class="fa fa-check"></span>
+              Sim, apagar
+            </button>
+
+            <button type="button" class="btn btn-default" @click="setTimeout(() => { App.tenant.delete = false }, 100)">
+              <span class="fa fa-times"></span>
+              Não, cancelar
+            </button>
+          </div>
+
+        </div>
+        <!-- end::box-footer -->
+
+      </div>
+      <!-- end::box -->
+
+    </form>
+
+    <!-- Roles -->
+    <div>
+      <%- include('../roles/list') %>
+    </div>
+    <!-- end::Roles -->
+
+    <!-- Users -->
+    <div>
+      <%- include('../users/list') %>
+    </div>
+    <!-- end::Users -->
+
+  </div>
+  <!-- end::Alert no records -->
+
+</section>
+<!-- /.content -->
+
+<%- contentFor('scripts') %>
+<script>
+  const tenantUuid = '<%= tenantUuid %>'
+</script>
+<script src="/assets/app/js/pages/tenants/update.js?_v=<%= assetsVersion %>"></script>
+<script src="/assets/app/js/pages/roles/list.js?_v=<%= assetsVersion %>"></script>
+<script src="/assets/app/js/pages/users/list.js?_v=<%= assetsVersion %>"></script>

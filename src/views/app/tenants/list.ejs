@@ -1,0 +1,169 @@
+<%- contentFor('body') %>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <i class="fa fa-sitemap"></i> Inquilinos
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="/app"><i class="fa fa-home"></i> Início</a></li>
+    <li class="active"><i class="fa fa-sitemap"></i> Inquilinos</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Alert loading -->
+  <div v-if="tenants.loading && !tenants.loaded">
+    <div class="alert alert-info">
+      <i class="fa fa-spinner fa-spin"></i> Carregando...
+    </div>
+  </div>
+  <!-- end::Alert loading -->
+
+  <!-- Alert no records -->
+  <div v-if="tenants.loaded">
+    <div v-if="!tenants.list.length">
+      <div class="alert alert-info">
+        <i class="fa fa-info-circle"></i> Nenhum registro encontrado.
+      </div>
+    </div>
+    <!-- end::Alert no records -->
+
+    <!-- Table -->
+    <div v-else>
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Lista de Inquilinos</h3>
+
+          <div class="box-tools pull-right">
+            <a href="/app/tenants/create" class="btn btn-primary btn-sm">
+              <i class="fa fa-plus"></i> Adicionar
+            </a>
+          </div>
+        </div>
+        <datatables :model="tenants"></datatables>
+      </div>
+    </div>
+    <!-- end::Table -->
+  </div>
+  <!-- end::Alert no records -->
+
+</section>
+<!-- /.content -->
+
+<!-- Tenant Add Modal -->
+<div class="modal fade" id="newTenantModal" tabindex="-1" role="dialog" aria-labelledby="newTenantModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title" v-if="!tenant.fields.uuid.value">Criar Inquilino</h4>
+        <h4 class="modal-title" v-else>Editar Inquilino</h4>
+      </div>
+
+      <div class="modal-body">
+
+        <form id="newTenantForm" @submit.prevent="App.saveTenant()">
+
+          <div class="alert" v-if="tenant.messages.length" :class="{'alert-danger': tenant.error, 'alert-success': !tenant.error}">
+            <p v-for="message in tenant.messages">{{ message }}</p>
+          </div>
+
+          <div class="form-group" :class="{'has-error': tenant.fields.name.error}">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" v-model="tenant.fields.name.value" :disabled="tenant.loading">
+            <small class="help-block" v-if="tenant.fields.name.error" v-html="tenant.fields.name.messages.join('<br>')"></small>
+          </div>
+
+          <div class="form-group" :class="{'has-error': tenant.fields.description.error}">
+            <label for="description">Descrição</label>
+            <textarea name="description" id="description" class="form-control" rows="3" v-model="tenant.fields.description.value" :disabled="tenant.loading"></textarea>
+            <small class="help-block" v-if="tenant.fields.description.error" v-html="tenant.fields.description.messages.join('<br>')"></small>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group" :class="{'has-error': tenant.fields.appTitle.error}">
+                <label for="appTitle">Título</label>
+                <input type="text" class="form-control" v-model="tenant.fields.appTitle.value" :disabled="tenant.loading">
+                <small class="help-block" v-if="tenant.fields.appTitle.error" v-html="tenant.fields.appTitle.messages.join('<br>')"></small>
+              </div>
+            </div>
+            <!-- end::col -->
+
+            <div class="col-md-4">
+              <div class="form-group" :class="{'has-error': tenant.fields.appShortTitle.error}">
+                <label for="appShortTitle">Título curto</label>
+                <input type="text" class="form-control" v-model="tenant.fields.appShortTitle.value" :disabled="tenant.loading">
+                <small class="help-block" v-if="tenant.fields.appShortTitle.error" v-html="tenant.fields.appShortTitle.messages.join('<br>')"></small>
+              </div>
+            </div>
+            <!-- end::col -->
+
+            <div class="col-md-4">
+              <div class="form-group" :class="{'has-error': tenant.fields.active.error}">
+                <label for="active">Ativo</label>
+                <select name="active" id="active" class="form-control" v-model="tenant.fields.active.value" :disabled="tenant.loading || !tenant.fields.uuid.value">
+                  <option value="">Selecione</option>
+                  <option value="1">Ativo</option>
+                  <option value="0">Inativo</option>
+                </select>
+                <small class="help-block" v-if="tenant.fields.active.error" v-html="tenant.fields.active.messages.join('<br>')"></small>
+              </div>
+            </div>
+            <!-- end::col -->
+          </div>
+          <!-- end::row -->
+
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <p v-if="!tenant.delete">
+          <button type="submit" class="btn btn-primary" form="newTenantForm" v-if="!tenant.fields.uuid.value" :disabled="tenant.loading">
+            <span class="fa fa-save"></span>
+            Criar
+          </button>
+
+          <button type="submit" class="btn btn-primary" form="newTenantForm" v-else :disabled="tenant.loading">
+            <span class="fa fa-save"></span>
+            Atualizar
+          </button>
+
+          <button type="button" class="btn btn-danger" v-if="tenant.fields.uuid.value" :disabled="tenant.loading" @click="App.tenant.delete = true">
+            <span class="fa fa-trash"></span>
+            Apagar
+          </button>
+
+          <button type="button" class="btn btn-default" data-dismiss="modal" @click="App.cancelTenant()" :disabled="tenant.loading">
+            <span class="fa fa-times"></span>
+            Cancelar
+          </button>
+        </p>
+
+        <p v-if="tenant.delete">
+          <span class="text-danger">Deseja realmente apagar este inquilino?</span>
+
+          <button type="button" class="btn btn-danger" :disabled="tenant.loading" @click="App.deleteTenant()">
+            <span class="fa fa-check"></span>
+            Sim, apagar
+          </button>
+
+          <button type="button" class="btn btn-default" @click="setTimeout(() => { App.tenant.delete = false }, 100)">
+            <span class="fa fa-times"></span>
+            Não, cancelar
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tenant Add Modal -->
+
+<%- contentFor('scripts') %>
+<script src="/assets/app/js/pages/tenants/list.js?_v=<%= assetsVersion %>"></script>
