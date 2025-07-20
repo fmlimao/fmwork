@@ -17,8 +17,8 @@ router.get('/tenants/create', require('./controllers/tenants/create'))
 router.get('/tenants/:tenantUuid', require('./controllers/tenants/update'))
 
 // Papéis
-router.get('/tenants/:tenantUuid/roles/create', require('./controllers/roles/create'))
-router.get('/tenants/:tenantUuid/roles/:roleUuid', require('./controllers/roles/update'))
+router.get('/tenants/:tenantUuid/roles/create', require('./controllers/tenants/roles/create'))
+router.get('/tenants/:tenantUuid/roles/:roleUuid', require('./controllers/tenants/roles/update'))
 
 // // Autenticação
 // router.get('/login', AuthController.loginGet)

@@ -141,13 +141,13 @@
 
     <!-- Roles -->
     <div>
-      <%- include('../roles/list') %>
+      <%- include('roles/list') %>
     </div>
     <!-- end::Roles -->
 
     <!-- Users -->
     <div>
-      <%- include('../users/list') %>
+      <%- include('users/list') %>
     </div>
     <!-- end::Users -->
 
@@ -162,5 +162,5 @@
   const tenantUuid = '<%= tenantUuid %>'
 </script>
 <script src="/assets/app/js/pages/tenants/update.js?_v=<%= assetsVersion %>"></script>
-<script src="/assets/app/js/pages/roles/list.js?_v=<%= assetsVersion %>"></script>
-<script src="/assets/app/js/pages/users/list.js?_v=<%= assetsVersion %>"></script>
+<script src="/assets/app/js/pages/tenants/roles/list.js?_v=<%= assetsVersion %>"></script>
+<script src="/assets/app/js/pages/tenants/users/list.js?_v=<%= assetsVersion %>"></script>
