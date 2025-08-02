@@ -70,12 +70,12 @@ const localFilters = {
   `,
   principalQuery: `
     SELECT
-      p.uuid AS permissionUuid,
-      p.name AS permissionName,
-      p.slug AS permissionSlug,
-      p.description AS permissionDescription,
-      p.created_at AS permissionCreatedAt,
-      p.updated_at AS permissionUpdatedAt
+      p.uuid,
+      p.name,
+      p.slug,
+      p.description,
+      p.created_at AS createdAt,
+      p.updated_at AS updatedAt
     FROM permissions p
     INNER JOIN role_permissions rp ON p.permission_id = rp.permission_id AND rp.deleted_at IS NULL
     WHERE p.deleted_at IS NULL
@@ -222,7 +222,7 @@ module.exports = class RoleRepository {
       })
   }
 
-  static async create (args = {}) {
+  static async add (args = {}) {
     const req = args.req
     const res = args.res
     const ret = req.ret()
@@ -276,7 +276,7 @@ module.exports = class RoleRepository {
 
         return next
       })
-      // Verificamos se o registro já esta associado ao perfil
+      // Verificamos se o registro já esta associado ao papel
       .then(async next => {
         const rolePermission = await conn.getOne(`
           SELECT p.permission_id AS permissionId
@@ -296,14 +296,14 @@ module.exports = class RoleRepository {
         if (rolePermission) {
           ret.setCode(400)
           ret.setFieldError('permissionUuid', true)
-          ret.addFieldMessage('permissionUuid', 'Esta permissão já está associada a este perfil.')
+          ret.addFieldMessage('permissionUuid', 'Esta permissão já está associada a este papel.')
           ret.addMessage('Verifique todos os campos.')
           throw ret
         }
 
         return next
       })
-      // Vamos associar a permissão ao perfil
+      // Vamos associar a permissão ao papel
       .then(async next => {
         const rolePermissionId = await conn.insert(`
           INSERT INTO role_permissions (tenant_id, role_id, permission_id)
@@ -316,7 +316,7 @@ module.exports = class RoleRepository {
 
         if (!rolePermissionId) {
           ret.setCode(400)
-          ret.addMessage('Erro ao associar permissão ao perfil.')
+          ret.addMessage('Erro ao associar permissão ao papel.')
           throw ret
         }
 
@@ -330,7 +330,7 @@ module.exports = class RoleRepository {
       })
   }
 
-  static async delete (args = {}) {
+  static async remove (args = {}) {
     const req = args.req
     const res = args.res
     const ret = req.ret()
@@ -356,7 +356,7 @@ module.exports = class RoleRepository {
           })
         } catch (error) {
           ret.setCode(400)
-          ret.addMessage('Erro ao remover permissão do perfil.')
+          ret.addMessage('Erro ao remover permissão do papel.')
           ret.addMessage(error.message)
           throw ret
         }

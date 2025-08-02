@@ -10,12 +10,12 @@ const listGet = async (req, res) => {
   }))
 }
 
-const createPost = async (req, res) => {
+const addPost = async (req, res) => {
   res.success({
     code: 201,
-    messages: ['Permissão criada com sucesso.'],
+    messages: ['Permissão adicionada com sucesso.'],
     content: {
-      data: await RolePermissionRepository.create({
+      data: await RolePermissionRepository.add({
         req,
         res,
         fields: req.body || {},
@@ -39,21 +39,24 @@ const getOneGet = async (req, res) => {
   })
 }
 
-const deleteDelete = async (req, res) => {
-  await RolePermissionRepository.delete({
-    req,
-    res,
-    tenant: req.tenantRoute,
-    role: req.roleRoute,
-    rolePermission: req.rolePermissionRoute
+const removeDelete = async (req, res) => {
+  res.success({
+    code: 204,
+    content: {
+      data: await RolePermissionRepository.remove({
+        req,
+        res,
+        tenant: req.tenantRoute,
+        role: req.roleRoute,
+        rolePermission: req.rolePermissionRoute
+      })
+    }
   })
-
-  res.success(204)
 }
 
 module.exports = {
   listGet,
-  createPost,
+  addPost,
   getOneGet,
-  deleteDelete
+  removeDelete
 }
