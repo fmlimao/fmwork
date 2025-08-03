@@ -80,7 +80,7 @@
  *               }
  *             }
  *
- *     UnauthorizedErrorResponse:
+ *     InvalidCredentialsResponse:
  *       allOf:
  *         - $ref: '#/components/schemas/ApiResponse'
  *         - type: object
@@ -94,7 +94,35 @@
  *           example:
  *             code: 401
  *             error: true
- *             messages: ["Não autorizado"]
+ *             messages: ["Credenciais inválidas"]
+ *
+ *     UnauthorizedErrorResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             code:
+ *               type: integer
+ *               default: 401
+ *             error:
+ *               type: boolean
+ *               default: true
+ *             errorCodes:
+ *               type: array
+ *               items:
+ *                 type: string
+ *               description: Códigos de erro para identificação do problema
+ *             errorCodeDetails:
+ *               type: array
+ *               items:
+ *                 type: string
+ *               description: Detalhes técnicos do erro
+ *           example:
+ *             code: 401
+ *             error: true
+ *             errorCodes: ["INVALID_TOKEN"]
+ *             errorCodeDetails: ["invalid token"]
+ *             messages: ["Token inválido."]
  *
  *     InternalServerErrorResponse:
  *       allOf:
