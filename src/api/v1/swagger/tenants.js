@@ -1,45 +1,5 @@
 /**
  * @swagger
- * components:
- *   schemas:
- *     Tenant:
- *       type: object
- *       required:
- *         - name
- *       properties:
- *         uuid:
- *           type: string
- *           format: uuid
- *           description: UUID do tenant
- *         name:
- *           type: string
- *           description: Nome do tenant
- *         active:
- *           type: boolean
- *           description: Status do tenant
- *       example:
- *         uuid: "550e8400-e29b-41d4-a716-446655440000"
- *         name: "Empresa Exemplo"
- *         active: true
- *
- *     TenantListResponse:
- *       allOf:
- *         - $ref: '#/components/schemas/ApiResponse'
- *         - type: object
- *           properties:
- *             content:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Tenant'
- *
- *     TenantResponse:
- *       allOf:
- *         - $ref: '#/components/schemas/ApiResponse'
- *         - type: object
- *           properties:
- *             content:
- *               $ref: '#/components/schemas/Tenant'
- *
  * /tenants:
  *   get:
  *     summary: Lista todos os tenants
@@ -58,13 +18,13 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
  *       500:
  *         description: Erro interno do servidor
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  *
  *   post:
  *     summary: Cria um novo tenant
@@ -96,18 +56,24 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TenantResponse'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
  *       401:
  *         description: Não autorizado
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
  *       500:
  *         description: Erro interno do servidor
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  *
  * /tenants/{tenantUuid}:
  *   get:
@@ -135,19 +101,19 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
  *       404:
  *         description: Tenant não encontrado
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/NotFoundErrorResponse'
  *       500:
  *         description: Erro interno do servidor
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  *
  *   put:
  *     summary: Atualiza um tenant
@@ -185,24 +151,30 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TenantResponse'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
  *       401:
  *         description: Não autorizado
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
  *       404:
  *         description: Tenant não encontrado
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/NotFoundErrorResponse'
  *       500:
  *         description: Erro interno do servidor
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  *
  *   delete:
  *     summary: Remove um tenant
@@ -229,17 +201,17 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
  *       404:
  *         description: Tenant não encontrado
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/NotFoundErrorResponse'
  *       500:
  *         description: Erro interno do servidor
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  */

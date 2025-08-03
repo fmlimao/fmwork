@@ -1,4 +1,6 @@
-const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerJsdoc = require('swagger-jsdoc')
+
+const HOST = process.env.HOST
 
 const options = {
   definition: {
@@ -6,34 +8,31 @@ const options = {
     info: {
       title: 'FMWork API',
       version: '1.0.0',
-      description: 'Documentação da API do FMWork - Sistema de Gerenciamento Multi-tenant',
+      description: 'Documentação da API do FMWork - Sistema de Gerenciamento Multi-tenant'
     },
     servers: [
       {
-        url: '/api',
-        description: 'Servidor API',
-      },
+        url: `${HOST}/api/v1`,
+        description: 'Servidor API v1'
+      }
     ],
     components: {
       securitySchemes: {
-        bearerAuth: {
+        basicAuth: {
           type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-    security: [{
-      bearerAuth: [],
-    }],
+          scheme: 'basic'
+        }
+      }
+    }
   },
   apis: [
-    './src/api/v1/routes.js',
-    './src/api/v1/swagger/*.js',
-    './src/api/v1/swagger/schemas.js'
-  ], // arquivos que contêm anotações
-};
+    './src/api/v1/swagger/schemas.js', // Carrega os schemas primeiro
+    './src/api/v1/swagger/auth.js'
+    // './src/api/v1/swagger/tenants.js',
+    // './src/api/v1/routes.js'
+  ]
+}
 
-const specs = swaggerJsdoc(options);
+const specs = swaggerJsdoc(options)
 
-module.exports = specs;
+module.exports = specs
