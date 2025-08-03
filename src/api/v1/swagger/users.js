@@ -1,14 +1,10 @@
 /**
  * @swagger
- * tags:
- *   - name: Usuários
- *     description: Gerenciamento de usuários do sistema
- *
  * /users:
  *   get:
  *     summary: Lista todos os usuários
  *     description: Retorna uma lista paginada de todos os usuários do sistema
- *     tags: [Usuários]
+ *     tags: [⤷ Usuários]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -30,11 +26,11 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/InternalServerErrorResponse'
- *
+ *   
  *   post:
  *     summary: Cria um novo usuário
  *     description: Cria um novo usuário no sistema
- *     tags: [Usuários]
+ *     tags: [⤷ Usuários]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -73,7 +69,7 @@
  *   get:
  *     summary: Busca um usuário pelo UUID
  *     description: Retorna os dados de um usuário específico
- *     tags: [Usuários]
+ *     tags: [⤷ Usuários]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -114,7 +110,7 @@
  *   put:
  *     summary: Atualiza um usuário
  *     description: Atualiza os dados de um usuário específico
- *     tags: [Usuários]
+ *     tags: [⤷ Usuários]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -169,7 +165,7 @@
  *   delete:
  *     summary: Remove um usuário
  *     description: Remove um usuário do sistema. A operação não pode ser desfeita.
- *     tags: [Usuários]
+ *     tags: [⤷ Usuários]
  *     security:
  *       - bearerAuth: []
  *     parameters:

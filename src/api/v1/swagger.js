@@ -31,10 +31,11 @@ const options = {
     }
   },
   apis: [
-    './src/api/v1/swagger/schemas.js', // Carrega os schemas primeiro
-    './src/api/v1/swagger/auth.js', // Depois carrega as rotas
+    './src/api/v1/swagger/tags.js', // Carrega as tags primeiro
+    './src/api/v1/swagger/schemas.js', // Depois os schemas
+    './src/api/v1/swagger/auth.js', // E por fim as rotas
     './src/api/v1/swagger/tenants.js',
-    './src/api/v1/swagger/users.js' // Arquivo que vamos criar para as rotas de usuários
+    './src/api/v1/swagger/users.js'
   ]
 }
 

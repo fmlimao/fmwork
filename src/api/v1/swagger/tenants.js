@@ -1,16 +1,10 @@
 /**
  * @swagger
- * tags:
- *   - name: Autenticação
- *     description: Autenticação e gerenciamento de sessão
- *   - name: Inquilinos
- *     description: Gerenciamento de inquilinos (tenants)
- *
  * /tenants:
  *   get:
  *     summary: Lista todos os inquilinos
  *     description: Retorna uma lista paginada de todos os inquilinos do sistema
- *     tags: [Inquilinos]
+ *     tags: [⤷ Inquilinos]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -36,7 +30,7 @@
  *   post:
  *     summary: Cria um novo inquilino
  *     description: Cria um novo inquilino no sistema
- *     tags: [Inquilinos]
+ *     tags: [⤷ Inquilinos]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -75,7 +69,7 @@
  *   get:
  *     summary: Busca um inquilino pelo UUID
  *     description: Retorna os dados de um inquilino específico
- *     tags: [Inquilinos]
+ *     tags: [⤷ Inquilinos]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -116,7 +110,7 @@
  *   put:
  *     summary: Atualiza um inquilino
  *     description: Atualiza os dados de um inquilino específico
- *     tags: [Inquilinos]
+ *     tags: [⤷ Inquilinos]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -142,12 +136,12 @@
  *             schema:
  *               $ref: '#/components/schemas/TenantUpdateResponse'
  *       400:
- *         description: Erro de validação
+ *         description: Erro de validação nos dados enviados
  *         content:
  *           application/json:
  *             schema:
  *               oneOf:
- *                 - $ref: '#/components/schemas/TenantUpdateValidationResponse'
+ *                 - $ref: '#/components/schemas/TenantCreateValidationResponse'
  *                 - $ref: '#/components/schemas/TenantUpdateEmptyFieldsResponse'
  *       401:
  *         description: Token inválido ou não fornecido
@@ -171,7 +165,7 @@
  *   delete:
  *     summary: Remove um inquilino
  *     description: Remove um inquilino do sistema. A operação não pode ser desfeita.
- *     tags: [Inquilinos]
+ *     tags: [⤷ Inquilinos]
  *     security:
  *       - bearerAuth: []
  *     parameters:
