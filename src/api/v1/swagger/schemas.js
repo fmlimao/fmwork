@@ -1186,4 +1186,72 @@
  *                   updatedAt: "2025-08-03 00:39:20"
  *                 }
  *               ]
+ *
+ *     RoleCreateRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do papel
+ *         description:
+ *           type: string
+ *           nullable: true
+ *           description: Descrição do papel
+ *       example:
+ *         name: "Gerente"
+ *
+ *     RoleCreateValidationResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             form:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo nome
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo nome
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Verifique todos os campos."]
+ *             form: {
+ *               name: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               }
+ *             }
+ *
+ *     RoleCreateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Role'
+ *           example:
+ *             code: 201
+ *             error: false
+ *             messages: ["Papel criado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "1c964865-7088-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Gerente"
+ *                 description: null
+ *                 active: 1
+ *                 createdAt: "2025-08-03 16:37:14"
+ *                 updatedAt: "2025-08-03 16:37:14"
  */
