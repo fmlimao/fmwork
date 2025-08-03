@@ -726,4 +726,118 @@
  *                 active: 0
  *                 createdAt: "2024-01-01 10:00:00"
  *                 updatedAt: "2024-01-01 10:30:00"
+ *
+ *     User:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do usuário
+ *         name:
+ *           type: string
+ *           description: Nome do usuário
+ *         document:
+ *           type: string
+ *           nullable: true
+ *           description: Documento do usuário (CPF)
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         tenantUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do inquilino ao qual o usuário pertence
+ *         tenantName:
+ *           type: string
+ *           description: Nome do inquilino ao qual o usuário pertence
+ *         roleUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel do usuário
+ *         roleName:
+ *           type: string
+ *           description: Nome do papel do usuário
+ *         active:
+ *           type: integer
+ *           enum: [0, 1]
+ *           description: Status do usuário (0 = inativo, 1 = ativo)
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação do usuário
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data da última atualização do usuário
+ *       example:
+ *         uuid: "550e8400-e29b-41d3-a456-446614174001"
+ *         name: "João Silva"
+ *         document: "123.456.789-00"
+ *         email: "joao.silva@exemplo.com"
+ *         tenantUuid: "550e8400-e29b-41d3-a456-446614174002"
+ *         tenantName: "Empresa Exemplo"
+ *         roleUuid: "550e8400-e29b-41d3-a456-446614174003"
+ *         roleName: "Gerente"
+ *         active: 1
+ *         createdAt: "2024-01-01 10:00:00"
+ *         updatedAt: "2024-01-01 10:00:00"
+ *
+ *     UserListResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ListResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   description: Lista de usuários
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: []
+ *             content:
+ *               meta:
+ *                 totalCount: 2
+ *                 filteredCount: 2
+ *                 start: 0
+ *                 length: 10
+ *                 pages: 1
+ *                 currentPage: 1
+ *                 orderBy:
+ *                   column: "name"
+ *                   dir: "ASC"
+ *               data: [
+ *                 {
+ *                   uuid: "550e8400-e29b-41d3-a456-446614174001",
+ *                   name: "João Silva",
+ *                   document: "123.456.789-00",
+ *                   email: "joao.silva@exemplo.com",
+ *                   tenantUuid: "550e8400-e29b-41d3-a456-446614174002",
+ *                   tenantName: "Empresa Exemplo",
+ *                   roleUuid: "550e8400-e29b-41d3-a456-446614174003",
+ *                   roleName: "Gerente",
+ *                   active: 1,
+ *                   createdAt: "2024-01-01 10:00:00",
+ *                   updatedAt: "2024-01-01 10:00:00"
+ *                 },
+ *                 {
+ *                   uuid: "550e8400-e29b-41d3-a456-446614174004",
+ *                   name: "Maria Santos",
+ *                   document: null,
+ *                   email: "maria.santos@exemplo.com",
+ *                   tenantUuid: "550e8400-e29b-41d3-a456-446614174002",
+ *                   tenantName: "Empresa Exemplo",
+ *                   roleUuid: "550e8400-e29b-41d3-a456-446614174005",
+ *                   roleName: "Analista",
+ *                   active: 1,
+ *                   createdAt: "2024-01-01 11:00:00",
+ *                   updatedAt: "2024-01-01 11:00:00"
+ *                 }
+ *               ]
  */

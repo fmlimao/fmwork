@@ -31,9 +31,10 @@ const options = {
     }
   },
   apis: [
-    './src/api/v1/swagger/schemas.js',
-    './src/api/v1/swagger/auth.js',
-    './src/api/v1/swagger/tenants.js'
+    './src/api/v1/swagger/schemas.js', // Carrega os schemas primeiro
+    './src/api/v1/swagger/auth.js', // Depois carrega as rotas
+    './src/api/v1/swagger/tenants.js',
+    './src/api/v1/swagger/users.js' // Arquivo que vamos criar para as rotas de usuários
   ]
 }
 
