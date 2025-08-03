@@ -182,6 +182,48 @@
  *                 uuid: "550e8400-e29b-41d4-a716-446655440000"
  *                 name: "Empresa Exemplo"
  *
+ *     Meta:
+ *       type: object
+ *       properties:
+ *         totalCount:
+ *           type: integer
+ *           description: Total de itens na lista
+ *         filteredCount:
+ *           type: integer
+ *           description: Total de itens filtrados na lista
+ *         start:
+ *           type: integer
+ *           description: Índice inicial da lista
+ *         length:
+ *           type: integer
+ *           description: Limite de itens por página
+ *         pages:
+ *           type: integer
+ *           description: Total de páginas
+ *         currentPage:
+ *           type: integer
+ *           description: Página atual
+ *         orderBy:
+ *           type: object
+ *           properties:
+ *             column:
+ *               type: string
+ *               description: Campo a ser ordenado
+ *             dir:
+ *               type: string
+ *               enum: [ASC, DESC]
+ *               description: Direção da ordenação (ASC ou DESC)
+ *       example:
+ *         totalCount: 1
+ *         filteredCount: 1
+ *         start: 0
+ *         length: 10
+ *         pages: 1
+ *         currentPage: 1
+ *         orderBy:
+ *           column: "name"
+ *           dir: "ASC"
+ *
  *     ListResponse:
  *       allOf:
  *         - $ref: '#/components/schemas/ApiResponse'
@@ -191,35 +233,7 @@
  *               type: object
  *               properties:
  *                 meta:
- *                   type: object
- *                   properties:
- *                     totalCount:
- *                       type: integer
- *                       description: Total de itens na lista
- *                     filteredCount:
- *                       type: integer
- *                       description: Total de itens filtrados na lista
- *                     start:
- *                       type: integer
- *                       description: Índice inicial da lista
- *                     length:
- *                       type: integer
- *                       description: Limite de itens por página
- *                     pages:
- *                       type: integer
- *                       description: Total de páginas
- *                     currentPage:
- *                       type: integer
- *                       description: Página atual
- *                     orderBy:
- *                       type: object
- *                       properties:
- *                         column:
- *                           type: string
- *                           description: Campo a ser ordenado
- *                         dir:
- *                           type: string
- *                           description: Direção da ordenação (asc ou desc)
+ *                   $ref: '#/components/schemas/Meta'
  *                 data:
  *                   type: array
  *                   description: Lista de itens
@@ -239,7 +253,7 @@
  *                 currentPage: 1
  *                 orderBy:
  *                   column: "name"
- *                   dir: "asc"
+ *                   dir: "ASC"
  *               data:
  *                 - uuid: "550e8400-e29b-41d4-a716-446655440000"
  *                   name: "Empresa Exemplo"
@@ -431,42 +445,12 @@
  *
  *     TenantListResponse:
  *       allOf:
- *         - $ref: '#/components/schemas/ApiResponse'
+ *         - $ref: '#/components/schemas/ListResponse'
  *         - type: object
  *           properties:
  *             content:
  *               type: object
  *               properties:
- *                 meta:
- *                   type: object
- *                   properties:
- *                     totalCount:
- *                       type: integer
- *                       description: Total de itens na lista
- *                     filteredCount:
- *                       type: integer
- *                       description: Total de itens filtrados na lista
- *                     start:
- *                       type: integer
- *                       description: Índice inicial da lista
- *                     length:
- *                       type: integer
- *                       description: Limite de itens por página
- *                     pages:
- *                       type: integer
- *                       description: Total de páginas
- *                     currentPage:
- *                       type: integer
- *                       description: Página atual
- *                     orderBy:
- *                       type: object
- *                       properties:
- *                         column:
- *                           type: string
- *                           description: Campo a ser ordenado
- *                         dir:
- *                           type: string
- *                           description: Direção da ordenação (ASC ou DESC)
  *                 data:
  *                   type: array
  *                   description: Lista de tenants
