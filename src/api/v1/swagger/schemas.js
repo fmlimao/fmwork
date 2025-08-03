@@ -1338,4 +1338,201 @@
  *                 active: 0
  *                 createdAt: "2025-08-03 16:37:14"
  *                 updatedAt: "2025-08-03 16:51:09"
+ *
+ *     Permission:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID da permissão
+ *         name:
+ *           type: string
+ *           description: Nome da permissão
+ *         slug:
+ *           type: string
+ *           description: Identificador único da permissão
+ *         description:
+ *           type: string
+ *           description: Descrição da permissão
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação da permissão
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data da última atualização da permissão
+ *       example:
+ *         uuid: "264ef91a-59b4-11f0-9142-3eaed10807e8"
+ *         name: "Permissão Total - Inquilino"
+ *         slug: "full-tenant-permission"
+ *         description: "Permite todas as ações no inquilino"
+ *         createdAt: "2025-08-03 16:37:11"
+ *         updatedAt: "2025-08-03 16:37:11"
+ *
+ *     PermissionListResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ListResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   description: Lista de permissões
+ *                   items:
+ *                     $ref: '#/components/schemas/Permission'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             content:
+ *               meta:
+ *                 totalCount: 1
+ *                 filteredCount: 1
+ *                 start: 0
+ *                 length: 10
+ *                 pages: 1
+ *                 currentPage: 1
+ *                 orderBy:
+ *                   column: "name"
+ *                   dir: "ASC"
+ *               data: [
+ *                 {
+ *                   uuid: "264ef91a-59b4-11f0-9142-3eaed10807e8",
+ *                   name: "Permissão Total - Inquilino",
+ *                   slug: "full-tenant-permission",
+ *                   description: "Permite todas as ações no inquilino",
+ *                   createdAt: "2025-08-03 16:37:11",
+ *                   updatedAt: "2025-08-03 16:37:11"
+ *                 }
+ *               ]
+ *
+ *     PermissionCreateRequest:
+ *       type: object
+ *       required:
+ *         - permissionUuid
+ *       properties:
+ *         permissionUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID da permissão a ser adicionada ao papel
+ *       example:
+ *         permissionUuid: "264f0021-59b4-11f0-9142-3eaed10807e8"
+ *
+ *     PermissionCreateValidationResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             form:
+ *               type: object
+ *               properties:
+ *                 permissionUuid:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo UUID da permissão
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo UUID da permissão
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Verifique todos os campos."]
+ *             form:
+ *               permissionUuid:
+ *                 error: true
+ *                 messages: ["Campo obrigatório."]
+ *
+ *     PermissionCreateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Permission'
+ *           example:
+ *             code: 201
+ *             error: false
+ *             messages: ["Permissão adicionada com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "264f0021-59b4-11f0-9142-3eaed10807e8"
+ *                 name: "Visualizar Dashboard"
+ *                 slug: "view-dashboard"
+ *                 description: "Permite visualizar o dashboard do tenant"
+ *                 createdAt: "2025-08-03 16:37:11"
+ *                 updatedAt: "2025-08-03 16:37:11"
+ *
+ *     PermissionNotFoundResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 404
+ *             error: false
+ *             messages: ["Permissão não encontrada."]
+ *
+ *     RolePermission:
+ *       type: object
+ *       properties:
+ *         permissionUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID da permissão
+ *         permissionName:
+ *           type: string
+ *           description: Nome da permissão
+ *         permissionSlug:
+ *           type: string
+ *           description: Identificador único da permissão
+ *         permissionDescription:
+ *           type: string
+ *           description: Descrição da permissão
+ *         permissionCreatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação da permissão
+ *         permissionUpdatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data da última atualização da permissão
+ *       example:
+ *         permissionUuid: "264f0021-59b4-11f0-9142-3eaed10807e8"
+ *         permissionName: "Visualizar Dashboard"
+ *         permissionSlug: "view-dashboard"
+ *         permissionDescription: "Permite visualizar o dashboard do tenant"
+ *         permissionCreatedAt: "2025-08-03 16:37:11"
+ *         permissionUpdatedAt: "2025-08-03 16:37:11"
+ *
+ *     RolePermissionResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/RolePermission'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Permissão encontrada com sucesso."]
+ *             content:
+ *               data:
+ *                 permissionUuid: "264f0021-59b4-11f0-9142-3eaed10807e8"
+ *                 permissionName: "Visualizar Dashboard"
+ *                 permissionSlug: "view-dashboard"
+ *                 permissionDescription: "Permite visualizar o dashboard do tenant"
+ *                 permissionCreatedAt: "2025-08-03 16:37:11"
+ *                 permissionUpdatedAt: "2025-08-03 16:37:11"
  */
