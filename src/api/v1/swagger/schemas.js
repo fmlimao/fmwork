@@ -605,4 +605,125 @@
  *                 active: 1
  *                 createdAt: "2024-01-01 10:00:00"
  *                 updatedAt: "2024-01-01 10:00:00"
+ *
+ *     TenantUpdateRequest:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do inquilino
+ *         description:
+ *           type: string
+ *           description: Descrição do inquilino
+ *         appTitle:
+ *           type: string
+ *           description: Título da aplicação
+ *         appShortTitle:
+ *           type: string
+ *           description: Título curto da aplicação
+ *         active:
+ *           type: integer
+ *           enum: [0, 1]
+ *           description: Status do inquilino (0 = inativo, 1 = ativo)
+ *       example:
+ *         name: "Empresa Exemplo Editada"
+ *         description: "Descrição da Empresa Exemplo Editada"
+ *         appTitle: "Sistema Exemplo Editado"
+ *         appShortTitle: "SEX2"
+ *         active: 0
+ *
+ *     TenantUpdateValidationResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             form:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo nome
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo nome
+ *                 appTitle:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo título da aplicação
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo título da aplicação
+ *                 appShortTitle:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo título curto da aplicação
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo título curto da aplicação
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Verifique todos os campos."]
+ *             form: {
+ *               name: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               appTitle: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               appShortTitle: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               }
+ *             }
+ *
+ *     TenantUpdateEmptyFieldsResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Nenhum campo foi informado."]
+ *
+ *     TenantUpdateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Tenant'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Inquilino atualizado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "123e4567-e89b-12d3-a456-426614174000"
+ *                 name: "Empresa Exemplo Editada"
+ *                 description: "Descrição da Empresa Exemplo Editada"
+ *                 appTitle: "Sistema Exemplo Editado"
+ *                 appShortTitle: "SEX2"
+ *                 isRoot: 0
+ *                 active: 0
+ *                 createdAt: "2024-01-01 10:00:00"
+ *                 updatedAt: "2024-01-01 10:30:00"
  */
