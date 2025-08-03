@@ -16,10 +16,6 @@
  *           items:
  *             type: string
  *             description: Mensagem de erro ou sucesso
- *       example:
- *         code: 200
- *         error: false
- *         messages: []
  *
  *     NotFoundErrorResponse:
  *       allOf:
@@ -240,25 +236,6 @@
  *                   items:
  *                     type: object
  *                     description: Item da lista
- *           example:
- *             code: 200
- *             error: false
- *             content:
- *               meta:
- *                 totalCount: 100
- *                 filteredCount: 100
- *                 start: 0
- *                 length: 10
- *                 pages: 10
- *                 currentPage: 1
- *                 orderBy:
- *                   column: "name"
- *                   dir: "ASC"
- *               data:
- *                 - uuid: "550e8400-e29b-41d4-a716-446655440000"
- *                   name: "Empresa Exemplo"
- *                 - uuid: "550e8400-e29b-41d4-a716-446655440001"
- *                   name: "Empresa Exemplo 2"
  *
  *     Me:
  *       type: object
@@ -459,6 +436,7 @@
  *           example:
  *             code: 200
  *             error: false
+ *             messages: []
  *             content:
  *               meta:
  *                 totalCount: 1

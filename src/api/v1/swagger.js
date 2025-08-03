@@ -31,10 +31,9 @@ const options = {
     }
   },
   apis: [
-    './src/api/v1/swagger/schemas.js', // Carrega os schemas primeiro
-    './src/api/v1/swagger/auth.js'
-    // './src/api/v1/swagger/tenants.js',
-    // './src/api/v1/routes.js'
+    './src/api/v1/swagger/schemas.js',
+    './src/api/v1/swagger/auth.js',
+    './src/api/v1/swagger/tenants.js'
   ]
 }
 
