@@ -1,5 +1,6 @@
 const conn = require('../../../database/conn-mysql')
 const bcrypt = require('bcrypt')
+const gravatar = require('gravatar')
 
 module.exports = class AuthRepository {
   static async loginWithEmailAndPassword (args = {}) {
@@ -81,6 +82,12 @@ module.exports = class AuthRepository {
           ret.addMessage('Token inválido.')
           throw ret
         }
+
+        user.avatar = gravatar.url(user.email, {
+          s: '200',
+          d: 'retro',
+          r: 'g'
+        })
 
         return user
       })
