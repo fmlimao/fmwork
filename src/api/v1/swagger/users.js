@@ -165,4 +165,41 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/InternalServerErrorResponse'
+ *
+ *   delete:
+ *     summary: Remove um usuário
+ *     description: Remove um usuário do sistema. A operação não pode ser desfeita.
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: UUID do usuário
+ *         example: "550e8400-e29b-41d3-a456-446614174001"
+ *     responses:
+ *       204:
+ *         description: Usuário removido com sucesso
+ *       401:
+ *         description: Token inválido ou não fornecido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserNotFoundResponse'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  */
