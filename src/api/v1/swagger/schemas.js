@@ -1201,6 +1201,7 @@
  *           description: Descrição do papel
  *       example:
  *         name: "Gerente"
+ *         description: "Acesso gerencial ao sistema"
  *
  *     RoleCreateValidationResponse:
  *       allOf:
@@ -1246,6 +1247,38 @@
  *             code: 201
  *             error: false
  *             messages: ["Papel criado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "1c964865-7088-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Gerente"
+ *                 description: null
+ *                 active: 1
+ *                 createdAt: "2025-08-03 16:37:14"
+ *                 updatedAt: "2025-08-03 16:37:14"
+ *
+ *     RoleNotFoundResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 404
+ *             error: false
+ *             messages: ["Papel não encontrado."]
+ *
+ *     RoleResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Role'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Papel encontrado com sucesso."]
  *             content:
  *               data:
  *                 uuid: "1c964865-7088-11f0-a5c2-fa4b97db6fe4"
