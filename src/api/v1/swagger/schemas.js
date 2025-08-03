@@ -530,10 +530,10 @@
  *           type: string
  *           description: Título curto da aplicação
  *       example:
- *         name: "Nogueira"
- *         description: "Contabilidade Nogueira"
- *         appTitle: "Nogueira"
- *         appShortTitle: "NGR"
+ *         name: "Empresa Exemplo"
+ *         description: "Descrição da Empresa Exemplo"
+ *         appTitle: "Sistema Exemplo"
+ *         appShortTitle: "SEX"
  *
  *     TenantCreateResponse:
  *       allOf:
@@ -554,13 +554,13 @@
  *             messages: ["Inquilino criado com sucesso."]
  *             content:
  *               data:
- *                 uuid: "3c8c8f7e-707d-11f0-a5c2-fa4b97db6fe4"
- *                 name: "Nogueira"
- *                 description: "Contabilidade Nogueira"
- *                 appTitle: "Nogueira"
- *                 appShortTitle: "NGR"
+ *                 uuid: "123e4567-e89b-12d3-a456-426614174000"
+ *                 name: "Empresa Exemplo"
+ *                 description: "Descrição da Empresa Exemplo"
+ *                 appTitle: "Sistema Exemplo"
+ *                 appShortTitle: "SEX"
  *                 isRoot: 0
  *                 active: 1
- *                 createdAt: "2025-08-03 15:19:23"
- *                 updatedAt: "2025-08-03 15:19:23"
+ *                 createdAt: "2024-01-01 10:00:00"
+ *                 updatedAt: "2024-01-01 10:00:00"
  */
