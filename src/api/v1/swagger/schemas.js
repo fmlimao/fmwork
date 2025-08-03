@@ -997,4 +997,48 @@
  *                 active: 1
  *                 createdAt: "2024-01-01 10:00:00"
  *                 updatedAt: "2024-01-01 10:00:00"
+ *
+ *     UserNotFoundResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             code:
+ *               type: integer
+ *               default: 404
+ *             error:
+ *               type: boolean
+ *               default: false
+ *           example:
+ *             code: 404
+ *             error: false
+ *             messages: ["Usuário não encontrado."]
+ *
+ *     UserResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Usuário encontrado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "550e8400-e29b-41d3-a456-446614174001"
+ *                 name: "João Silva"
+ *                 document: "12345678900"
+ *                 email: "joao.silva@exemplo.com"
+ *                 tenantUuid: "550e8400-e29b-41d3-a456-446614174002"
+ *                 tenantName: "Empresa Exemplo"
+ *                 roleUuid: "550e8400-e29b-41d3-a456-446614174003"
+ *                 roleName: "Gerente"
+ *                 active: 1
+ *                 createdAt: "2024-01-01 10:00:00"
+ *                 updatedAt: "2024-01-01 10:00:00"
  */
