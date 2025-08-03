@@ -384,4 +384,48 @@
  *                     name: "Permissão Total - Inquilino"
  *                     slug: "full-tenant-permission"
  *                     description: "Permite todas as ações no inquilino"
+ *
+ *     Tenant:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do tenant
+ *         name:
+ *           type: string
+ *           description: Nome do tenant
+ *         description:
+ *           type: string
+ *           description: Descrição do tenant
+ *         appTitle:
+ *           type: string
+ *           description: Título da aplicação
+ *         appShortTitle:
+ *           type: string
+ *           description: Título curto da aplicação
+ *         isRoot:
+ *           type: integer
+ *           description: Indica se é o tenant raiz (1 = sim, 0 = não)
+ *         active:
+ *           type: integer
+ *           description: Indica se o tenant está ativo (1 = sim, 0 = não)
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação do tenant
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data da última atualização do tenant
+ *       example:
+ *         uuid: "288ad53d-4a1f-11f0-95b3-5299fd27ec4e"
+ *         name: "Projetos FM"
+ *         description: "Projeto principal do sistema"
+ *         appTitle: "Projetos FM"
+ *         appShortTitle: "PFM"
+ *         isRoot: 1
+ *         active: 1
+ *         createdAt: "2025-08-03 00:35:02"
+ *         updatedAt: "2025-08-03 00:35:02"
  */
