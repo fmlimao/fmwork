@@ -304,7 +304,7 @@
  *         user:
  *           uuid: "2fe91aa9-4a20-11f0-95b3-5299fd27ec4e"
  *           name: "Administrador"
- *           document: "000.000.000-00"
+ *           document: "00000000000"
  *           email: "admin@projetosfm.com.br"
  *           avatar: "//www.gravatar.com/avatar/0c62b0063771ce3f12502c4e39c711f3?s=200&d=retro&r=g"
  *         tenant:
@@ -342,7 +342,7 @@
  *                 user:
  *                   uuid: "2fe91aa9-4a20-11f0-95b3-5299fd27ec4e"
  *                   name: "Administrador"
- *                   document: "000.000.000-00"
+ *                   document: "00000000000"
  *                   email: "admin@projetosfm.com.br"
  *                   avatar: "//www.gravatar.com/avatar/0c62b0063771ce3f12502c4e39c711f3?s=200&d=retro&r=g"
  *                 tenant:
@@ -774,7 +774,7 @@
  *       example:
  *         uuid: "550e8400-e29b-41d3-a456-446614174001"
  *         name: "João Silva"
- *         document: "123.456.789-00"
+ *         document: "12345678900"
  *         email: "joao.silva@exemplo.com"
  *         tenantUuid: "550e8400-e29b-41d3-a456-446614174002"
  *         tenantName: "Empresa Exemplo"
@@ -816,7 +816,7 @@
  *                 {
  *                   uuid: "550e8400-e29b-41d3-a456-446614174001",
  *                   name: "João Silva",
- *                   document: "123.456.789-00",
+ *                   document: "12345678900",
  *                   email: "joao.silva@exemplo.com",
  *                   tenantUuid: "550e8400-e29b-41d3-a456-446614174002",
  *                   tenantName: "Empresa Exemplo",
@@ -840,4 +840,161 @@
  *                   updatedAt: "2024-01-01 11:00:00"
  *                 }
  *               ]
+ *
+ *     UserCreateRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *         - tenantUuid
+ *         - roleUuid
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do usuário
+ *         document:
+ *           type: string
+ *           description: Documento do usuário (CPF). Aceita apenas letras e números
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Senha do usuário
+ *         tenantUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do inquilino ao qual o usuário pertencerá
+ *         roleUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel que será atribuído ao usuário
+ *       example:
+ *         name: "João Silva"
+ *         document: "12345678900"
+ *         email: "joao.silva@exemplo.com"
+ *         password: "senha123"
+ *         tenantUuid: "550e8400-e29b-41d3-a456-446614174002"
+ *         roleUuid: "550e8400-e29b-41d3-a456-446614174003"
+ *
+ *     UserCreateValidationResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             form:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo nome
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo nome
+ *                 email:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo email
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo email
+ *                 password:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo senha
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo senha
+ *                 tenantUuid:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo inquilino
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo inquilino
+ *                 roleUuid:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo papel
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo papel
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Verifique todos os campos."]
+ *             form: {
+ *               name: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               email: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               password: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               tenantUuid: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               roleUuid: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               }
+ *             }
+ *
+ *     UserCreateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *           example:
+ *             code: 201
+ *             error: false
+ *             messages: ["Usuário criado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "550e8400-e29b-41d3-a456-446614174001"
+ *                 name: "João Silva"
+ *                 document: "12345678900"
+ *                 email: "joao.silva@exemplo.com"
+ *                 tenantUuid: "550e8400-e29b-41d3-a456-446614174002"
+ *                 tenantName: "Empresa Exemplo"
+ *                 roleUuid: "550e8400-e29b-41d3-a456-446614174003"
+ *                 roleName: "Gerente"
+ *                 active: 1
+ *                 createdAt: "2024-01-01 10:00:00"
+ *                 updatedAt: "2024-01-01 10:00:00"
  */
