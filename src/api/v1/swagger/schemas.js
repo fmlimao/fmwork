@@ -1624,4 +1624,134 @@
  *                   updatedAt: "2025-08-03 16:37:11"
  *                 }
  *               ]
+ *
+ *     TenantUserCreateRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *         - roleUuid
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do usuário
+ *         document:
+ *           type: string
+ *           nullable: true
+ *           description: Documento do usuário (CPF)
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Senha do usuário
+ *         roleUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel que será atribuído ao usuário
+ *       example:
+ *         name: "Leandro Macedo"
+ *         document: ""
+ *         email: "fmlimao@gmail.com"
+ *         password: "123456"
+ *         roleUuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f"
+ *
+ *     TenantUserCreateValidationResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             form:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo nome
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo nome
+ *                 email:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo email
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo email
+ *                 password:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo senha
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo senha
+ *                 roleUuid:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo papel
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo papel
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Verifique todos os campos."]
+ *             form:
+ *               name:
+ *                 error: true
+ *                 messages: ["Campo obrigatório."]
+ *               email:
+ *                 error: true
+ *                 messages: ["Campo obrigatório."]
+ *               password:
+ *                 error: true
+ *                 messages: ["Campo obrigatório."]
+ *               roleUuid:
+ *                 error: true
+ *                 messages: ["Campo obrigatório."]
+ *
+ *     TenantUserCreateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/TenantUser'
+ *           example:
+ *             code: 201
+ *             error: false
+ *             messages: ["Usuário criado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "6b4e8f8e-708e-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Leandro Macedo"
+ *                 document: null
+ *                 email: "fmlimao@gmail.com"
+ *                 roleUuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f"
+ *                 roleName: "Administrador"
+ *                 active: 1
+ *                 createdAt: "2025-08-03 17:22:23"
+ *                 updatedAt: "2025-08-03 17:22:23"
  */
