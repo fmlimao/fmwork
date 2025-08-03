@@ -207,4 +207,49 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/InternalServerErrorResponse'
+ *
+ *   delete:
+ *     summary: Remove um usuário do inquilino
+ *     description: Remove um usuário específico do inquilino
+ *     tags: [⤷ Usuários do Inquilino]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: tenantUuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: UUID do inquilino
+ *         example: "288ad53d-4a1f-11f0-95b3-5299fd27ec4e"
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: UUID do usuário
+ *         example: "6b4e8f8e-708e-11f0-a5c2-fa4b97db6fe4"
+ *     responses:
+ *       204:
+ *         description: Usuário removido com sucesso
+ *       401:
+ *         description: Token inválido ou não fornecido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TenantUserNotFoundResponse'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  */
