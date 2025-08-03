@@ -2,7 +2,6 @@
  * @swagger
  * components:
  *   schemas:
- *
  *     ApiResponse:
  *       type: object
  *       properties:
@@ -95,7 +94,7 @@
  *           example:
  *             code: 401
  *             error: true
- *             messages: ["Usuário não encontrado."]
+ *             messages: ["Não autorizado"]
  *
  *     InternalServerErrorResponse:
  *       allOf:
@@ -219,5 +218,104 @@
  *                 - uuid: "550e8400-e29b-41d4-a716-446655440001"
  *                   name: "Empresa Exemplo 2"
  *
- *
+ *     Me:
+ *       type: object
+ *       properties:
+ *         user:
+ *           type: object
+ *           properties:
+ *             uuid:
+ *               type: string
+ *               format: uuid
+ *               description: UUID do usuário
+ *             name:
+ *               type: string
+ *               description: Nome do usuário
+ *             document:
+ *               type: string
+ *               description: Documento do usuário (CPF)
+ *             email:
+ *               type: string
+ *               format: email
+ *               description: Email do usuário
+ *             avatar:
+ *               type: string
+ *               description: URL do avatar do usuário
+ *         tenant:
+ *           type: object
+ *           properties:
+ *             uuid:
+ *               type: string
+ *               format: uuid
+ *               description: UUID do tenant
+ *             name:
+ *               type: string
+ *               description: Nome do tenant
+ *             description:
+ *               type: string
+ *               description: Descrição do tenant
+ *             appTitle:
+ *               type: string
+ *               description: Título da aplicação
+ *             appShortTitle:
+ *               type: string
+ *               description: Título curto da aplicação
+ *             isRoot:
+ *               type: integer
+ *               description: Indica se é o tenant raiz
+ *         role:
+ *           type: object
+ *           properties:
+ *             uuid:
+ *               type: string
+ *               format: uuid
+ *               description: UUID do papel
+ *             name:
+ *               type: string
+ *               description: Nome do papel
+ *             description:
+ *               type: string
+ *               description: Descrição do papel
+ *         permissions:
+ *           type: array
+ *           description: Lista de permissões do usuário
+ *           items:
+ *             type: object
+ *             properties:
+ *               uuid:
+ *                 type: string
+ *                 format: uuid
+ *                 description: UUID da permissão
+ *               name:
+ *                 type: string
+ *                 description: Nome da permissão
+ *               slug:
+ *                 type: string
+ *                 description: Slug da permissão
+ *               description:
+ *                 type: string
+ *                 description: Descrição da permissão
+ *       example:
+ *         user:
+ *           uuid: "2fe91aa9-4a20-11f0-95b3-5299fd27ec4e"
+ *           name: "Administrador"
+ *           document: "000.000.000-00"
+ *           email: "admin@projetosfm.com.br"
+ *           avatar: "//www.gravatar.com/avatar/0c62b0063771ce3f12502c4e39c711f3?s=200&d=retro&r=g"
+ *         tenant:
+ *           uuid: "288ad53d-4a1f-11f0-95b3-5299fd27ec4e"
+ *           name: "Projetos FM"
+ *           description: "Projeto principal do sistema"
+ *           appTitle: "Projetos FM"
+ *           appShortTitle: "PFM"
+ *           isRoot: 1
+ *         role:
+ *           uuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f"
+ *           name: "Administrador"
+ *           description: "Acesso total ao sistema"
+ *         permissions:
+ *           - uuid: "264ef91a-59b4-11f0-9142-3eaed10807e8"
+ *             name: "Permissão Total - Inquilino"
+ *             slug: "full-tenant-permission"
+ *             description: "Permite todas as ações no inquilino"
  */
