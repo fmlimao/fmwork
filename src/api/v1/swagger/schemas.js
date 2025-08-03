@@ -428,4 +428,75 @@
  *         active: 1
  *         createdAt: "2025-08-03 00:35:02"
  *         updatedAt: "2025-08-03 00:35:02"
+ *
+ *     TenantListResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 meta:
+ *                   type: object
+ *                   properties:
+ *                     totalCount:
+ *                       type: integer
+ *                       description: Total de itens na lista
+ *                     filteredCount:
+ *                       type: integer
+ *                       description: Total de itens filtrados na lista
+ *                     start:
+ *                       type: integer
+ *                       description: Índice inicial da lista
+ *                     length:
+ *                       type: integer
+ *                       description: Limite de itens por página
+ *                     pages:
+ *                       type: integer
+ *                       description: Total de páginas
+ *                     currentPage:
+ *                       type: integer
+ *                       description: Página atual
+ *                     orderBy:
+ *                       type: object
+ *                       properties:
+ *                         column:
+ *                           type: string
+ *                           description: Campo a ser ordenado
+ *                         dir:
+ *                           type: string
+ *                           description: Direção da ordenação (ASC ou DESC)
+ *                 data:
+ *                   type: array
+ *                   description: Lista de tenants
+ *                   items:
+ *                     $ref: '#/components/schemas/Tenant'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             content:
+ *               meta:
+ *                 totalCount: 1
+ *                 filteredCount: 1
+ *                 start: 0
+ *                 length: 10
+ *                 pages: 1
+ *                 currentPage: 1
+ *                 orderBy:
+ *                   column: "name"
+ *                   dir: "ASC"
+ *               data: [
+ *                 {
+ *                   uuid: "288ad53d-4a1f-11f0-95b3-5299fd27ec4e",
+ *                   name: "Projetos FM",
+ *                   description: "Projeto principal do sistema",
+ *                   appTitle: "Projetos FM",
+ *                   appShortTitle: "PFM",
+ *                   isRoot: 1,
+ *                   active: 1,
+ *                   createdAt: "2025-08-03 00:35:02",
+ *                   updatedAt: "2025-08-03 00:35:02"
+ *                 }
+ *               ]
  */
