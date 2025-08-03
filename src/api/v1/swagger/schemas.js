@@ -1789,4 +1789,68 @@
  *                 active: 1
  *                 createdAt: "2025-08-03 17:22:23"
  *                 updatedAt: "2025-08-03 17:22:23"
+ *
+ *     TenantUserUpdateRequest:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do usuário
+ *         document:
+ *           type: string
+ *           nullable: true
+ *           description: Documento do usuário (CPF)
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Senha do usuário
+ *         roleUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel que será atribuído ao usuário
+ *       example:
+ *         name: "Leandro Macedo 2"
+ *         document: "22222222222"
+ *         email: "fmlimao2@gmail.com"
+ *         password: "222222"
+ *         roleUuid: "19ea4608-708f-11f0-a5c2-fa4b97db6fe4"
+ *
+ *     TenantUserUpdateEmptyFieldsResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Nenhum campo foi informado."]
+ *
+ *     TenantUserUpdateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/TenantUser'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Usuário atualizado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "6b4e8f8e-708e-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Leandro Macedo 2"
+ *                 document: "22222222222"
+ *                 email: "fmlimao2@gmail.com"
+ *                 roleUuid: "19ea4608-708f-11f0-a5c2-fa4b97db6fe4"
+ *                 roleName: "Gerente"
+ *                 active: 1
+ *                 createdAt: "2025-08-03 17:22:23"
+ *                 updatedAt: "2025-08-03 17:27:32"
  */
