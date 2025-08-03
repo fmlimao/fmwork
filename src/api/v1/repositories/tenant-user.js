@@ -66,8 +66,6 @@ const localFilters = {
   totalQuery: `
     SELECT COUNT(u.user_id) AS total
     FROM users u
-    INNER JOIN tenants t ON t.tenant_id = u.tenant_id AND t.deleted_at IS NULL
-    INNER JOIN roles r ON r.role_id = u.role_id AND r.deleted_at IS NULL
     WHERE u.deleted_at IS NULL
   `,
   principalQuery: `
@@ -76,15 +74,12 @@ const localFilters = {
       u.name,
       u.document,
       u.email,
-      t.uuid AS tenantUuid,
-      t.name AS tenantName,
       r.uuid AS roleUuid,
       r.name AS roleName,
       u.active,
       u.created_at AS createdAt,
       u.updated_at AS updatedAt
     FROM users u
-    INNER JOIN tenants t ON t.tenant_id = u.tenant_id AND t.deleted_at IS NULL
     INNER JOIN roles r ON r.role_id = u.role_id AND r.deleted_at IS NULL
     WHERE u.deleted_at IS NULL
   `,
@@ -95,15 +90,12 @@ const localFilters = {
       u.name,
       u.document,
       u.email,
-      t.uuid AS tenantUuid,
-      t.name AS tenantName,
       r.uuid AS roleUuid,
       r.name AS roleName,
       u.active,
       u.created_at AS createdAt,
       u.updated_at AS updatedAt
     FROM users u
-    INNER JOIN tenants t ON t.tenant_id = u.tenant_id AND t.deleted_at IS NULL
     INNER JOIN roles r ON r.role_id = u.role_id AND r.deleted_at IS NULL
     WHERE u.deleted_at IS NULL
   `
@@ -111,14 +103,15 @@ const localFilters = {
 
 module.exports = class UserRepository {
   static async listAll (args = {}) {
+    const tenant = args.tenant
     const withIds = args.withIds || false
 
     return Promise.resolve()
       .then(async () => {
         const queryOptions = generateOptions(args.filter)
 
-        const fixedWhereCriteria = []
-        const fixedWhereValues = {}
+        const fixedWhereCriteria = ['u.tenant_id = :tenantId']
+        const fixedWhereValues = { tenantId: tenant.tenantId }
 
         const dynamicWhereCriteria = []
         const dynamicWhereValues = {}
@@ -194,6 +187,7 @@ module.exports = class UserRepository {
     const res = args.res
     const ret = req.ret()
     const uuid = args.uuid
+    const tenant = args.tenant
     const withIds = args.withIds || false
 
     return Promise.resolve()
@@ -211,10 +205,12 @@ module.exports = class UserRepository {
 
         const query = `
           ${withIds ? localFilters.principalQueryWithIds : localFilters.principalQuery}
+          AND u.tenant_id = :tenantId
           AND u.uuid = :userUuid;
         `
 
         const values = {
+          tenantId: tenant.tenantId,
           userUuid: uuid
         }
 
@@ -227,25 +223,24 @@ module.exports = class UserRepository {
     const res = args.res
     const ret = req.ret()
     const fields = args.fields
+    const tenant = args.tenant
 
     return Promise.resolve()
       .then(async () => {
         // Recebemos as variáveis
-        const { name, document, email, password, tenantUuid, roleUuid } = fields
+        const { name, document, email, password, roleUuid } = fields
 
         if (!validator(res, ret, {
           name,
           document,
           email,
           password,
-          tenantUuid,
           roleUuid
         }, {
           name: 'required|string|min:3|max:255',
           document: 'string|min:11|max:14',
           email: 'required|email',
           password: 'required|string|min:6|max:255',
-          tenantUuid: 'required|uuid',
           roleUuid: 'required|uuid'
         })) {
           ret.setError(true)
@@ -260,35 +255,9 @@ module.exports = class UserRepository {
             document,
             email,
             password,
-            tenantUuid,
             roleUuid
           }
         }
-      })
-      // Verifico se o inquilino existe
-      .then(async next => {
-        const tenant = await conn.getOne(`
-          SELECT tenant_id AS tenantId
-          FROM tenants
-          WHERE deleted_at IS NULL
-          AND active = 1
-          AND uuid = ?
-          LIMIT 1;
-        `, [
-          next.fields.tenantUuid
-        ])
-
-        if (!tenant) {
-          ret.setCode(400)
-          ret.setFieldError('tenantUuid', true)
-          ret.addFieldMessage('tenantUuid', 'Inquilino não encontrado.')
-          ret.addMessage('Verifique todos os campos.')
-          throw ret
-        }
-
-        next.fields.tenantId = tenant.tenantId
-
-        return next
       })
       // Verifico se o papel existe
       .then(async next => {
@@ -301,7 +270,7 @@ module.exports = class UserRepository {
           AND uuid = ?
           LIMIT 1;
         `, [
-          next.fields.tenantId,
+          tenant.tenantId,
           next.fields.roleUuid
         ])
 
@@ -327,7 +296,7 @@ module.exports = class UserRepository {
           AND email = ?
           LIMIT 1;
         `, [
-          next.fields.tenantId,
+          tenant.tenantId,
           next.fields.email
         ])
 
@@ -360,7 +329,7 @@ module.exports = class UserRepository {
           next.fields.document || null,
           next.fields.email,
           next.fields.password,
-          next.fields.tenantId,
+          tenant.tenantId,
           next.fields.roleId
         ])
 
@@ -373,7 +342,8 @@ module.exports = class UserRepository {
         return this.findByUuid({
           req,
           res,
-          uuid
+          uuid,
+          tenant
         })
       })
   }
@@ -383,6 +353,7 @@ module.exports = class UserRepository {
     const res = args.res
     const ret = req.ret()
     const fields = args.fields
+    const tenant = args.tenant
     const user = args.user
 
     return Promise.resolve()
@@ -442,24 +413,6 @@ module.exports = class UserRepository {
           fields: updateFields
         }
       })
-      // Busco o inquilino do usuario
-      .then(async next => {
-        const tenant = await conn.getOne(`
-          SELECT t.tenant_id AS tenantId
-          FROM tenants t
-          INNER JOIN users u ON u.tenant_id = t.tenant_id AND u.deleted_at IS NULL
-          WHERE t.deleted_at IS NULL
-          AND t.active = 1
-          AND u.user_id = ?
-          LIMIT 1;
-        `, [
-          user.userId
-        ])
-
-        next.fields.tenantId = tenant.tenantId
-
-        return next
-      })
       // Verifico se o papel existe
       .then(async next => {
         if (next.fields.roleUuid) {
@@ -472,7 +425,7 @@ module.exports = class UserRepository {
             AND uuid = ?
             LIMIT 1;
           `, [
-            next.fields.tenantId,
+            tenant.tenantId,
             next.fields.roleUuid
           ])
 
@@ -502,7 +455,7 @@ module.exports = class UserRepository {
             AND email = ?
             LIMIT 1;
           `, [
-            next.fields.tenantId,
+            tenant.tenantId,
             user.userId,
             next.fields.email
           ])
@@ -529,8 +482,6 @@ module.exports = class UserRepository {
       // Vamos atualizar o perfil
       .then(async next => {
         try {
-          delete next.fields.tenantId
-
           await conn.update(`
             UPDATE users
             SET ${Object.keys(next.fields).map(key => `${key} = :${key}`).join(', ')},
@@ -550,7 +501,8 @@ module.exports = class UserRepository {
         return this.findByUuid({
           req,
           res,
-          uuid: user.uuid
+          uuid: user.uuid,
+          tenant
         })
       })
   }
@@ -559,6 +511,7 @@ module.exports = class UserRepository {
     const req = args.req
     const res = args.res
     const ret = req.ret()
+    const tenant = args.tenant
     const user = args.user
 
     return Promise.resolve()
@@ -583,7 +536,8 @@ module.exports = class UserRepository {
         return await this.findByUuid({
           req,
           res,
-          uuid: user.uuid
+          uuid: user.uuid,
+          tenant
         })
       })
   }

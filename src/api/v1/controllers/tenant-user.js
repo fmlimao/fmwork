@@ -1,4 +1,4 @@
-const UserRepository = require('../repositories/user')
+const UserRepository = require('../repositories/tenant-user')
 
 const list = async (req, res) => {
   res.success(await UserRepository.listAll({
@@ -46,6 +46,7 @@ const update = async (req, res) => {
         req,
         res,
         fields: req.body || {},
+        tenant: req.tenantRoute,
         user: req.userRoute
       })
     }
@@ -59,6 +60,7 @@ const remove = async (req, res) => {
       data: await UserRepository.delete({
         req,
         res,
+        tenant: req.tenantRoute,
         user: req.userRoute
       })
     }
