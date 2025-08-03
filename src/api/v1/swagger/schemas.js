@@ -318,4 +318,42 @@
  *             name: "Permissão Total - Inquilino"
  *             slug: "full-tenant-permission"
  *             description: "Permite todas as ações no inquilino"
+ *
+ *     MeResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 me:
+ *                   $ref: '#/components/schemas/Me'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             content:
+ *               me:
+ *                 user:
+ *                   uuid: "2fe91aa9-4a20-11f0-95b3-5299fd27ec4e"
+ *                   name: "Administrador"
+ *                   document: "000.000.000-00"
+ *                   email: "admin@projetosfm.com.br"
+ *                   avatar: "//www.gravatar.com/avatar/0c62b0063771ce3f12502c4e39c711f3?s=200&d=retro&r=g"
+ *                 tenant:
+ *                   uuid: "288ad53d-4a1f-11f0-95b3-5299fd27ec4e"
+ *                   name: "Projetos FM"
+ *                   description: "Projeto principal do sistema"
+ *                   appTitle: "Projetos FM"
+ *                   appShortTitle: "PFM"
+ *                   isRoot: 1
+ *                 role:
+ *                   uuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f"
+ *                   name: "Administrador"
+ *                   description: "Acesso total ao sistema"
+ *                 permissions:
+ *                   - uuid: "264ef91a-59b4-11f0-9142-3eaed10807e8"
+ *                     name: "Permissão Total - Inquilino"
+ *                     slug: "full-tenant-permission"
+ *                     description: "Permite todas as ações no inquilino"
  */
