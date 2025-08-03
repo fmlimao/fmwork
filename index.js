@@ -10,6 +10,8 @@ const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
 const morgan = require('morgan')
 const path = require('path')
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpecs = require('./src/api/v1/swagger')
 // const { I18n } = require('i18n')
 
 const app = express()
@@ -41,6 +43,9 @@ app.use(require('./src/middlewares/sintaxe-error'))
 if (DEBUG) {
   app.use(morgan('dev'))
 }
+
+// API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 // API
 app.use('/api/v1', require('./src/api/v1/routes'))
