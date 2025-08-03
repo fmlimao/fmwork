@@ -1041,4 +1041,69 @@
  *                 active: 1
  *                 createdAt: "2024-01-01 10:00:00"
  *                 updatedAt: "2024-01-01 10:00:00"
+ *
+ *     UserUpdateRequest:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do usuário
+ *         document:
+ *           type: string
+ *           description: Documento do usuário (CPF). Aceita apenas letras e números
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Senha do usuário
+ *         roleUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel que será atribuído ao usuário
+ *       example:
+ *         name: "João Silva Editado"
+ *         document: "98765432100"
+ *         email: "joao.silva.novo@exemplo.com"
+ *         password: "nova123"
+ *         roleUuid: "550e8400-e29b-41d3-a456-446614174005"
+ *
+ *     UserUpdateEmptyFieldsResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Nenhum campo foi informado."]
+ *
+ *     UserUpdateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Usuário atualizado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "550e8400-e29b-41d3-a456-446614174001"
+ *                 name: "João Silva Editado"
+ *                 document: "98765432100"
+ *                 email: "joao.silva.novo@exemplo.com"
+ *                 tenantUuid: "550e8400-e29b-41d3-a456-446614174002"
+ *                 tenantName: "Empresa Exemplo"
+ *                 roleUuid: "550e8400-e29b-41d3-a456-446614174005"
+ *                 roleName: "Analista"
+ *                 active: 1
+ *                 createdAt: "2024-01-01 10:00:00"
+ *                 updatedAt: "2024-01-01 11:30:00"
  */

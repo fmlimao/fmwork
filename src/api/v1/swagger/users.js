@@ -110,4 +110,59 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/InternalServerErrorResponse'
+ *
+ *   put:
+ *     summary: Atualiza um usuário
+ *     description: Atualiza os dados de um usuário específico
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: UUID do usuário
+ *         example: "550e8400-e29b-41d3-a456-446614174001"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserUpdateRequest'
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserUpdateResponse'
+ *       400:
+ *         description: Erro de validação nos dados enviados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - $ref: '#/components/schemas/UserCreateValidationResponse'
+ *                 - $ref: '#/components/schemas/UserUpdateEmptyFieldsResponse'
+ *       401:
+ *         description: Token inválido ou não fornecido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserNotFoundResponse'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  */
