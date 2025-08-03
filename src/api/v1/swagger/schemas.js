@@ -1287,4 +1287,55 @@
  *                 active: 1
  *                 createdAt: "2025-08-03 16:37:14"
  *                 updatedAt: "2025-08-03 16:37:14"
+ *
+ *     RoleUpdateRequest:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do papel
+ *         description:
+ *           type: string
+ *           nullable: true
+ *           description: Descrição do papel
+ *         active:
+ *           type: integer
+ *           enum: [0, 1]
+ *           description: Status do papel (0 = inativo, 1 = ativo)
+ *       example:
+ *         name: "Gerente 2"
+ *         description: "Chefe da galera 2"
+ *         active: 0
+ *
+ *     RoleUpdateEmptyFieldsResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Nenhum campo foi informado."]
+ *
+ *     RoleUpdateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Role'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Papel atualizado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "1c964865-7088-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Gerente 2"
+ *                 description: "Chefe da galera 2"
+ *                 active: 0
+ *                 createdAt: "2025-08-03 16:37:14"
+ *                 updatedAt: "2025-08-03 16:51:09"
  */
