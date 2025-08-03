@@ -1535,4 +1535,93 @@
  *                 permissionDescription: "Permite visualizar o dashboard do tenant"
  *                 permissionCreatedAt: "2025-08-03 16:37:11"
  *                 permissionUpdatedAt: "2025-08-03 16:37:11"
+ *
+ *     TenantUser:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do usuário
+ *         name:
+ *           type: string
+ *           description: Nome do usuário
+ *         document:
+ *           type: string
+ *           nullable: true
+ *           description: Documento do usuário (CPF)
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         roleUuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel do usuário
+ *         roleName:
+ *           type: string
+ *           description: Nome do papel do usuário
+ *         active:
+ *           type: integer
+ *           enum: [0, 1]
+ *           description: Status do usuário (0 = inativo, 1 = ativo)
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação do usuário
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data da última atualização do usuário
+ *       example:
+ *         uuid: "2fe91aa9-4a20-11f0-95b3-5299fd27ec4e"
+ *         name: "Administrador"
+ *         document: "000.000.000-00"
+ *         email: "admin@projetosfm.com.br"
+ *         roleUuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f"
+ *         roleName: "Administrador"
+ *         active: 1
+ *         createdAt: "2025-08-03 16:37:11"
+ *         updatedAt: "2025-08-03 16:37:11"
+ *
+ *     TenantUserListResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ListResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   description: Lista de usuários do inquilino
+ *                   items:
+ *                     $ref: '#/components/schemas/TenantUser'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             content:
+ *               meta:
+ *                 totalCount: 1
+ *                 filteredCount: 1
+ *                 start: 0
+ *                 length: 10
+ *                 pages: 1
+ *                 currentPage: 1
+ *                 orderBy:
+ *                   column: "name"
+ *                   dir: "ASC"
+ *               data: [
+ *                 {
+ *                   uuid: "2fe91aa9-4a20-11f0-95b3-5299fd27ec4e",
+ *                   name: "Administrador",
+ *                   document: "000.000.000-00",
+ *                   email: "admin@projetosfm.com.br",
+ *                   roleUuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f",
+ *                   roleName: "Administrador",
+ *                   active: 1,
+ *                   createdAt: "2025-08-03 16:37:11",
+ *                   updatedAt: "2025-08-03 16:37:11"
+ *                 }
+ *               ]
  */

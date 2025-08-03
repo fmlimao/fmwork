@@ -18,4 +18,7 @@
  *
  *   - name: ⤷ Papéis
  *     description: Gerenciamento de papéis de usuários do inquilino
+ *
+ *   - name: ⤷ Usuários do Inquilino
+ *     description: Gerenciamento de usuários dentro do inquilino
  */

@@ -37,7 +37,8 @@ const options = {
     './src/api/v1/swagger/tenants.js',
     './src/api/v1/swagger/users.js',
     './src/api/v1/swagger/roles.js',
-    './src/api/v1/swagger/permissions.js'
+    './src/api/v1/swagger/permissions.js',
+    './src/api/v1/swagger/tenant-users.js'
   ]
 }
 
