@@ -1,14 +1,16 @@
 /**
  * @swagger
  * tags:
- *   name: Tenants
- *   description: Gerenciamento de inquilinos (tenants)
+ *   - name: Autenticação
+ *     description: Autenticação e gerenciamento de sessão
+ *   - name: Inquilinos
+ *     description: Gerenciamento de inquilinos (tenants)
  *
  * /tenants:
  *   get:
  *     summary: Lista todos os inquilinos
  *     description: Retorna uma lista paginada de todos os inquilinos do sistema
- *     tags: [Tenants]
+ *     tags: [Inquilinos]
  *     security:
  *       - bearerAuth: []
  *     responses:
