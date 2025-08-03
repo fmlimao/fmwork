@@ -35,7 +35,8 @@ const options = {
     './src/api/v1/swagger/schemas.js', // Depois os schemas
     './src/api/v1/swagger/auth.js', // E por fim as rotas
     './src/api/v1/swagger/tenants.js',
-    './src/api/v1/swagger/users.js'
+    './src/api/v1/swagger/users.js',
+    './src/api/v1/swagger/roles.js'
   ]
 }
 

@@ -1106,4 +1106,84 @@
  *                 active: 1
  *                 createdAt: "2024-01-01 10:00:00"
  *                 updatedAt: "2024-01-01 11:30:00"
+ *
+ *     Role:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string
+ *           format: uuid
+ *           description: UUID do papel
+ *         name:
+ *           type: string
+ *           description: Nome do papel
+ *         description:
+ *           type: string
+ *           nullable: true
+ *           description: Descrição do papel
+ *         active:
+ *           type: integer
+ *           enum: [0, 1]
+ *           description: Status do papel (0 = inativo, 1 = ativo)
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação do papel
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Data da última atualização do papel
+ *       example:
+ *         uuid: "550e8400-e29b-41d3-a456-446614174001"
+ *         name: "Gerente de Vendas"
+ *         description: "Responsável pela equipe de vendas"
+ *         active: 1
+ *         createdAt: "2024-01-01 10:00:00"
+ *         updatedAt: "2024-01-01 10:00:00"
+ *
+ *     RoleListResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ListResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   description: Lista de papéis
+ *                   items:
+ *                     $ref: '#/components/schemas/Role'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             content:
+ *               meta:
+ *                 totalCount: 2
+ *                 filteredCount: 2
+ *                 start: 0
+ *                 length: 10
+ *                 pages: 1
+ *                 currentPage: 1
+ *                 orderBy:
+ *                   column: "name"
+ *                   dir: "ASC"
+ *               data: [
+ *                 {
+ *                   uuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f",
+ *                   name: "Administrador",
+ *                   description: "Acesso total ao sistema",
+ *                   active: 1,
+ *                   createdAt: "2025-08-03 00:35:02",
+ *                   updatedAt: "2025-08-03 00:35:02"
+ *                 },
+ *                 {
+ *                   uuid: "4b5cf997-7002-11f0-a5c2-fa4b97db6fe4",
+ *                   name: "Gerente",
+ *                   description: null,
+ *                   active: 1,
+ *                   createdAt: "2025-08-03 00:39:20",
+ *                   updatedAt: "2025-08-03 00:39:20"
+ *                 }
+ *               ]
  */
