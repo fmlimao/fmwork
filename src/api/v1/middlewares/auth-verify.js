@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const LoginRepository = require('../repositories/login')
+const authRepository = require('../repositories/auth')
 
 module.exports = async (req, res, next) => {
   let ret = req.ret()
@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
     const uuid = decoded.uuid
 
     // Verifico se tem um usuário com o uuid informado
-    const user = await LoginRepository.findOneByUuid({
+    const user = await authRepository.findOneByUuid({
       req,
       res,
       ret,
@@ -41,7 +41,7 @@ module.exports = async (req, res, next) => {
     })
 
     // Buscar os dados do tenant
-    const tenant = await LoginRepository.getTenantByUserUuid({
+    const tenant = await authRepository.getTenantByUserUuid({
       req,
       res,
       ret,
@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
     })
 
     // Buscar os dados do perfil
-    const role = await LoginRepository.getRoleByUserUuid({
+    const role = await authRepository.getRoleByUserUuid({
       req,
       res,
       ret,
@@ -57,7 +57,7 @@ module.exports = async (req, res, next) => {
     })
 
     // Buscar as permissões do usuário
-    const permissions = await LoginRepository.getPermissionsByUserUuid({
+    const permissions = await authRepository.getPermissionsByUserUuid({
       req,
       res,
       ret,
@@ -72,7 +72,6 @@ module.exports = async (req, res, next) => {
     }
 
     next()
-    // res.json(req.auth)
   } catch (error) {
     /*
 

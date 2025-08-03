@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const HomeController = require('./controllers/home')
-// const AuthController = require('./controllers/auth')
+const AuthController = require('./controllers/auth')
 
 const TenantController = require('./controllers/tenant')
 const TenantUserController = require('./controllers/tenant-user')
@@ -11,7 +11,7 @@ const RoleController = require('./controllers/role')
 const RolePermissionController = require('./controllers/role-permission')
 const UserController = require('./controllers/user')
 
-// const AuthVerifyMiddleware = require('./middlewares/auth-verify')
+const AuthVerifyMiddleware = require('./middlewares/auth-verify')
 const GetTenantMiddleware = require('./middlewares/get-tenant')
 const GetTenantUserMiddleware = require('./middlewares/get-tenant-user')
 
@@ -22,13 +22,14 @@ const GetUserMiddleware = require('./middlewares/get-user')
 // Home
 router.get('/', HomeController.home)
 
-// // Autenticação
-// router.post('/auth', AuthController.loginPost)
+// Autenticação
+router.post('/auth', AuthController.login)
 
-// // Verificação de autenticação
-// router.use(AuthVerifyMiddleware)
+// Verificação de autenticação
+router.use(AuthVerifyMiddleware)
 
-// router.get('/auth/me', AuthController.meGet)
+// Dados do usuário autenticado
+router.get('/auth/me', AuthController.me)
 
 // Acesso Administrativo
 

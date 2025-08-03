@@ -1,8 +1,8 @@
 const conn = require('../../../database/conn-mysql')
 const bcrypt = require('bcrypt')
 
-module.exports = class LoginRepository {
-  static async findOneByEmailAndPassword (args = {}) {
+module.exports = class AuthRepository {
+  static async loginWithEmailAndPassword (args = {}) {
     // const res = args.res
     const ret = args.ret
     const email = args.email
@@ -98,9 +98,9 @@ module.exports = class LoginRepository {
             t.uuid,
             t.name,
             t.description,
-            t.app_title,
-            t.app_short_title,
-            t.is_root
+            t.app_title AS appTitle,
+            t.app_short_title AS appShortTitle,
+            t.is_root AS isRoot
           FROM users u
           INNER JOIN tenants t ON u.tenant_id = t.tenant_id AND t.deleted_at IS NULL AND t.active = 1
           WHERE u.deleted_at IS NULL
@@ -138,8 +138,7 @@ module.exports = class LoginRepository {
             r.description
           FROM users u
           INNER JOIN tenants t ON u.tenant_id = t.tenant_id AND t.deleted_at IS NULL AND t.active = 1
-          INNER JOIN roles r ON r.tenant_id = t.tenant_id AND r.deleted_at IS NULL AND r.active = 1
-          INNER JOIN user_roles ur ON u.user_id = ur.user_id AND t.tenant_id = ur.tenant_id AND ur.deleted_at IS NULL
+          INNER JOIN roles r ON r.tenant_id = t.tenant_id AND u.role_id = r.role_id AND r.deleted_at IS NULL AND r.active = 1
           WHERE u.deleted_at IS NULL
           AND u.active = 1
           AND u.uuid = :uuid
@@ -176,9 +175,8 @@ module.exports = class LoginRepository {
             p.description
           FROM users u
           INNER JOIN tenants t ON u.tenant_id = t.tenant_id AND t.deleted_at IS NULL AND t.active = 1
-          INNER JOIN roles r ON r.tenant_id = t.tenant_id AND r.deleted_at IS NULL AND r.active = 1
-          INNER JOIN user_roles ur ON u.user_id = ur.user_id AND t.tenant_id = ur.tenant_id AND ur.deleted_at IS NULL
-          INNER JOIN role_permissions rp ON r.role_id = rp.role_id AND t.tenant_id = rp.tenant_id AND rp.deleted_at IS NULL
+          INNER JOIN roles r ON r.tenant_id = t.tenant_id AND u.role_id = r.role_id AND r.deleted_at IS NULL AND r.active = 1
+          INNER JOIN role_permissions rp ON r.role_id = rp.role_id AND rp.deleted_at IS NULL
           INNER JOIN permissions p ON rp.permission_id = p.permission_id AND p.deleted_at IS NULL
           WHERE u.deleted_at IS NULL
           AND u.active = 1

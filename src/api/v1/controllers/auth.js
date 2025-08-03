@@ -1,7 +1,7 @@
-const LoginRepository = require('../repositories/login')
+const AuthRepository = require('../repositories/auth')
 const jwt = require('jsonwebtoken')
 
-const loginPost = async (req, res) => {
+const login = async (req, res) => {
   let ret = req.ret()
 
   try {
@@ -47,7 +47,7 @@ const loginPost = async (req, res) => {
     }
 
     // Vamos tentar procurar o usuário
-    const user = await LoginRepository.findOneByEmailAndPassword({
+    const user = await AuthRepository.loginWithEmailAndPassword({
       req,
       res,
       ret,
@@ -79,7 +79,7 @@ const loginPost = async (req, res) => {
   }
 }
 
-const meGet = async (req, res) => {
+const me = async (req, res) => {
   let ret = req.ret()
 
   try {
@@ -93,6 +93,6 @@ const meGet = async (req, res) => {
 }
 
 module.exports = {
-  loginPost,
-  meGet
+  login,
+  me
 }
