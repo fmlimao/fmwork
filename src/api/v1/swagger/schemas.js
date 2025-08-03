@@ -16,6 +16,10 @@
  *           items:
  *             type: string
  *             description: Mensagem de erro ou sucesso
+ *       example:
+ *         code: 200
+ *         error: false
+ *         messages: []
  *
  *     NotFoundErrorResponse:
  *       allOf:
@@ -51,30 +55,12 @@
  *               default: ["Verifique todos os campos."]
  *             form:
  *               type: object
- *               description: Formulário de erro
- *               properties:
- *                 id-do-campo:
- *                   type: object
- *                   description: Campo que causou o erro
- *                   properties:
- *                     error:
- *                       type: boolean
- *                       description: Indica se houve erro no campo
- *                     messages:
- *                       type: array
- *                       items:
- *                         type: string
- *                         description: Mensagem de erro ou sucesso
+ *               description: Formulário de erro com os campos que falharam na validação
  *           example:
  *             code: 400
  *             error: true
  *             messages: ["Verifique todos os campos."]
- *             form: {
- *               name: {
- *                 error: true,
- *                 messages: ["Campo obrigatório."]
- *               }
- *             }
+ *             form: {}
  *
  *     InvalidCredentialsResponse:
  *       allOf:
@@ -461,4 +447,64 @@
  *                   updatedAt: "2025-08-03 00:35:02"
  *                 }
  *               ]
+ *
+ *     TenantCreateValidationResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ValidationErrorResponse'
+ *         - type: object
+ *           properties:
+ *             form:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo nome
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo nome
+ *                 appTitle:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo título da aplicação
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo título da aplicação
+ *                 appShortTitle:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: boolean
+ *                       description: Indica se há erro no campo título curto da aplicação
+ *                     messages:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Mensagens de erro do campo título curto da aplicação
+ *           example:
+ *             code: 400
+ *             error: true
+ *             messages: ["Verifique todos os campos."]
+ *             form: {
+ *               name: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               appTitle: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               },
+ *               appShortTitle: {
+ *                 error: true,
+ *                 messages: ["Campo obrigatório."]
+ *               }
+ *             }
  */
