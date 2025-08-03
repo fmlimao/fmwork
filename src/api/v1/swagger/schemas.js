@@ -1754,4 +1754,39 @@
  *                 active: 1
  *                 createdAt: "2025-08-03 17:22:23"
  *                 updatedAt: "2025-08-03 17:22:23"
+ *
+ *     TenantUserNotFoundResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           example:
+ *             code: 404
+ *             error: false
+ *             messages: ["Usuário não encontrado."]
+ *
+ *     TenantUserResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/TenantUser'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Usuário encontrado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "6b4e8f8e-708e-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Leandro Macedo"
+ *                 document: null
+ *                 email: "fmlimao@gmail.com"
+ *                 roleUuid: "4fe91aa9-4a20-11f0-95b3-5299fd27ec4f"
+ *                 roleName: "Administrador"
+ *                 active: 1
+ *                 createdAt: "2025-08-03 17:22:23"
+ *                 updatedAt: "2025-08-03 17:22:23"
  */
