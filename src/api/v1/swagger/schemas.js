@@ -52,14 +52,14 @@
  *               type: array
  *               items:
  *                 type: string
- *               default: ["Verifique todos os campos."]
+ *               description: Mensagens de erro gerais
  *             form:
  *               type: object
  *               description: Formulário de erro com os campos que falharam na validação
  *           example:
  *             code: 400
  *             error: true
- *             messages: ["Verifique todos os campos."]
+ *             messages: []
  *             form: {}
  *
  *     InvalidCredentialsResponse:
@@ -507,4 +507,60 @@
  *                 messages: ["Campo obrigatório."]
  *               }
  *             }
+ *           x-inherits:
+ *             messages: []  # Sobrescreve as mensagens herdadas
+ *
+ *     TenantCreateRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *         - appTitle
+ *         - appShortTitle
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do inquilino
+ *         description:
+ *           type: string
+ *           description: Descrição do inquilino
+ *         appTitle:
+ *           type: string
+ *           description: Título da aplicação
+ *         appShortTitle:
+ *           type: string
+ *           description: Título curto da aplicação
+ *       example:
+ *         name: "Nogueira"
+ *         description: "Contabilidade Nogueira"
+ *         appTitle: "Nogueira"
+ *         appShortTitle: "NGR"
+ *
+ *     TenantCreateResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             code:
+ *               type: integer
+ *               default: 201
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Tenant'
+ *           example:
+ *             code: 201
+ *             error: false
+ *             messages: ["Inquilino criado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "3c8c8f7e-707d-11f0-a5c2-fa4b97db6fe4"
+ *                 name: "Nogueira"
+ *                 description: "Contabilidade Nogueira"
+ *                 appTitle: "Nogueira"
+ *                 appShortTitle: "NGR"
+ *                 isRoot: 0
+ *                 active: 1
+ *                 createdAt: "2025-08-03 15:19:23"
+ *                 updatedAt: "2025-08-03 15:19:23"
  */

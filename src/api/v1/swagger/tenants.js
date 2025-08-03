@@ -32,4 +32,42 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/InternalServerErrorResponse'
+ *
+ *   post:
+ *     summary: Cria um novo inquilino
+ *     description: Cria um novo inquilino no sistema
+ *     tags: [Inquilinos]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TenantCreateRequest'
+ *     responses:
+ *       201:
+ *         description: Inquilino criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TenantCreateResponse'
+ *       400:
+ *         description: Erro de validação nos dados enviados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TenantCreateValidationResponse'
+ *       401:
+ *         description: Token inválido ou não fornecido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UnauthorizedErrorResponse'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/InternalServerErrorResponse'
  */
