@@ -1,6 +1,6 @@
 const TenantRepository = require('../repositories/tenant')
 
-const listGet = async (req, res) => {
+const list = async (req, res) => {
   res.success(await TenantRepository.listAll({
     req,
     res,
@@ -8,7 +8,7 @@ const listGet = async (req, res) => {
   }))
 }
 
-const createPost = async (req, res) => {
+const create = async (req, res) => {
   res.success({
     code: 201,
     messages: ['Inquilino criado com sucesso.'],
@@ -22,7 +22,7 @@ const createPost = async (req, res) => {
   })
 }
 
-const getOneGet = async (req, res) => {
+const getOne = async (req, res) => {
   const tenantRoute = req.tenantRoute
   delete tenantRoute.tenantId
 
@@ -35,7 +35,7 @@ const getOneGet = async (req, res) => {
   })
 }
 
-const updatePut = async (req, res) => {
+const update = async (req, res) => {
   res.success({
     code: 200,
     messages: ['Inquilino atualizado com sucesso.'],
@@ -50,7 +50,7 @@ const updatePut = async (req, res) => {
   })
 }
 
-const deleteDelete = async (req, res) => {
+const remove = async (req, res) => {
   res.success({
     code: 204,
     content: {
@@ -64,9 +64,9 @@ const deleteDelete = async (req, res) => {
 }
 
 module.exports = {
-  listGet,
-  createPost,
-  getOneGet,
-  updatePut,
-  deleteDelete
+  list,
+  create,
+  getOne,
+  update,
+  remove
 }

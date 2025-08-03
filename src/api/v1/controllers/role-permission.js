@@ -1,6 +1,6 @@
 const RolePermissionRepository = require('../repositories/role-permission')
 
-const listGet = async (req, res) => {
+const list = async (req, res) => {
   res.success(await RolePermissionRepository.listAll({
     req,
     res,
@@ -10,7 +10,7 @@ const listGet = async (req, res) => {
   }))
 }
 
-const addPost = async (req, res) => {
+const add = async (req, res) => {
   res.success({
     code: 201,
     messages: ['Permissão adicionada com sucesso.'],
@@ -26,7 +26,7 @@ const addPost = async (req, res) => {
   })
 }
 
-const getOneGet = async (req, res) => {
+const getOne = async (req, res) => {
   const rolePermissionRoute = req.rolePermissionRoute
   delete rolePermissionRoute.permissionId
 
@@ -39,7 +39,7 @@ const getOneGet = async (req, res) => {
   })
 }
 
-const removeDelete = async (req, res) => {
+const remove = async (req, res) => {
   res.success({
     code: 204,
     content: {
@@ -55,8 +55,8 @@ const removeDelete = async (req, res) => {
 }
 
 module.exports = {
-  listGet,
-  addPost,
-  getOneGet,
-  removeDelete
+  list,
+  add,
+  getOne,
+  remove
 }

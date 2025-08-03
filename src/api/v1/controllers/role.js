@@ -1,6 +1,6 @@
 const RoleRepository = require('../repositories/role')
 
-const listGet = async (req, res) => {
+const list = async (req, res) => {
   res.success(await RoleRepository.listAll({
     req,
     res,
@@ -9,7 +9,7 @@ const listGet = async (req, res) => {
   }))
 }
 
-const createPost = async (req, res) => {
+const create = async (req, res) => {
   res.success({
     code: 201,
     messages: ['Papel criado com sucesso.'],
@@ -24,7 +24,7 @@ const createPost = async (req, res) => {
   })
 }
 
-const getOneGet = async (req, res) => {
+const getOne = async (req, res) => {
   const roleRoute = req.roleRoute
   delete roleRoute.roleId
 
@@ -37,7 +37,7 @@ const getOneGet = async (req, res) => {
   })
 }
 
-const updatePut = async (req, res) => {
+const update = async (req, res) => {
   res.success({
     code: 200,
     messages: ['Papel atualizado com sucesso.'],
@@ -53,7 +53,7 @@ const updatePut = async (req, res) => {
   })
 }
 
-const deleteDelete = async (req, res) => {
+const remove = async (req, res) => {
   res.success({
     code: 204,
     content: {
@@ -68,9 +68,9 @@ const deleteDelete = async (req, res) => {
 }
 
 module.exports = {
-  listGet,
-  createPost,
-  getOneGet,
-  updatePut,
-  deleteDelete
+  list,
+  create,
+  getOne,
+  update,
+  remove
 }

@@ -1,6 +1,6 @@
 const UserRepository = require('../repositories/user')
 
-const listGet = async (req, res) => {
+const list = async (req, res) => {
   res.success(await UserRepository.listAll({
     req,
     res,
@@ -9,7 +9,7 @@ const listGet = async (req, res) => {
   }))
 }
 
-const createPost = async (req, res) => {
+const create = async (req, res) => {
   res.success({
     code: 201,
     messages: ['Usuário criado com sucesso.'],
@@ -24,7 +24,7 @@ const createPost = async (req, res) => {
   })
 }
 
-const getOneGet = async (req, res) => {
+const getOne = async (req, res) => {
   const userRoute = req.userRoute
   delete userRoute.userId
 
@@ -37,7 +37,7 @@ const getOneGet = async (req, res) => {
   })
 }
 
-const updatePut = async (req, res) => {
+const update = async (req, res) => {
   res.success({
     code: 200,
     messages: ['Usuário atualizado com sucesso.'],
@@ -53,7 +53,7 @@ const updatePut = async (req, res) => {
   })
 }
 
-const deleteDelete = async (req, res) => {
+const remove = async (req, res) => {
   res.success({
     code: 204,
     content: {
@@ -67,45 +67,10 @@ const deleteDelete = async (req, res) => {
   })
 }
 
-// const getRoleGet = async (req, res) => {
-//   const role = await UserRepository.getRole({
-//     req,
-//     res,
-//     tenant: req.tenantRoute,
-//     user: req.userRoute
-//   })
-
-//   res.success({
-//     code: 200,
-//     messages: [role ? 'Perfil do usuário encontrado com sucesso.' : 'Usuário não possui perfil.'],
-//     content: {
-//       data: role
-//     }
-//   })
-// }
-
-// const updateRolePatch = async (req, res) => {
-//   res.success({
-//     code: 200,
-//     messages: ['Perfil do usuário atualizado com sucesso.'],
-//     content: {
-//       data: await UserRepository.updateRole({
-//         req,
-//         res,
-//         fields: req.body || {},
-//         tenant: req.tenantRoute,
-//         user: req.userRoute
-//       })
-//     }
-//   })
-// }
-
 module.exports = {
-  listGet,
-  createPost,
-  getOneGet,
-  updatePut,
-  deleteDelete
-  // getRoleGet,
-  // updateRolePatch
+  list,
+  create,
+  getOne,
+  update,
+  remove
 }

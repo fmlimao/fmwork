@@ -1,4 +1,4 @@
-const homeGet = (req, res) => {
+const home = (req, res) => {
   const ret = req.ret()
 
   ret.addMessage('Servidor rodando com sucesso!')
@@ -8,5 +8,5 @@ const homeGet = (req, res) => {
 }
 
 module.exports = {
-  homeGet
+  home
 }

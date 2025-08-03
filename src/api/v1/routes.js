@@ -15,7 +15,7 @@ const GetRolePermissionMiddleware = require('./middlewares/get-role-permission')
 const GetUserMiddleware = require('./middlewares/get-user')
 
 // Home
-router.get('/', HomeController.homeGet)
+router.get('/', HomeController.home)
 
 // // Autenticação
 // router.post('/auth', AuthController.loginPost)
@@ -26,35 +26,31 @@ router.get('/', HomeController.homeGet)
 // router.get('/auth/me', AuthController.meGet)
 
 // Inquilinos
-router.get('/tenants', TenantController.listGet)
-router.post('/tenants', TenantController.createPost)
-router.get('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.getOneGet)
-router.put('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.updatePut)
-router.delete('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.deleteDelete)
+router.get('/tenants', TenantController.list)
+router.post('/tenants', TenantController.create)
+router.get('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.getOne)
+router.put('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.update)
+router.delete('/tenants/:tenantUuid', GetTenantMiddleware, TenantController.remove)
 
 // Papeis
-router.get('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.listGet)
-router.post('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.createPost)
-router.get('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.getOneGet)
-router.put('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.updatePut)
-router.delete('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.deleteDelete)
+router.get('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.list)
+router.post('/tenants/:tenantUuid/roles', GetTenantMiddleware, RoleController.create)
+router.get('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.getOne)
+router.put('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.update)
+router.delete('/tenants/:tenantUuid/roles/:roleUuid', GetTenantMiddleware, GetRoleMiddleware, RoleController.remove)
 
 // Perfil / Permissões
-router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.listGet)
-router.post('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.addPost)
-router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions/:permissionUuid', GetTenantMiddleware, GetRoleMiddleware, GetRolePermissionMiddleware, RolePermissionController.getOneGet)
-router.delete('/tenants/:tenantUuid/roles/:roleUuid/permissions/:permissionUuid', GetTenantMiddleware, GetRoleMiddleware, GetRolePermissionMiddleware, RolePermissionController.removeDelete)
+router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.list)
+router.post('/tenants/:tenantUuid/roles/:roleUuid/permissions', GetTenantMiddleware, GetRoleMiddleware, RolePermissionController.add)
+router.get('/tenants/:tenantUuid/roles/:roleUuid/permissions/:permissionUuid', GetTenantMiddleware, GetRoleMiddleware, GetRolePermissionMiddleware, RolePermissionController.getOne)
+router.delete('/tenants/:tenantUuid/roles/:roleUuid/permissions/:permissionUuid', GetTenantMiddleware, GetRoleMiddleware, GetRolePermissionMiddleware, RolePermissionController.remove)
 
 // Usuários
-router.get('/tenants/:tenantUuid/users', GetTenantMiddleware, UserController.listGet)
-router.post('/tenants/:tenantUuid/users', GetTenantMiddleware, UserController.createPost)
-router.get('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.getOneGet)
-router.put('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.updatePut)
-router.delete('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.deleteDelete)
-
-// // Usuário / Perfil
-// router.get('/tenants/:tenantUuid/users/:userUuid/role', GetTenantMiddleware, GetUserMiddleware, UserController.getRoleGet)
-// router.patch('/tenants/:tenantUuid/users/:userUuid/role', GetTenantMiddleware, GetUserMiddleware, UserController.updateRolePatch)
+router.get('/tenants/:tenantUuid/users', GetTenantMiddleware, UserController.list)
+router.post('/tenants/:tenantUuid/users', GetTenantMiddleware, UserController.create)
+router.get('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.getOne)
+router.put('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.update)
+router.delete('/tenants/:tenantUuid/users/:userUuid', GetTenantMiddleware, GetUserMiddleware, UserController.remove)
 
 // Erros
 router.use(require('./middlewares/error-404'))
