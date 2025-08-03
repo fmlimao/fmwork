@@ -2,10 +2,8 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS role_permissions;
-# DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS roles;
-# DROP TABLE IF EXISTS people;
 DROP TABLE IF EXISTS tenants;
 DROP TABLE IF EXISTS permissions;
 
@@ -36,17 +34,6 @@ CREATE TABLE `tenants` (
     PRIMARY KEY (`tenant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-# CREATE TABLE `people` (
-#    `person_id` int NOT NULL AUTO_INCREMENT,
-#    `uuid` varchar(36) NOT NULL,
-#    `name` varchar(255) NOT NULL,
-#    `document` text,
-#    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#    `deleted_at` datetime DEFAULT NULL,
-#    PRIMARY KEY (`person_id`)
-# ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 CREATE TABLE `roles` (
     `role_id` int NOT NULL AUTO_INCREMENT,
     `uuid` varchar(36) NOT NULL,
@@ -76,21 +63,6 @@ CREATE TABLE `users` (
     PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-# CREATE TABLE `user_roles` (
-#     `user_role_id` int NOT NULL AUTO_INCREMENT,
-#     `tenant_id` int NOT NULL,
-#     `user_id` int NOT NULL,
-#     `role_id` int NOT NULL,
-#     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#     `deleted_at` datetime DEFAULT NULL,
-#     PRIMARY KEY (`user_role_id`),
-# #     UNIQUE KEY `uk_user_roles` (`tenant_id`, `user_id`, `role_id`),
-#     FOREIGN KEY (`tenant_id`) REFERENCES `tenants` (`tenant_id`),
-#     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-#     FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`)
-# ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-#
 CREATE TABLE `role_permissions` (
     `role_permission_id` int NOT NULL AUTO_INCREMENT,
     `tenant_id` int NOT NULL,
@@ -121,10 +93,6 @@ INSERT INTO roles (uuid, tenant_id, name, description) VALUES
 -- Inserir usuário admin
 INSERT INTO users (uuid, tenant_id, role_id, name, document, email, password)
 VALUES ('2fe91aa9-4a20-11f0-95b3-5299fd27ec4e', 1, 1, 'Administrador', '000.000.000-00', 'admin@projetosfm.com.br', '$2b$10$xLxrhUq119Hwa2gnRqWlOeucyrTqq8JEDrqOXmUxLSgDGVXIiobwy');
-#
-# -- Vincular perfil de Administrador ao usuário admin
-# INSERT INTO user_roles (tenant_id, user_id, role_id)
-# VALUES (1, 1, 1);
 
 -- Vincular todas as permissões ao perfil de Administrador
 INSERT INTO role_permissions (tenant_id, role_id, permission_id)
