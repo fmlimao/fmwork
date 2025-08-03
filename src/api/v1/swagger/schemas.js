@@ -563,4 +563,46 @@
  *                 active: 1
  *                 createdAt: "2024-01-01 10:00:00"
  *                 updatedAt: "2024-01-01 10:00:00"
+ *
+ *     TenantNotFoundResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             code:
+ *               type: integer
+ *               default: 404
+ *             error:
+ *               type: boolean
+ *               default: false
+ *           example:
+ *             code: 404
+ *             error: false
+ *             messages: ["Inquilino não encontrado."]
+ *
+ *     TenantResponse:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ApiResponse'
+ *         - type: object
+ *           properties:
+ *             content:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Tenant'
+ *           example:
+ *             code: 200
+ *             error: false
+ *             messages: ["Inquilino encontrado com sucesso."]
+ *             content:
+ *               data:
+ *                 uuid: "123e4567-e89b-12d3-a456-426614174000"
+ *                 name: "Empresa Exemplo"
+ *                 description: "Descrição da Empresa Exemplo"
+ *                 appTitle: "Sistema Exemplo"
+ *                 appShortTitle: "SEX"
+ *                 isRoot: 0
+ *                 active: 1
+ *                 createdAt: "2024-01-01 10:00:00"
+ *                 updatedAt: "2024-01-01 10:00:00"
  */
